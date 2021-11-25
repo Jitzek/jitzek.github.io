@@ -4,8 +4,8 @@
   //
 
   // "components"
-  import ContextMenu from "$components/desktop/context_menu/ContextMenu.svelte";
-  import ContextMenuOption from "$components/desktop/context_menu/ContextMenuOption.svelte";
+  import ContextMenu from "$components/shared/context_menu/ContextMenu.svelte";
+  import ContextMenuOption from "$components/shared/context_menu/ContextMenuOption.svelte";
   import Grid from "$components/shared/grid/Grid.svelte";
   import Taskbar from "$components/desktop/taskbar/Taskbar.svelte";
   import Wallpaper from "$components/shared/Wallpaper.svelte";
@@ -26,7 +26,7 @@
     maxWindowZIndex,
     maxWindowZIndexStore,
   } from "$stores/shared/ProcessesStore";
-  import { contextMenuStore } from "$stores/desktop/ContextMenuStore";
+  import { contextMenuStore } from "$stores/shared/ContextMenuStore";
   import { hideMenu } from "$stores/desktop/MenuStore";
   //
 

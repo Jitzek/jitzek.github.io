@@ -92,12 +92,9 @@
   }
 
   .menu-launcher-button:hover,
+  .menu-launcher-button:focus,
   .menu-launcher-button.activated {
-    background-color: var(--input_hover_bg_color);
-  }
-
-  .menu-launcher-button:hover,
-  .menu-launcher-button.activated {
+    @include input-hover-inherit;
     img {
       width: 2.75rem;
     }

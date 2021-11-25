@@ -15,7 +15,7 @@
   import {
     hideContextMenu,
     showContextMenu,
-  } from "$stores/desktop/ContextMenuStore";
+  } from "$stores/shared/ContextMenuStore";
   import { hideMenu } from "$stores/desktop/MenuStore";
   import { removeProgramShortcut } from "$stores/desktop/TaskbarStore";
   //

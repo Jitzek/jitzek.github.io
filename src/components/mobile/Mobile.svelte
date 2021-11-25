@@ -7,9 +7,9 @@
   import Grid from "$components/shared/grid/Grid.svelte";
   import Wallpaper from "$components/shared/Wallpaper.svelte";
   import StatusBar from "$components/mobile/status_bar/StatusBar.svelte";
-  import ContextMenu from "$components/desktop/context_menu/ContextMenu.svelte";
-  import ContextMenuOption from "$components/desktop/context_menu/ContextMenuOption.svelte";
-  import { contextMenuStore } from "$stores/desktop/ContextMenuStore";
+  import ContextMenu from "$components/shared/context_menu/ContextMenu.svelte";
+  import ContextMenuOption from "$components/shared/context_menu/ContextMenuOption.svelte";
+  import { contextMenuStore } from "$stores/shared/ContextMenuStore";
   import NavigationBar from "./navigation_bar/NavigationBar.svelte";
   import { convertRemToPixels } from "$objects/shared/conversions";
   //

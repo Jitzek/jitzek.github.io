@@ -11,7 +11,7 @@
   //
 
   // "stores"
-  import { hideContextMenu } from "$stores/desktop/ContextMenuStore";
+  import { hideContextMenu } from "$stores/shared/ContextMenuStore";
   //
 
   /** ENDOF IMPORTS*/

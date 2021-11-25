@@ -90,7 +90,11 @@
 
     .app-drawer-bar-button:hover,
     .app-drawer-bar-button:focus {
-      background-color: var(--input_hover_bg_color);
+      @include input-hover-inherit;
+    }
+
+    .app-drawer-bar-button:active {
+      @include input-active-inherit;
     }
   }
 </style>

@@ -26,7 +26,7 @@ export class Grid {
     this.prevScreenHeight = screenHeight;
     let rows = Math.floor(
       (screenHeight -
-        convertRemToPixels(this.padding + this.bottomOffset + this.topOffset)) /
+        convertRemToPixels(this.padding + this.bottomOffset - this.topOffset)) /
         convertRemToPixels(this.columnHeight + this.gap)
     );
     let columnsPerRow = Math.round(

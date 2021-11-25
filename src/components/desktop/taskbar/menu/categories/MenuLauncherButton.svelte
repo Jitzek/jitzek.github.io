@@ -14,7 +14,7 @@
   import {
     hideContextMenu,
     showContextMenu,
-  } from "$stores/desktop/ContextMenuStore";
+  } from "$stores/shared/ContextMenuStore";
   import { hideMenu } from "$stores/desktop/MenuStore";
   import {
     addProgramShortcut,
@@ -150,7 +150,8 @@
     }
   }
 
-  .menu-launcher-button:hover {
+  .menu-launcher-button:hover,
+  .menu-launcher-button:focus {
     @include input-hover-inherit;
   }
 
@@ -159,6 +160,7 @@
   }
 
   .menu-launcher-button:hover,
+  .menu-launcher-button:focus,
   .menu-launcher-button.activated {
     img {
       width: 2.75rem;

@@ -1,0 +1,14 @@
+.layout-wrapper.svelte-z6nb3i {
+  height: 100%;
+  color: var(--fg_color_primary);
+}
+body,
+html {
+  position: relative;
+  z-index: -1;
+  margin: 0;
+  height: 100%;
+  color: var(--fg_color_primary);
+  background-color: var(--bg_color_primary);
+  font-weight: 500;
+}
