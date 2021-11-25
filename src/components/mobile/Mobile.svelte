@@ -52,11 +52,16 @@
 </svelte:head>
 
 <Wallpaper src={wallpaper} />
-<NavigationBar buttonHeightInRem={3.5} />
+
+<StatusBar
+  statusBarHeightInRem={2.5}
+  bottomOffsetInPX={convertRemToPixels(3.5)}
+/>
 
 <div class="grid-container">
   <Grid
-    topOffset={2.5}
+    topOffset={0}
+    bottomOffset={3.5 + 2.5}
     columnWidth={5}
     columnHeight={6}
     gap={1.5}
@@ -64,10 +69,7 @@
   />
 </div>
 
-<StatusBar
-  statusBarHeightInRem={2.5}
-  bottomOffsetInPX={convertRemToPixels(3.5)}
-/>
+<NavigationBar buttonHeightInRem={3.5} />
 
 {#if $contextMenuStore.show}
   <ContextMenu x={$contextMenuStore.x} y={$contextMenuStore.y} z_index={10}>

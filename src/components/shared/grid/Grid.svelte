@@ -48,7 +48,6 @@
   let screenHeight: number;
 
   let gridItemBeingDragged: GridItemObject = null;
-  let positionBeingHovered: GridPositionObject = null;
   let positionsBeingHovered: GridPositionObject[] = [];
   /** ENDOF VARIABLE DECLERATION */
 
@@ -96,37 +95,39 @@
       // Attempt to handle data transfer of dragged gridItems
     } else {
       // Attempt to place GridItem on grid
-      $gridStore.gridItems
-        .filter((gridItem) => gridItem.selected)
-        .forEach((gridItem) => {
-          let or_gridPosition = $gridStore.gridPositions.find(
-            (_position) =>
-              _position.item != null && _position.item.id == gridItem.id
-          );
-          let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
-            or_gridPosition.x + offsetX,
-            or_gridPosition.y + offsetY,
-            (position: GridPositionObject) =>
-              position.item == null || position.item == gridItem
-          );
-          setPreferredPositionOfGridItem(
-            gridItem,
-            new_gridPosition.row,
-            new_gridPosition.column
-          );
-        });
+      $gridStore.getSelectedItems().forEach((gridItem) => {
+        let or_gridPosition = $gridStore.gridPositions.find(
+          (_position) =>
+            _position.item != null && _position.item.id == gridItem.id
+        );
+        let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
+          or_gridPosition.x + offsetX,
+          or_gridPosition.y + offsetY,
+          (position: GridPositionObject) =>
+            position.item == null || position.item == gridItem
+        );
+        setPreferredPositionOfGridItem(
+          gridItem,
+          new_gridPosition.row,
+          new_gridPosition.column
+        );
+      });
     }
   }
   /** ENDOF HELPER FUNCTIONS */
 
   /** EVENT HANDLERS */
-  // TODO: Closely resembled {placeGridItemOnGrid}, maybe use a generic function instead?
+  // TODO: Closely resembles {placeGridItemOnGrid}, maybe use a generic function instead?
   function handleGridItemMove(x: number, y: number) {
-    if (gridItemBeingDragged === null) return;
+    positionsBeingHovered = [];
+    if (gridItemBeingDragged === null) {
+      positionsBeingHovered.push(
+        $gridStore.getClosestGridPositionToPosition(x, y)
+      );
+      return;
+    }
     let offsetX = x - gridItemBeingDragged.position.x;
     let offsetY = y - gridItemBeingDragged.position.y;
-
-    positionsBeingHovered = [];
 
     let position = $gridStore.getClosestGridPositionToPosition(x, y);
     // Check if the GridItem being dragged is dropped on an occupied spot
@@ -135,26 +136,24 @@
       // Inform user about potential data transfer of dragged gridItems
     } else {
       // Fill list with the grid positions where the currently selected/dragged items will be placed
-      $gridStore.gridItems
-        .filter((gridItem) => gridItem.selected)
-        .forEach((gridItem) => {
-          let or_gridPosition = $gridStore.gridPositions.find(
-            (_position) =>
-              _position.item != null && _position.item.id == gridItem.id
-          );
-          let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
-            or_gridPosition.x + offsetX,
-            or_gridPosition.y + offsetY,
-            (position: GridPositionObject) =>
-              position.item == null || position.item == gridItem
-          );
-          positionsBeingHovered.push(new_gridPosition);
-        });
+      $gridStore.getSelectedItems().forEach((gridItem) => {
+        let or_gridPosition = $gridStore.gridPositions.find(
+          (_position) =>
+            _position.item != null && _position.item.id == gridItem.id
+        );
+        let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
+          or_gridPosition.x + offsetX,
+          or_gridPosition.y + offsetY,
+          (position: GridPositionObject) =>
+            position.item == null || position.item == gridItem
+        );
+        positionsBeingHovered.push(new_gridPosition);
+      });
     }
-    positionsBeingHovered = positionsBeingHovered;
   }
 
   function handleGridDrop(e: DragEvent) {
+    positionsBeingHovered = [];
     if (gridItemBeingDragged !== null) {
       placeGridItemOnGrid(e.clientX, e.clientY, gridItemBeingDragged);
       gridItemBeingDragged = null;
@@ -220,7 +219,8 @@
 >
   {#each $gridStore.gridPositions as gridPosition}
     <div
-      class="grid-child {gridItemBeingDragged !== null
+      class="grid-child {gridItemBeingDragged !== null ||
+      positionsBeingHovered.length > 0
         ? 'show-outline'
         : ''} {positionsBeingHovered.includes(gridPosition) ? 'hovered' : ''}"
     >
