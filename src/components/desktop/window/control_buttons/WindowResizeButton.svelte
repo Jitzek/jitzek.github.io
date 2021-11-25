@@ -83,13 +83,13 @@
     svg {
       height: 0.85rem;
       transition: height 0.15s;
-      stroke: var(--font-color);
+      stroke: var(--input_fg_color);
       fill: none;
     }
   }
 
   .window-resize-button:hover {
-    background-color: var(--background-color-hover);
+    background-color: var(--input_hover_bg_color);
     svg {
       height: 1rem;
     }

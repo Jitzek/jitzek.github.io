@@ -3,6 +3,7 @@
   import Desktop from "$components/desktop/Desktop.svelte";
   import { onMount } from "svelte";
   import Mobile from "$components/mobile/Mobile.svelte";
+  import LoadingScreen from "$components/shared/loading_screen/LoadingScreen.svelte";
 
   let mounted: boolean = false;
   onMount(() => {
@@ -10,12 +11,16 @@
   });
 </script>
 
+<svelte:head>
+  <title>Jitze Jan Kerkstra</title>
+</svelte:head>
+
 {#if mounted}
   {#if $desktop}
     <Desktop />
-  {:else if $mobile}
+  {:else}
     <Mobile />
   {/if}
 {:else}
-  <!-- Show OS loading -->
+  <LoadingScreen />
 {/if}

@@ -87,7 +87,7 @@
     let offsetX = x - gridItem.position.x;
     let offsetY = y - gridItem.position.y;
 
-    let position = $gridStore.getGridPositionAtPosition(x, y);
+    let position = $gridStore.getClosestGridPositionToPosition(x, y);
     // Check if the GridItem being dragged is dropped on an occupied spot
     if (position && position.item != null) {
       if (position.item == gridItem) return;
@@ -114,14 +114,14 @@
           );
         });
     }
-    gridItemBeingDragged = null;
   }
   /** ENDOF HELPER FUNCTIONS */
 
   /** EVENT HANDLERS */
   function handleGridDrop(e: DragEvent) {
-    if (gridItemBeingDragged != null) {
+    if (gridItemBeingDragged !== null) {
       placeGridItemOnGrid(e.clientX, e.clientY, gridItemBeingDragged);
+      gridItemBeingDragged = null;
       return;
     }
 
@@ -168,8 +168,8 @@
     return;
   }
   function handleGridItemTouchEnd(x: number, y: number, item: GridItemObject) {
-    console.log(`${x} ${y}`);
     placeGridItemOnGrid(x, y, item);
+    gridItemBeingDragged = null;
   }
   /** ENDOF EVENT HANDLERS */
 </script>

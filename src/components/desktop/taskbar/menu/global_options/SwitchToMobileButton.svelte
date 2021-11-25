@@ -56,6 +56,10 @@
 
 <style lang="scss">
   .switch-to-mobile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     height: 3rem;
     width: 3rem;
 

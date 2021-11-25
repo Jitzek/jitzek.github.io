@@ -109,16 +109,13 @@
 
 <style lang="scss">
   .menu-launcher-button {
-    background-color: rgba(0, 0, 0, 0);
-    transition: background-color 0.25s;
-
-    display: block;
+    @include input-inherit;
     outline: none;
     border: none;
 
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
+    transition: background-color 0.25s;
+
+    display: block;
 
     cursor: pointer;
 
@@ -143,18 +140,22 @@
       .name-and-description {
         display: inline-block;
         text-align: left;
-        color: var(--font-color);
+        color: var(--fg_color_primary);
 
         .description {
-          color: var(--font-color-secondary);
+          color: var(--fg_color_secondary);
+          font-size: 0.85rem;
         }
       }
     }
   }
 
-  .menu-launcher-button:hover,
+  .menu-launcher-button:hover {
+    @include input-hover-inherit;
+  }
+
   .menu-launcher-button.activated {
-    background-color: var(--background-color-secondary-hover);
+    @include input-active-inherit;
   }
 
   .menu-launcher-button:hover,

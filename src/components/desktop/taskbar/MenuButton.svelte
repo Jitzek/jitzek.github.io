@@ -54,6 +54,8 @@
 
 <style lang="scss">
   .menu-button {
+    @include font-inherit;
+
     background-color: rgba(0, 0, 0, 0);
     transition: background-color 0.2s;
     outline: none;
@@ -67,8 +69,6 @@
     width: 12rem;
 
     color: inherit;
-    font-family: inherit;
-    font-size: inherit;
 
     .menu-button-content {
       display: flex;
@@ -102,7 +102,7 @@
 
   .menu-button:hover,
   .menu-button.activated {
-    background-color: var(--background-color-secondary-hover);
+    background-color: var(--input_hover_bg_color);
     cursor: pointer;
 
     .menu-button-icon {

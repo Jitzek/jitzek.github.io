@@ -1,13 +1,5 @@
 <script lang="ts">
-  import { changeCursor, Cursor } from "$objects/desktop/cursors";
-
-  import { convertRemToPixels } from "$objects/shared/conversions";
-
-  import {
-    dateStore,
-    getTimeWithoutSecondsAsString,
-  } from "$stores/shared/DateTimeStore";
-  import { onMount } from "svelte";
+  import ChangeThemeSwitch from "$components/desktop/taskbar/menu/global_options/ChangeThemeSwitch.svelte";
 
   /** IMPORTS */
   // "svelte"
@@ -17,16 +9,28 @@
   //
 
   // "objects"
+  import { changeCursor, Cursor } from "$objects/desktop/cursors";
+  import { convertRemToPixels } from "$objects/shared/conversions";
   //
 
   // "stores"
+  import {
+    dateStore,
+    getDateString,
+    getDayOfMonth,
+    getDayOfWeekString,
+    getMonthOfYearString,
+    getTimeWithoutSecondsAsString,
+  } from "$stores/shared/DateTimeStore";
+  import SwitchToDesktopButton from "./global_options/SwitchToDesktopButton.svelte";
   //
 
   /** ENDOF IMPORTS*/
 
   /** EXPORTS */
-  export let heightInRem: number = 2.5;
+  export let statusBarHeightInRem: number = 2.5;
   export let expanded: boolean = false;
+  export let bottomOffsetInPX: number = 0;
   /** ENDOF EXPORTS */
 
   /** VARIABLE DECLARATION */
@@ -47,7 +51,8 @@
 
   /** REACTIVE VARIABLES */
   $: {
-    maxY = innerHeight - convertRemToPixels(heightInRem);
+    maxY =
+      innerHeight - convertRemToPixels(statusBarHeightInRem) - bottomOffsetInPX;
     if (statusBarOffset >= maxY) statusBarOffset = maxY;
   }
   $: {
@@ -116,11 +121,6 @@
       expanded = true;
     }
   }
-  function window_handleTouchMove(e: TouchEvent) {
-    if (!isResizing) return;
-    e.preventDefault();
-    handleStatusBarBorderMove(e.targetTouches[0].clientY);
-  }
   function window_handleTouchEnd(e: TouchEvent) {
     if (!isResizing) return;
     e.preventDefault();
@@ -140,15 +140,22 @@
   function handleStatusBarBorderTouchStart(e: TouchEvent) {
     handleStatusBarBorderMoveStart(e.targetTouches[0].clientY);
   }
+  function handleStatusBarBorderTouchMove(e: TouchEvent) {
+    if (!isResizing) return;
+    e.preventDefault();
+    handleStatusBarBorderMove(e.targetTouches[0].clientY);
+  }
   function handleStatusBarBorderMouseDown(e: MouseEvent) {
     handleStatusBarBorderMoveStart(e.clientY);
+  }
+  function handleStatusBarBorderContextMenu(e: MouseEvent) {
+    e.preventDefault();
   }
   /** ENDOF EVENT HANDLERS */
 </script>
 
 <svelte:window
   bind:innerHeight
-  on:touchmove={window_handleTouchMove}
   on:touchend={window_handleTouchEnd}
   on:mousemove={window_handleMouseMove}
   on:mouseup={window_handleMouseUp}
@@ -158,25 +165,32 @@
   bind:this={statusBarElement}
   class:expanding
   class="status-bar"
-  style="top: {statusBarOffset - maxY + convertRemToPixels(heightInRem)}px"
+  style="top: {statusBarOffset -
+    maxY +
+    convertRemToPixels(statusBarHeightInRem)}px; height: {maxY};"
 >
   <div class="status-bar-content" style="height: {maxY}px;">
-    Top<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Content<br />
-    Bottom<br />
+    <div class="status-bar-content-top">
+      <div class="status-bar-content-top-left">
+        <span class="date"
+          >{getDayOfWeekString($dateStore, "short")}, {getMonthOfYearString(
+            $dateStore,
+            "long"
+          )}
+          {getDayOfMonth($dateStore)}</span
+        >
+      </div>
+      <div class="status-bar-content-top-right">
+        <SwitchToDesktopButton />
+        <div style="padding-left: 0.75rem;" />
+        <ChangeThemeSwitch />
+      </div>
+    </div>
   </div>
 </div>
-<div class="status-bar-status" style="height: {heightInRem}rem;">
+<div class="status-bar-status" style="height: {statusBarHeightInRem}rem;">
   <div class="status-bar-status-left">
-    {getTimeWithoutSecondsAsString($dateStore)}
+    <span>{getTimeWithoutSecondsAsString($dateStore)}</span>
   </div>
   <div class="status-bar-status-right">right</div>
 </div>
@@ -186,23 +200,43 @@
   class:expanded
   class:isResizing
   class="status-bar-border"
-  style="height: {heightInRem}rem; top: {statusBarOffset}px"
+  style="height: {statusBarHeightInRem}rem; top: {statusBarOffset}px"
   on:touchstart={handleStatusBarBorderTouchStart}
   on:mousedown={handleStatusBarBorderMouseDown}
-  on:contextmenu={(e) => e.preventDefault()}
+  on:contextmenu={handleStatusBarBorderContextMenu}
+  on:touchmove={handleStatusBarBorderTouchMove}
 />
 
 <style lang="scss">
   .status-bar {
     position: fixed;
     width: 100%;
-    height: 100%;
 
     .status-bar-content {
       position: absolute;
       width: 100%;
       overflow: auto;
-      background-color: var(--background-color);
+      background-color: var(--bg_color_secondary);
+
+      .status-bar-content-top {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        .status-bar-content-top-left {
+          margin: 0.5rem;
+          display: flex;
+          margin-right: auto;
+
+          .date {
+            font-size: 1.25rem;
+          }
+        }
+        .status-bar-content-top-right {
+          margin: 0.5rem;
+          display: flex;
+          margin-left: auto;
+        }
+      }
     }
   }
 
@@ -225,13 +259,13 @@
   }
   .status-bar-border.expanding {
     transition: top 0.5s;
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg_color_primary);
   }
   .status-bar-border.expanded {
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg_color_primary);
   }
   .status-bar-border.isResizing {
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg_color_primary);
   }
 
   .status-bar-status {
@@ -239,18 +273,18 @@
     display: flex;
     align-items: center;
     top: 0;
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg_color_primary);
     width: 100%;
 
     .status-bar-status-left {
       position: absolute;
       left: 0;
-      margin-left: 0.5rem;
+      margin: 0.5rem;
     }
     .status-bar-status-right {
       position: absolute;
       right: 0;
-      margin-right: 0.5rem;
+      margin: 0.5rem;
     }
   }
 </style>

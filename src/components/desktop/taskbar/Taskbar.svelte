@@ -226,7 +226,7 @@
     bottom: 0;
     width: 100%;
 
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg_color_primary);
 
     transition: height 0.25s;
 

@@ -55,24 +55,19 @@
 >
   <div class="menu-launcher-button-content">
     <img src={icon} alt={name} />
-    <div class="name-and-description">
-      <span class="name">{name}</span>
-    </div>
+    <span class="name">{name}</span>
   </div>
 </button>
 
 <style lang="scss">
   .menu-launcher-button {
-    background-color: rgba(0, 0, 0, 0);
-    transition: background-color 0.25s;
-
-    display: block;
+    @include input-inherit;
     outline: none;
     border: none;
 
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
+    transition: background-color 0.25s;
+
+    display: block;
 
     cursor: pointer;
 
@@ -93,22 +88,12 @@
         transition: width 0.25s;
         height: auto;
       }
-
-      .name-and-description {
-        display: inline-block;
-        text-align: left;
-        color: var(--font-color);
-
-        .description {
-          color: var(--font-color-secondary);
-        }
-      }
     }
   }
 
   .menu-launcher-button:hover,
   .menu-launcher-button.activated {
-    background-color: var(--background-color-secondary-hover);
+    background-color: var(--input_hover_bg_color);
   }
 
   .menu-launcher-button:hover,

@@ -4,7 +4,7 @@
   //
 
   // "components"
-  import { clickOutside } from "$components/shared/events/mouseOutside";
+  import { clickOutside } from "$actions/mouseOutside";
   //
 
   // "objects"
@@ -73,11 +73,11 @@
 <style lang="scss">
   .context-menu {
     position: absolute;
-    background-color: var(--background-color);
+    background-color: var(--bg_color_primary);
     height: auto;
     width: auto;
     max-width: 100%;
     max-height: 100%;
-    outline: 1px solid var(--font-color-secondary);
+    outline: 1px solid var(--border_color_primary);
   }
 </style>

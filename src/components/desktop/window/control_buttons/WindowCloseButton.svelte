@@ -43,12 +43,12 @@
     svg {
       height: 0.85rem;
       transition: height 0.15s;
-      fill: var(--font-color);
+      fill: var(--input_fg_color);
     }
   }
 
   .window-close-button:hover {
-    background-color: var(--accent-alert-color);
+    background-color: var(--input_hover_bg_color);
     svg {
       height: 1rem;
     }

@@ -96,7 +96,7 @@
   <title>Jitze Jan Kerkstra</title>
 </svelte:head>
 
-<!-- <Wallpaper src={wallpaper} /> -->
+<Wallpaper src={wallpaper} />
 <div class="grid-container">
   <Grid
     bottomOffset={taskbarHeight}
@@ -164,6 +164,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    // height: 100%;
   }
 </style>

@@ -20,7 +20,8 @@
     categoryFavourites,
   } from "$stores/shared/CategoriesStore";
   import { programsStore } from "$stores/shared/ProgramsStore";
-  import { filter, sortBy } from "lodash-es";
+  import lodash from "lodash";
+  const { sortBy } = lodash;
   //
 
   /** ENDOF IMPORTS*/
@@ -136,16 +137,16 @@
     .category-buttons-container {
       overflow-y: auto;
       overflow-x: hidden;
-      padding-right: 0.5rem;
-      width: 100%;
-      flex: 1;
+      width: 12rem;
+      background-color: var(--bg_color_primary);
     }
 
     .category-content-container {
       overflow-y: auto;
       overflow-x: hidden;
-      width: 100%;
-      flex: 2;
+      // 100% - the width of MenuButton
+      width: calc(100% - 12rem);
+      background-color: var(--bg_color_secondary);
     }
   }
 </style>

@@ -2,7 +2,9 @@ import { Process } from "./Process";
 import type { Window } from "./Window";
 import { processesStore, addProcess } from "$stores/shared/ProcessesStore";
 import type { Category } from "./Category";
-import { cloneDeep } from "lodash-es";
+// import { cloneDeep } from "lodash";
+import lodash from "lodash";
+const { cloneDeep } = lodash;
 
 let c_program_id = 0;
 export class Program {

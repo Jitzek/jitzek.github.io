@@ -89,7 +89,7 @@
     all: unset;
     padding: 0 0.5rem 0 0.5rem;
     svg {
-      fill: var(--font-color-secondary);
+      fill: var(--input_fg_color);
       width: 100%;
       height: 100%;
       transition: transform 0.5s ease-out;
@@ -103,6 +103,6 @@
     }
   }
   button:hover {
-    background-color: var(--background-color-secondary-hover);
+    background-color: var(--input_hover_bg_color);
   }
 </style>

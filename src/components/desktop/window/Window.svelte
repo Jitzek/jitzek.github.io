@@ -419,18 +419,17 @@
   .window {
     $--control-bar-height: 2rem;
 
-    background-color: var(--background-color-application);
+    background-color: var(--bg_color_primary);
     position: absolute;
     margin-left: auto;
     margin-right: auto;
     // outline: 1px solid black;
-
     overflow: hidden;
 
     .control-bar {
       height: $--control-bar-height;
       width: 100%;
-      background-color: var(--border-color-application);
+      background-color: var(--border_color_primary);
 
       -moz-user-select: none;
       -webkit-user-select: none;
@@ -466,7 +465,7 @@
     .window-content {
       width: 100%;
       height: calc(100% - #{$--control-bar-height});
-      background-color: var(--background-color-application);
+      background-color: var(--bg_color_primary);
     }
 
     .border-top,

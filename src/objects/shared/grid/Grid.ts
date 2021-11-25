@@ -6,7 +6,6 @@ export class Grid {
   public gridItems: Array<GridItem> = [];
   public gridPositions: Array<GridPosition> = [];
   public gridTemplateColumns: string = "";
-  public gridItemBeingDragged: GridItem | null = null;
 
   public gap: number;
   public widthOffset: number;
@@ -97,6 +96,10 @@ export class Grid {
         gridItem.position = preferredGridPosition;
       }
     });
+  }
+
+  public getSelectedItems(): Array<GridItem> {
+    return this.gridItems.filter((gridItem) => gridItem.selected);
   }
 
   public addGridItem(gridItem: GridItem) {

@@ -7,6 +7,11 @@
   import Grid from "$components/shared/grid/Grid.svelte";
   import Wallpaper from "$components/shared/Wallpaper.svelte";
   import StatusBar from "$components/mobile/status_bar/StatusBar.svelte";
+  import ContextMenu from "$components/desktop/context_menu/ContextMenu.svelte";
+  import ContextMenuOption from "$components/desktop/context_menu/ContextMenuOption.svelte";
+  import { contextMenuStore } from "$stores/desktop/ContextMenuStore";
+  import NavigationBar from "./navigation_bar/NavigationBar.svelte";
+  import { convertRemToPixels } from "$objects/shared/conversions";
   //
 
   // "objects"
@@ -46,6 +51,9 @@
   <title>Jitze Jan Kerkstra</title>
 </svelte:head>
 
+<Wallpaper src={wallpaper} />
+<NavigationBar buttonHeightInRem={3.5} />
+
 <div class="grid-container">
   <Grid
     topOffset={2.5}
@@ -56,7 +64,24 @@
   />
 </div>
 
-<StatusBar heightInRem={2.5} />
+<StatusBar
+  statusBarHeightInRem={2.5}
+  bottomOffsetInPX={convertRemToPixels(3.5)}
+/>
+
+{#if $contextMenuStore.show}
+  <ContextMenu x={$contextMenuStore.x} y={$contextMenuStore.y} z_index={10}>
+    <div slot="options">
+      {#each $contextMenuStore.options as option}
+        <ContextMenuOption
+          name={option.name}
+          icon={option.icon}
+          onClick={option.onClick}
+        />
+      {/each}
+    </div>
+  </ContextMenu>
+{/if}
 
 <style lang="scss">
   .grid-container {

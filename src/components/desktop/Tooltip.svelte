@@ -57,15 +57,15 @@
 
 <style>
   .tooltip[data-tooltip]:before {
-    background-color: var(--background-color);
-    color: var(--font-color);
+    background-color: var(--bg_color_tertiary);
+    color: var(--fg_color_primary);
 
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
   }
 
   .tooltip[data-tooltip]:after {
-    border-top: 5px solid var(--background-color);
-    border-bottom: 5px solid var(--background-color);
+    border-top: 5px solid var(--bg_color_tertiary);
+    border-bottom: 5px solid var(--bg_color_tertiary);
   }
 
   [data-tooltip] {

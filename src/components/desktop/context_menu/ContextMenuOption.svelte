@@ -80,6 +80,6 @@
   }
 
   button:hover {
-    background-color: var(--background-color-hover);
+    background-color: var(--input_hover_bg_color);
   }
 </style>

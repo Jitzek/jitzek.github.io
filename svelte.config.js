@@ -6,7 +6,11 @@ import path from "path";
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
-  preprocess: preprocess(),
+  preprocess: preprocess({
+    scss: {
+      prependData: `@import "./src/globalstyles.scss";`,
+    },
+  }),
 
   kit: {
     vite: {
@@ -15,6 +19,7 @@ const config = {
           $components: path.resolve("src", "components"),
           $stores: path.resolve("src", "stores"),
           $objects: path.resolve("src", "objects"),
+          $actions: path.resolve("src", "actions"),
         },
       },
     },
