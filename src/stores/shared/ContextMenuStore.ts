@@ -1,6 +1,7 @@
 import { ContextMenu } from "$objects/desktop/context_menu/ContextMenu";
 import type { ContextMenuOption } from "$objects/desktop/context_menu/ContextMenuOption";
-import { Readable, writable, Writable, derived } from "svelte/store";
+import { writable, derived } from "svelte/store";
+import type { Writable, Readable } from "svelte/store";
 
 const _contextMenuStore: Writable<ContextMenu> = writable(new ContextMenu());
 export const contextMenuStore: Readable<ContextMenu> = derived(

@@ -1,6 +1,7 @@
 import { Taskbar } from "$objects/desktop/taskbar/Taskbar";
 import type { Program } from "$objects/shared/program/Program";
-import { Readable, writable, Writable, derived } from "svelte/store";
+import { writable, derived } from "svelte/store";
+import type { Writable, Readable } from "svelte/store";
 
 const taskbar: Taskbar = new Taskbar();
 const _taskbarStore: Writable<Taskbar> = writable(taskbar);

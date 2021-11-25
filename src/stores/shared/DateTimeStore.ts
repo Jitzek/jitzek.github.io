@@ -1,4 +1,5 @@
-import { readable, Readable } from "svelte/store";
+import { readable } from "svelte/store";
+import type { Readable } from "svelte/store";
 
 // Start is called when the store gets it's first subscriber
 // Stop is called when the last subscriber unsubscribes

@@ -1,5 +1,6 @@
 import type { Process } from "$objects/shared/program/Process";
-import { writable, Writable } from "svelte/store";
+import { writable } from "svelte/store";
+import type { Writable } from "svelte/store";
 
 export let maxWindowZIndex = 1;
 export const maxWindowZIndexStore: Writable<number> = writable(maxWindowZIndex);

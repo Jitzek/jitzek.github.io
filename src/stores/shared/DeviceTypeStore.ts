@@ -1,4 +1,5 @@
-import { writable, derived, Writable, Readable } from "svelte/store";
+import { writable, derived } from "svelte/store";
+import type { Writable, Readable } from "svelte/store";
 
 export const desktop: Writable<boolean> = writable(true);
 

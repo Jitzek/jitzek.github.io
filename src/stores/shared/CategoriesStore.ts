@@ -1,6 +1,7 @@
 import { Category } from "$objects/shared/program/Category";
 
-import { writable, Writable } from "svelte/store";
+import { writable } from "svelte/store";
+import type { Writable } from "svelte/store";
 
 let _categoriesStore: Array<Category> = [];
 export const categoryAll: Category = new Category(

@@ -1,6 +1,7 @@
 import type { Font } from "$objects/shared/fonts/Font";
 import { FontDefault } from "$objects/shared/fonts/FontDefault";
-import { writable, Writable } from "svelte/store";
+import { writable } from "svelte/store";
+import type { Writable } from "svelte/store";
 
 export const fontStore: Writable<Font> = writable(new FontDefault());
 

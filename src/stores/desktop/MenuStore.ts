@@ -1,4 +1,5 @@
-import { derived, Readable, writable, Writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
+import type { Readable, Writable } from "svelte/store";
 
 const _showMenuStore: Writable<boolean> = writable(false);
 export const showMenuStore: Readable<boolean> = derived(

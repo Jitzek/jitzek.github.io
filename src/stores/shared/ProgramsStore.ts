@@ -1,6 +1,8 @@
 import { Program } from "$objects/shared/program/Program";
 import { Window } from "$objects/shared/program/Window";
-import { writable, Writable } from "svelte/store";
+import { writable } from "svelte/store";
+import type { Writable } from "svelte/store";
+
 import {
   getCategoryByName,
   categoryFavourites,
