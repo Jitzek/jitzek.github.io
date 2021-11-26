@@ -118,7 +118,7 @@
 
   /** EVENT HANDLERS */
   // TODO: Closely resembles {placeGridItemOnGrid}, maybe use a generic function instead?
-  function handleGridItemMove(x: number, y: number) {
+  function handleGridMoveOver(x: number, y: number) {
     positionsBeingHovered = [];
     if (gridItemBeingDragged === null) {
       positionsBeingHovered.push(
@@ -186,8 +186,9 @@
     gridItemBeingDragged = item;
   }
 
-  function handleGridItemDragMove(x: number, y: number) {
-    handleGridItemMove(x, y);
+  function handleGridDragOver(e: DragEvent) {
+    e.preventDefault();
+    handleGridMoveOver(e.clientX, e.clientY);
   }
   function handleGridItemDragEnd(x: number, y: number, item: GridItemObject) {
     gridItemBeingDragged = null;
@@ -199,8 +200,9 @@
   ) {
     gridItemBeingDragged = item;
   }
-  function handleGridItemTouchMove(x: number, y: number, item: GridItemObject) {
-    handleGridItemMove(x, y);
+  function handleGridItemTouchMove(e: TouchEvent) {
+    e.preventDefault();
+    handleGridMoveOver(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
   }
   function handleGridItemTouchEnd(x: number, y: number, item: GridItemObject) {
     placeGridItemOnGrid(x, y, item);
@@ -216,6 +218,8 @@
   style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem;"
   on:mousedown={hideMenu}
   on:drop={handleGridDrop}
+  on:dragover={handleGridDragOver}
+  on:touchmove={handleGridItemTouchMove}
 >
   {#each $gridStore.gridPositions as gridPosition}
     <div
@@ -227,10 +231,8 @@
       <GridPosition
         {gridPosition}
         onDragStart={handleGridItemDragStart}
-        onDragMove={handleGridItemDragMove}
         onDragEnd={handleGridItemDragEnd}
         onTouchStart={handleGridItemTouchStart}
-        onTouchMove={handleGridItemTouchMove}
         onTouchEnd={handleGridItemTouchEnd}
       />
     </div>

@@ -110,8 +110,14 @@ export class Grid {
     this.gridItems = this.gridItems.filter((gridItem) => gridItem.id !== id);
   }
 
-  public getGridPositionAtPosition(x: number, y: number): GridPosition | null {
-    return this.gridPositions.find((position) => position.collidesWith(x, y));
+  public getGridPositionAtPosition(
+    x: number,
+    y: number,
+    filter: (position: GridPosition) => boolean = () => true
+  ): GridPosition | null {
+    return this.gridPositions
+      .filter(filter)
+      .find((position) => position.collidesWith(x, y));
   }
 
   public getClosestGridPositionToPosition(
