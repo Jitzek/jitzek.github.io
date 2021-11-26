@@ -41,11 +41,14 @@
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
+  /** @deprecated due to potential performance issues */
   export let onDragMove: (
     x: number,
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
   export let onDragEnd: (x: number, y: number, item: GridItemObject) => void = (
     x: number,
     y: number,
@@ -56,11 +59,14 @@
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
+  /** @deprecated due to potential performance issues */
   export let onTouchMove: (
     x: number,
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+  
   export let onTouchEnd: (
     x: number,
     y: number,
@@ -115,6 +121,7 @@
   /** ENDOF HELPER FUNCTIONS */
 
   /** EVENT HANDLERS */
+  /** @deprecated functionality might be handled in {Grid.svelte} instead **/
   function window_handleDragOver(e: DragEvent) {
     e.preventDefault();
     if (isDragging) {
