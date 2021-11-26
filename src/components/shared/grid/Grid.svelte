@@ -114,6 +114,10 @@
       });
     }
   }
+  function hideGridHelperLines() {
+    gridItemBeingDragged = null;
+    positionsBeingHovered = [];
+  }
   /** ENDOF HELPER FUNCTIONS */
 
   /** EVENT HANDLERS */
@@ -121,9 +125,6 @@
   function handleGridMoveOver(x: number, y: number) {
     positionsBeingHovered = [];
     if (gridItemBeingDragged === null) {
-      positionsBeingHovered.push(
-        $gridStore.getClosestGridPositionToPosition(x, y)
-      );
       return;
     }
     let offsetX = x - gridItemBeingDragged.position.x;
@@ -191,7 +192,7 @@
     handleGridMoveOver(e.clientX, e.clientY);
   }
   function handleGridItemDragEnd(x: number, y: number, item: GridItemObject) {
-    gridItemBeingDragged = null;
+    hideGridHelperLines();
   }
   function handleGridItemTouchStart(
     x: number,
@@ -206,7 +207,7 @@
   }
   function handleGridItemTouchEnd(x: number, y: number, item: GridItemObject) {
     placeGridItemOnGrid(x, y, item);
-    gridItemBeingDragged = null;
+    hideGridHelperLines();
   }
   /** ENDOF EVENT HANDLERS */
 </script>

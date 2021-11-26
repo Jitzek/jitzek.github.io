@@ -66,7 +66,7 @@
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
-  
+
   export let onTouchEnd: (
     x: number,
     y: number,
@@ -155,6 +155,28 @@
     shiftDown = e.shiftKey;
     ctrlDown = e.ctrlKey;
   }
+  function window_handleDragEnd(_e: DragEvent) {
+    handleMoveEnd(clientX, clientY);
+    onDragEnd(clientX, clientY, gridPosition.item);
+  }
+  function window_handleTouchEnd(_e: TouchEvent) {
+    if (gridPosition.item === null) return;
+    let touchEnd: number = +new Date();
+    touchCanceled = true;
+    const x = clientX;
+    const y = clientY;
+    if (touchMoving && gridPosition.item.selected) {
+      // This is currently bugged on Mozilla Firefox
+      // preventDefault() in contextmenu listener cancels touch event generation (sends touchcancel)
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1481923
+      handleMoveEnd(x, y);
+    } else if (!touchMoving && touchEnd - touchStart < longPressTouchTime) {
+      // Open program
+      gridPosition.item.program.createProcess().bringToTop();
+    }
+    onTouchEnd(x, y, gridPosition.item);
+    deselectGridItem(gridPosition.item);
+  }
 
   function handleMoveStart(x: number, y: number) {
     dragStartX = x;
@@ -199,24 +221,6 @@
     hideContextMenu();
   }
 
-  function handleTouchEnd(_e: TouchEvent) {
-    let touchEnd: number = +new Date();
-    touchCanceled = true;
-    const x = clientX;
-    const y = clientY;
-    if (touchMoving && gridPosition.item.selected) {
-      // This is currently bugged on Mozilla Firefox
-      // preventDefault() in contextmenu listener cancels touch event generation (sends touchcancel)
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1481923
-      handleMoveEnd(x, y);
-      onTouchEnd(x, y, gridPosition.item);
-    } else if (!touchMoving && touchEnd - touchStart < longPressTouchTime) {
-      // Open program
-      gridPosition.item.program.createProcess().bringToTop();
-    }
-    deselectGridItem(gridPosition.item);
-  }
-
   function handleDragStart(e: DragEvent) {
     e.dataTransfer.setData(
       "program_id",
@@ -224,11 +228,6 @@
     );
     handleMoveStart(e.clientX, e.clientY);
     onDragStart(e.clientX, e.clientY, gridPosition.item);
-  }
-
-  function handleDragEnd(_e: DragEvent) {
-    handleMoveEnd(clientX, clientY);
-    onDragEnd(clientX, clientY, gridPosition.item);
   }
 
   function handleDrop(e: DragEvent) {
@@ -271,6 +270,8 @@
   on:dragover={window_handleDragOver}
   on:keydown={window_handleKeyDown}
   on:keyup={window_handleKeyUp}
+  on:dragend={window_handleDragEnd}
+  on:touchend={window_handleTouchEnd}
 />
 
 {#if gridPosition.item == null}
@@ -293,9 +294,7 @@
       on:contextmenu={handleContextMenu}
       on:touchstart={handleTouchStart}
       on:touchmove={handleTouchMove}
-      on:touchend={handleTouchEnd}
       on:dragstart={handleDragStart}
-      on:dragend={handleDragEnd}
       on:drop={handleDrop}
       use:clickOutside
       on:clickoutside={handleClickOutside}
