@@ -156,6 +156,7 @@
     ctrlDown = e.ctrlKey;
   }
   function window_handleDragEnd(_e: DragEvent) {
+    if (gridPosition.item === null) return;
     handleMoveEnd(clientX, clientY);
     onDragEnd(clientX, clientY, gridPosition.item);
   }

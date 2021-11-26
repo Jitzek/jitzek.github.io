@@ -124,16 +124,14 @@
   // TODO: Closely resembles {placeGridItemOnGrid}, maybe use a generic function instead?
   function handleGridMoveOver(x: number, y: number) {
     positionsBeingHovered = [];
+    let position = $gridStore.getClosestGridPositionToPosition(x, y);
     if (gridItemBeingDragged === null) {
-      positionsBeingHovered.push(
-        $gridStore.getClosestGridPositionToPosition(x, y)
-      );
+      positionsBeingHovered.push(position);
       return;
     }
     let offsetX = x - gridItemBeingDragged.position.x;
     let offsetY = y - gridItemBeingDragged.position.y;
 
-    let position = $gridStore.getClosestGridPositionToPosition(x, y);
     // Check if the GridItem being dragged is dropped on an occupied spot
     if (position && position.item != null) {
       if (position.item == gridItemBeingDragged) return;
@@ -191,6 +189,8 @@
   }
 
   function handleGridDragOver(e: DragEvent) {
+    if (!isStringAPositiveNumber(e.dataTransfer.getData("program_id").trim()))
+      return;
     e.preventDefault();
     handleGridMoveOver(e.clientX, e.clientY);
   }
