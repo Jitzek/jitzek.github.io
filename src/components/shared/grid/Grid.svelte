@@ -125,6 +125,9 @@
   function handleGridMoveOver(x: number, y: number) {
     positionsBeingHovered = [];
     if (gridItemBeingDragged === null) {
+      positionsBeingHovered.push(
+        $gridStore.getClosestGridPositionToPosition(x, y)
+      );
       return;
     }
     let offsetX = x - gridItemBeingDragged.position.x;
