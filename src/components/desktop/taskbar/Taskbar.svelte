@@ -24,6 +24,10 @@
     addProgramShortcut,
     taskbarStore,
   } from "$stores/desktop/TaskbarStore";
+  import {
+    clearData as clearDragAndDropData,
+    dragAndDropStore,
+  } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -166,15 +170,15 @@
   }
 
   function handleTaskbarContentDrop(e: DragEvent) {
-    if (!isStringAPositiveNumber(e.dataTransfer.getData("program_id").trim()))
+    if (!isStringAPositiveNumber($dragAndDropStore["program_id"].trim()))
       return;
-    let programId: number = Number(e.dataTransfer.getData("program_id"));
+    let programId: number = Number($dragAndDropStore["program_id"]);
     if (isNaN(programId)) return;
     addProgramShortcut(getProgramById(programId));
+    clearDragAndDropData();
   }
   function handleTaskbarContentDragOver(e: DragEvent) {
-    if (!isStringAPositiveNumber(e.dataTransfer.getData("program_id").trim()))
-      return;
+    if (!isStringAPositiveNumber($dragAndDropStore["program_id"])) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
   }

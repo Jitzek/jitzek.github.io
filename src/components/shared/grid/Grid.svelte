@@ -23,6 +23,10 @@
     setGridParameters,
     setPreferredPositionOfGridItem,
   } from "$stores/shared/GridStore";
+  import {
+    clearData as clearDragAndDropData,
+    dragAndDropStore,
+  } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -170,9 +174,9 @@
       // Do nothing for now
       return;
     } else {
-      if (!isStringAPositiveNumber(e.dataTransfer.getData("program_id").trim()))
+      if (!isStringAPositiveNumber($dragAndDropStore["program_id"].trim()))
         return;
-      let programId: number = Number(e.dataTransfer.getData("program_id"));
+      let programId: number = Number($dragAndDropStore["program_id"]);
       if (isNaN(programId)) return;
       addGridItem(
         new GridItemObject(
@@ -182,6 +186,7 @@
         )
       );
     }
+    clearDragAndDropData();
   }
 
   function handleGridItemDragStart(x: number, y: number, item: GridItemObject) {
@@ -189,7 +194,7 @@
   }
 
   function handleGridDragOver(e: DragEvent) {
-    if (!isStringAPositiveNumber(e.dataTransfer.getData("program_id").trim()))
+    if (!isStringAPositiveNumber($dragAndDropStore["program_id"].trim()))
       return;
     e.preventDefault();
     handleGridMoveOver(e.clientX, e.clientY);

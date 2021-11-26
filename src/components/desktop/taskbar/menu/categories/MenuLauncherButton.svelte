@@ -21,6 +21,7 @@
     containsProgramShortcut,
     removeProgramShortcut,
   } from "$stores/desktop/TaskbarStore";
+  import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -82,7 +83,7 @@
   }
 
   function handleMenuLauncherButtonDragStart(e: DragEvent) {
-    e.dataTransfer.setData("program_id", program.id.toString());
+    setDragAndDropData({ program_id: program.id.toString() });
   }
   /** ENDOF EVENT HANDLERS */
 </script>

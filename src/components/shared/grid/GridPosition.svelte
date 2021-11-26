@@ -29,6 +29,7 @@
   // "actions"
   import { clickOutside } from "$actions/mouseOutside";
   import { longpressTouch } from "$actions/longpress";
+  import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -223,10 +224,7 @@
   }
 
   function handleDragStart(e: DragEvent) {
-    e.dataTransfer.setData(
-      "program_id",
-      gridPosition.item.program.id.toString()
-    );
+    setDragAndDropData({ program_id: gridPosition.item.program.id.toString() });
     handleMoveStart(e.clientX, e.clientY);
     onDragStart(e.clientX, e.clientY, gridPosition.item);
   }
