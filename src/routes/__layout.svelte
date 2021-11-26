@@ -16,10 +16,6 @@
       listen: true,
     });
 
-    // themeStore.subscribe((new_theme) => {
-    // document.documentElement.setAttribute('data-theme', new_theme);
-    // });
-
     document.getElementById("svelte").style.height = "100%";
 
     setTheme(wrapper, new NordTheme());
@@ -28,7 +24,10 @@
 </script>
 
 <div class="layout-wrapper" bind:this={wrapper}>
-  <slot />
+  <div class="build-label">This website is in development</div>
+  <div class="slot-container">
+    <slot />
+  </div>
 </div>
 
 <style lang="scss">
@@ -36,6 +35,16 @@
     height: 100%;
 
     color: var(--fg_color_primary);
+
+    .build-label {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+    .slot-container {
+      all: unset;
+      z-index: 0;
+    }
   }
 
   :global(html),

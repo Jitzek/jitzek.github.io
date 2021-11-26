@@ -224,7 +224,7 @@
 
 <div
   class="grid"
-  style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem;"
+  style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem; margin-bottom: {$gridStore.bottomOffset}rem;"
   on:mousedown={hideMenu}
   on:drop={handleGridDrop}
   on:dragover={handleGridDragOver}
@@ -256,12 +256,12 @@
     overflow: hidden;
 
     .grid-child {
-      outline: 1px none #ffffff00;
+      outline: 1px dashed #ffffff00;
+      transition: outline 0.25s;
     }
 
     .grid-child.show-outline {
       outline: 1px dashed #ffffff55;
-      transition: outline 0.25s;
 
       &.hovered {
         outline: 1px solid #ffffff77;

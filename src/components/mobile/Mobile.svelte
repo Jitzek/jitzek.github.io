@@ -60,8 +60,8 @@
 
 <div class="grid-container">
   <Grid
-    topOffset={0}
-    bottomOffset={3.5 + 2.5}
+    topOffset={2.5}
+    bottomOffset={3.5}
     columnWidth={5}
     columnHeight={6}
     gap={1.5}
