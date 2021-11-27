@@ -27,6 +27,7 @@
   import {
     clearData as clearDragAndDropData,
     dragAndDropStore,
+    keyExists as dragAndDropKeyExists,
   } from "$stores/shared/DragAndDropStore";
   //
 
@@ -170,15 +171,14 @@
   }
 
   function handleTaskbarContentDrop(e: DragEvent) {
-    if (!isStringAPositiveNumber($dragAndDropStore["program_id"].trim()))
-      return;
+    if (!dragAndDropKeyExists("program_id")) return;
     let programId: number = Number($dragAndDropStore["program_id"]);
     if (isNaN(programId)) return;
     addProgramShortcut(getProgramById(programId));
     clearDragAndDropData();
   }
   function handleTaskbarContentDragOver(e: DragEvent) {
-    if (!isStringAPositiveNumber($dragAndDropStore["program_id"])) return;
+    if (!dragAndDropKeyExists("program_id")) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
   }

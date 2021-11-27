@@ -26,6 +26,7 @@
   import {
     clearData as clearDragAndDropData,
     dragAndDropStore,
+    keyExists as dragAndDropKeyExists,
   } from "$stores/shared/DragAndDropStore";
   //
 
@@ -56,7 +57,9 @@
   /** ENDOF VARIABLE DECLERATION */
 
   /** STORE CALLBACKS */
-  //
+  dragAndDropStore.subscribe((_) => {
+    if (!dragAndDropKeyExists("program_id")) hideGridHelperLines();
+  });
   /** ENDOF STORE CALLBACKS */
 
   /** REACTIVE VARIABLES */
@@ -174,8 +177,7 @@
       // Do nothing for now
       return;
     } else {
-      if (!isStringAPositiveNumber($dragAndDropStore["program_id"].trim()))
-        return;
+      if (!dragAndDropKeyExists("program_id")) return;
       let programId: number = Number($dragAndDropStore["program_id"]);
       if (isNaN(programId)) return;
       addGridItem(
@@ -194,8 +196,7 @@
   }
 
   function handleGridDragOver(e: DragEvent) {
-    if (!isStringAPositiveNumber($dragAndDropStore["program_id"].trim()))
-      return;
+    if (!dragAndDropKeyExists("program_id")) return;
     e.preventDefault();
     handleGridMoveOver(e.clientX, e.clientY);
   }

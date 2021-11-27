@@ -7,6 +7,7 @@
 
   import { setFont } from "$stores/shared/FontStore";
   import { FontDefault } from "$objects/shared/fonts/FontDefault";
+  import { clearData } from "$stores/shared/DragAndDropStore";
 
   let wrapper: HTMLDivElement;
   onMount(() => {
@@ -21,7 +22,13 @@
     setTheme(wrapper, new NordTheme());
     setFont(wrapper, new FontDefault());
   });
+
+  function test(e: DragEvent) {
+    clearData();
+  }
 </script>
+
+<svelte:window on:dragend={test} />
 
 <div class="layout-wrapper" bind:this={wrapper}>
   <div class="build-label">This website is in development</div>
