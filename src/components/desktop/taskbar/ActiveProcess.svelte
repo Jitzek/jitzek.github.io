@@ -17,7 +17,6 @@
         showContextMenu,
     } from "$stores/shared/ContextMenuStore";
     import { hideMenu } from "$stores/desktop/MenuStore";
-    import { removeProgramShortcut } from "$stores/desktop/TaskbarStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -69,8 +68,7 @@
     }
 
     function handleLauncherClick(_e: MouseEvent) {
-        //   hideMenu();
-        //   program.createProcess().bringToTop();
+          hideMenu();
     }
     /** ENDOF EVENT HANDLERS */
 </script>
@@ -94,7 +92,7 @@
 
 <style lang="scss">
     .active-process {
-        background-color: rgba(0, 0, 0, 0);
+        background-color: var(--background-color);
         transition: background-color 0.25s;
         outline: none;
         border: none;

@@ -258,7 +258,8 @@
         </div>
         <div
             class="launchers-container"
-            style="width: {columnRadius * Math.ceil(launchers.length / rows)}rem;"
+            style="width: {columnRadius *
+                Math.ceil(launchers.length / rows)}rem;"
         >
             <div
                 class="launchers"
@@ -281,8 +282,16 @@
         </div>
         <div
             class="active-processes-container"
-            style="width: {columnRadius * Math.ceil(activeProcesses.length / rows)}rem;"
+            style="width: {columnRadius *
+                Math.ceil(activeProcesses.length / rows)}rem;"
         >
+            <div class="active-processes-handle">
+                <div class="active-processes-handle-line" />
+                <div style="margin-top: 0.1rem;" />
+                <div class="active-processes-handle-line" />
+                <div style="margin-top: 0.1rem;" />
+                <div class="active-processes-handle-line" />
+            </div>
             <div
                 class="active-processes"
                 style="grid-template-columns: {activeProcesssGridTemplateColumns};"
@@ -366,6 +375,19 @@
 
             .active-processes-container {
                 align-self: flex-start;
+                display: flex;
+                margin-left: 0.75rem;
+
+                .active-processes-handle {
+                    height: 100%;
+                    align-self: center;
+
+                    .active-processes-handle-line {
+                        background-color: var(--fg_color_secondary);
+                        height: 0.15rem;
+                        width: 0.5rem;
+                    }
+                }
                 .active-processes {
                     display: inline-grid;
                     display: -ms-inline-grid;
