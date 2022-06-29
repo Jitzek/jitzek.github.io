@@ -1,13 +1,11 @@
 <script lang="ts">
   import ProfileIcon from "$components/shared/ProfileIcon.svelte";
 
-  export let icon: string;
   export let name: string;
 </script>
 
 <button class="about-me-button">
   <div class="about-me-button-content">
-    <!-- <img src={icon} alt="User Icon" /> -->
     <div class="profile-icon-container">
       <ProfileIcon zoom={4} />
     </div>

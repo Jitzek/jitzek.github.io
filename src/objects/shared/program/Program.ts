@@ -14,7 +14,7 @@ export class Program {
    * A Program contains the initial information needed to instantiate processes
    * @param name Name of program
    * @param description Description of program
-   * @param category Category of program
+   * @param categories Categories of program
    * @param icon Icon src of program
    * @param window Initial window of program
    */

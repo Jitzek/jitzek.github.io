@@ -50,6 +50,7 @@
   data-tooltip={tooltip}
   style="--width: {width};"
   on:mouseover={() => (tooltipElement.style.zIndex = "9")}
+  on:focus={() => (tooltipElement.style.zIndex = "9")}
   on:mouseleave={() => (tooltipElement.style.zIndex = "initial")}
 >
   <slot />

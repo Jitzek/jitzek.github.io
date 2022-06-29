@@ -43,7 +43,7 @@
     height: 3rem;
     width: 3rem;
 
-    background-color: transparent;
+    background-color: #9671d1;
     transition: transform 0.25s, background-color 0.25s;
 
     outline: none;
@@ -55,7 +55,7 @@
 
     cursor: pointer;
 
-    border-radius: 100%;
+    border-radius: 12px;
 
     svg {
       width: 80%;
@@ -66,6 +66,6 @@
   }
 
   .switch-to-desktop-button:hover {
-    background-color: var(--input_hover_bg_color);
+    background-color: #9066d3;
   }
 </style>
