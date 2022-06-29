@@ -1,5 +1,6 @@
 import type { Process } from "$objects/shared/program/Process";
 import type { Program } from "$objects/shared/program/Program";
+import { notify as notifyTaskbarChanged } from "$stores/desktop/TaskbarStore";
 import { processesStore } from "$stores/shared/ProcessesStore";
 import { ProgramShortcut } from "./ProgramShortcut";
 
@@ -55,6 +56,7 @@ export class Taskbar {
                     .getActiveProcesses()
                     .push(new_process);
             }
+            notifyTaskbarChanged();
         });
     }
 
