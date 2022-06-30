@@ -17,6 +17,8 @@
         showContextMenu,
     } from "$stores/shared/ContextMenuStore";
     import { hideMenu } from "$stores/desktop/MenuStore";
+    import type { ContextMenuOption as ContextMenuOptionObject } from "$objects/desktop/context_menu/ContextMenuOption";
+    import { processesStore } from "$stores/shared/ProcessesStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -67,8 +69,22 @@
         //   ]);
     }
 
-    function handleLauncherClick(_e: MouseEvent) {
-          hideMenu();
+    function handleLauncherClick(e: MouseEvent) {
+        hideMenu();
+        let contextMenuOptions: Array<ContextMenuOptionObject> = [];
+        let i = 0;
+        for (let process of activeProcessStack.getActiveProcesses()) {
+            contextMenuOptions.push({
+                name: `${process.getProgram().name} ${i == 0 ? "" : ` (${i})`}`,
+                icon: process.getProgram().icon,
+                onClick: () => {
+                    process.getWindow().minimized = false;
+                    $processesStore = $processesStore;
+                },
+            });
+            i++;
+        }
+        showContextMenu(e.clientX, e.clientY, contextMenuOptions);
     }
     /** ENDOF EVENT HANDLERS */
 </script>

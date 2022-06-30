@@ -1,73 +1,72 @@
 <script lang="ts">
-  /** IMPORTS */
-  // "svelte"
-  //
+    /** IMPORTS */
+    // "svelte"
+    //
 
-  // "components"
-  //
+    // "components"
+    //
 
-  // "objects"
-  //
+    // "objects"
+    //
 
-  // "stores"
-  //
+    // "stores"
+    //
 
-  /** ENDOF IMPORTS*/
+    /** ENDOF IMPORTS*/
 
-  /** EXPORTS */
-  export let size: string = "1.25rem";
+    /** EXPORTS */
+    export let size: string = "1.25rem";
 
-  export let onClick: Function = (e: MouseEvent) => {};
-  /** ENDOF EXPORTS */
+    export let onClick: Function = (e: MouseEvent) => {};
+    /** ENDOF EXPORTS */
 
-  /** VARIABLE DECLARATION */
-  let buttonElement: HTMLElement;
-  /** ENDOF VARIABLE DECLERATION */
+    /** VARIABLE DECLARATION */
+    let buttonElement: HTMLElement;
+    /** ENDOF VARIABLE DECLERATION */
 
-  /** STORE CALLBACKS */
-  //
-  /** ENDOF STORE CALLBACKS */
+    /** STORE CALLBACKS */
+    //
+    /** ENDOF STORE CALLBACKS */
 
-  /** REACTIVE VARIABLES */
-  //
-  /** ENDOF REACTIVE VARIABLES */
+    /** REACTIVE VARIABLES */
+    //
+    /** ENDOF REACTIVE VARIABLES */
 
-  /** HELPER FUNCTIONS */
-  //
-  /** ENDOF HELPER FUNCTIONS */
+    /** HELPER FUNCTIONS */
+    //
+    /** ENDOF HELPER FUNCTIONS */
 
-  /** EVENT HANDLERS */
-  function handleRefreshButtonClick(_e: MouseEvent) {
-    onClick();
-    buttonElement.classList.remove("before");
-    setTimeout(() => {
-      buttonElement.classList.add("before");
-    }, 500);
-  }
-  /** ENDOF EVENT HANDLERS */
+    /** EVENT HANDLERS */
+    function handleRefreshButtonClick(_e: MouseEvent) {
+        onClick();
+        buttonElement.classList.remove("before");
+        setTimeout(() => {
+            buttonElement.classList.add("before");
+        }, 500);
+    }
+    /** ENDOF EVENT HANDLERS */
 </script>
 
 <button
-  class="before"
-  bind:this={buttonElement}
-  on:click={handleRefreshButtonClick}
-  style="width: {size}; height: 100%;"
+    class="before"
+    bind:this={buttonElement}
+    on:click={handleRefreshButtonClick}
+    style="width: {size}; height: 100%;"
 >
-  <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-  <svg
-    version="1.1"
-    id="Capa_1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    x="0px"
-    y="0px"
-    viewBox="0 0 438.542 438.542"
-    style="enable-background:new 0 0 438.542 438.542;"
-    xml:space="preserve"
-  >
-    <g>
-      <path
-        d="M427.408,19.697c-7.803-3.23-14.463-1.902-19.986,3.999l-37.116,36.834C349.94,41.305,326.672,26.412,300.5,15.848
+    <svg
+        version="1.1"
+        id="Capa_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 438.542 438.542"
+        style="enable-background:new 0 0 438.542 438.542;"
+        xml:space="preserve"
+    >
+        <g>
+            <path
+                d="M427.408,19.697c-7.803-3.23-14.463-1.902-19.986,3.999l-37.116,36.834C349.94,41.305,326.672,26.412,300.5,15.848
 		C274.328,5.285,247.251,0.003,219.271,0.003c-29.692,0-58.052,5.808-85.08,17.417c-27.03,11.61-50.347,27.215-69.951,46.82
 		c-19.605,19.607-35.214,42.921-46.824,69.949C5.807,161.219,0,189.575,0,219.271c0,29.687,5.807,58.05,17.417,85.079
 		c11.613,27.031,27.218,50.347,46.824,69.952c19.604,19.599,42.921,35.207,69.951,46.818c27.028,11.611,55.388,17.419,85.08,17.419
@@ -79,30 +78,30 @@
 		c17.983-7.707,36.879-11.563,56.671-11.563c38.259,0,71.475,13.039,99.646,39.116l-39.409,39.394
 		c-5.903,5.711-7.231,12.279-4.001,19.701c3.241,7.614,8.856,11.42,16.854,11.42h127.906c4.949,0,9.23-1.807,12.848-5.424
 		c3.613-3.616,5.42-7.898,5.42-12.847V36.55C438.542,28.558,434.84,22.943,427.408,19.697z"
-      />
-    </g>
-  </svg>
+            />
+        </g>
+    </svg>
 </button>
 
 <style lang="scss">
-  button {
-    all: unset;
-    padding: 0 0.5rem 0 0.5rem;
-    svg {
-      fill: var(--input_fg_color);
-      width: 100%;
-      height: 100%;
-      transition: transform 0.5s ease-out;
-      transform: rotate(360deg);
+    button {
+        all: unset;
+        padding: 0 0.5rem 0 0.5rem;
+        svg {
+            fill: var(--input_fg_color);
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-out;
+            transform: rotate(360deg);
+        }
     }
-  }
-  button.before {
-    svg {
-      transition: transform 0s;
-      transform: rotate(0deg);
+    button.before {
+        svg {
+            transition: transform 0s;
+            transform: rotate(0deg);
+        }
     }
-  }
-  button:hover {
-    background-color: var(--input_hover_bg_color);
-  }
+    button:hover {
+        background-color: var(--input_hover_bg_color);
+    }
 </style>

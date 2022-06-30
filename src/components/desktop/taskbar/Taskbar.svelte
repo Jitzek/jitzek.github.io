@@ -106,8 +106,6 @@
             });
         });
 
-        console.log(taskbarStore.getActiveProcessStacks().length);
-
         rows = rows;
     });
 

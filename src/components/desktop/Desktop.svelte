@@ -76,7 +76,8 @@
 
         selectedWindow.z_index = maxWindowZIndex;
         // Save current x, y, width and height to program
-        let window = getProgramById(process.getProgramId()).window;
+        // let window = getProgramById(process.getProgramId()).window;
+        let window = process.getWindow();
         window.x = process.window.x;
         window.y = process.window.y;
         window.width = process.window.width;
@@ -121,6 +122,7 @@
                 bind:fullscreen={window.fullscreen}
                 bind:minimized={window.minimized}
                 bind:z_index={window.z_index}
+                processUuid={uuid}
                 title={name}
                 {icon}
                 heightOffset={convertRemToPixels(taskbarHeight)}
