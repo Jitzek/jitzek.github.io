@@ -1,4 +1,8 @@
-import { maxWindowZIndex } from "$stores/shared/ProcessesStore";
+import {
+    focusWindow,
+    maxWindowZIndex,
+    notify as notifyProcessesChanged,
+} from "$stores/shared/ProcessesStore";
 import type { SvelteComponent } from "svelte";
 import type { Program } from "./Program";
 import type { Window } from "./Window";
@@ -40,6 +44,19 @@ export class Process {
 
     public bringToTop(): void {
         if (!this.hasWindow()) return;
-        this.window.z_index = maxWindowZIndex;
+        focusWindow(this);
+    }
+
+    public minimizeWindow() {
+        if (!this.hasWindow()) return;
+        this.window.minimized = true;
+        notifyProcessesChanged();
+    }
+
+    public maximizeWindow() {
+        if (!this.hasWindow()) return;
+        this.window.minimized = false;
+        this.bringToTop();
+        notifyProcessesChanged();
     }
 }

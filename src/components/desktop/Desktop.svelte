@@ -25,6 +25,7 @@
         removeProcessByUuid,
         maxWindowZIndex,
         maxWindowZIndexStore,
+focusWindow,
     } from "$stores/shared/ProcessesStore";
     import { contextMenuStore } from "$stores/shared/ContextMenuStore";
     import { hideMenu } from "$stores/desktop/MenuStore";
@@ -65,18 +66,7 @@
     function handleWindowSelection(processUuid: string) {
         hideMenu();
         let process = getProcessByUuid(processUuid);
-        if (!process) return;
-        let selectedWindow = process.window;
-        if (!selectedWindow) return;
-        getWindows().forEach((window) => {
-            if (window.z_index > selectedWindow.z_index) {
-                window.z_index -= 1;
-            }
-        });
-
-        selectedWindow.z_index = maxWindowZIndex;
-        // Save current x, y, width and height to program
-        // let window = getProgramById(process.getProgramId()).window;
+        focusWindow(process);
         let window = process.getWindow();
         window.x = process.window.x;
         window.y = process.window.y;

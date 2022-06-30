@@ -9,6 +9,7 @@
 
     // "objects"
     import type { ActiveProcessStack as ActiveProcessStackObject } from "$objects/desktop/taskbar/Taskbar";
+    import type { ContextMenuOption as ContextMenuOptionObject } from "$objects/desktop/context_menu/ContextMenuOption";
     //
 
     // "stores"
@@ -17,8 +18,10 @@
         showContextMenu,
     } from "$stores/shared/ContextMenuStore";
     import { hideMenu } from "$stores/desktop/MenuStore";
-    import type { ContextMenuOption as ContextMenuOptionObject } from "$objects/desktop/context_menu/ContextMenuOption";
-    import { processesStore } from "$stores/shared/ProcessesStore";
+    import {
+        maxWindowZIndex,
+        processesStore,
+    } from "$stores/shared/ProcessesStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -30,11 +33,22 @@
     /** ENDOF EXPORTS */
 
     /** VARIABLE DECLARATION */
-    //
+    let hasFocus = false;
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
-    //
+    processesStore.subscribe((_processes) => {
+        for (let process of activeProcessStack.getActiveProcesses()) {
+            if (
+                process.getWindow().hasFocus &&
+                !process.getWindow().minimized
+            ) {
+                hasFocus = true;
+                return;
+            }
+            hasFocus = false;
+        }
+    });
     /** ENDOF STORE CALLBACKS */
 
     /** REACTIVE VARIABLES */
@@ -69,8 +83,13 @@
         //   ]);
     }
 
-    function handleLauncherClick(e: MouseEvent) {
+    function handleStackClick(e: MouseEvent) {
         hideMenu();
+        if (activeProcessStack.getActiveProcesses().length <= 1) {
+            activeProcessStack.getActiveProcesses().at(0).maximizeWindow();
+            hideContextMenu();
+            return;
+        }
         let contextMenuOptions: Array<ContextMenuOptionObject> = [];
         let i = 0;
         for (let process of activeProcessStack.getActiveProcesses()) {
@@ -78,8 +97,8 @@
                 name: `${process.getProgram().name} ${i == 0 ? "" : ` (${i})`}`,
                 icon: process.getProgram().icon,
                 onClick: () => {
-                    process.getWindow().minimized = false;
-                    $processesStore = $processesStore;
+                    process.maximizeWindow();
+                    hideContextMenu();
                 },
             });
             i++;
@@ -91,11 +110,11 @@
 
 <div
     style="grid-row: {row};"
-    on:click={handleLauncherClick}
+    on:click={handleStackClick}
     on:contextmenu={handleContextMenu}
 >
     <Tooltip tooltip={activeProcessStack.getProgram().name} position="top">
-        <button class="active-process" style="height: {height}">
+        <button class="active-process" class:hasFocus style="height: {height}">
             <img
                 src={activeProcessStack.getProgram().icon}
                 alt={activeProcessStack.getProgram().name}
@@ -119,6 +138,10 @@
             width: 90%;
             transition: width 0.25s;
         }
+    }
+
+    .active-process.hasFocus {
+        background-color: black;
     }
 
     .active-process:hover {
