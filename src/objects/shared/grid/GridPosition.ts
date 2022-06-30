@@ -18,20 +18,20 @@ export class GridPosition {
     return (
       x >
         this.x -
-          convertRemToPixels(this.width / 2) +
-          convertRemToPixels(this.gap / 2) &&
+          (convertRemToPixels(this.width / 2) +
+            convertRemToPixels(this.gap / 2)) &&
       x <
         this.x +
-          convertRemToPixels(this.width / 2) +
-          convertRemToPixels(this.gap / 2) &&
+          (convertRemToPixels(this.width / 2) +
+            convertRemToPixels(this.gap / 2)) &&
       y >
         this.y -
-          convertRemToPixels(this.height / 2) +
-          convertRemToPixels(this.gap / 2) &&
+          (convertRemToPixels(this.height / 2) +
+            convertRemToPixels(this.gap / 2)) &&
       y <
         this.y +
-          convertRemToPixels(this.height / 2) +
-          convertRemToPixels(this.gap / 2)
+          (convertRemToPixels(this.height / 2) +
+            convertRemToPixels(this.gap / 2))
     );
   }
 }

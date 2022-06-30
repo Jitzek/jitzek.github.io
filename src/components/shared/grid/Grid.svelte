@@ -23,6 +23,11 @@
     setGridParameters,
     setPreferredPositionOfGridItem,
   } from "$stores/shared/GridStore";
+  import {
+    clearData as clearDragAndDropData,
+    dragAndDropStore,
+    keyExists as dragAndDropKeyExists,
+  } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -48,10 +53,13 @@
   let screenHeight: number;
 
   let gridItemBeingDragged: GridItemObject = null;
+  let positionsBeingHovered: GridPositionObject[] = [];
   /** ENDOF VARIABLE DECLERATION */
 
   /** STORE CALLBACKS */
-  //
+  dragAndDropStore.subscribe((_) => {
+    if (!dragAndDropKeyExists("program_id")) hideGridHelperLines();
+  });
   /** ENDOF STORE CALLBACKS */
 
   /** REACTIVE VARIABLES */
@@ -83,46 +91,81 @@
   /** ENDOF REACTIVE VARIABLES */
 
   /** HELPER FUNCTIONS */
-  function placeGridItemOnGrid(x: number, y: number, gridItem: GridItemObject) {
-    let offsetX = x - gridItem.position.x;
-    let offsetY = y - gridItem.position.y;
+  function placeGridItemOnGrid(x: number, y: number, item: GridItemObject) {
+    let offsetX = x - item.position.x;
+    let offsetY = y - item.position.y;
 
-    let position = $gridStore.getGridPositionAtPosition(x, y);
+    let position = $gridStore.getClosestGridPositionToPosition(x, y);
     // Check if the GridItem being dragged is dropped on an occupied spot
     if (position && position.item != null) {
-      if (position.item == gridItem) return;
+      if (position.item == item) return;
       // Attempt to handle data transfer of dragged gridItems
     } else {
       // Attempt to place GridItem on grid
-      $gridStore.gridItems
-        .filter((gridItem) => gridItem.selected)
-        .forEach((gridItem) => {
-          let or_gridPosition = $gridStore.gridPositions.find(
-            (position) =>
-              position.item != null && position.item.id == gridItem.id
-          );
-          let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
-            or_gridPosition.x + offsetX,
-            or_gridPosition.y + offsetY,
-            (position: GridPositionObject) =>
-              position.item == null || position.item == gridItem
-          );
-          setPreferredPositionOfGridItem(
-            gridItem,
-            new_gridPosition.row,
-            new_gridPosition.column
-          );
-        });
+      $gridStore.getSelectedItems().forEach((gridItem) => {
+        let or_gridPosition = $gridStore.gridPositions.find(
+          (_position) =>
+            _position.item != null && _position.item.id == gridItem.id
+        );
+        let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
+          or_gridPosition.x + offsetX,
+          or_gridPosition.y + offsetY,
+          (position: GridPositionObject) =>
+            position.item == null || position.item == gridItem
+        );
+        setPreferredPositionOfGridItem(
+          gridItem,
+          new_gridPosition.row,
+          new_gridPosition.column
+        );
+      });
     }
+  }
+  function hideGridHelperLines() {
     gridItemBeingDragged = null;
+    positionsBeingHovered = [];
   }
   /** ENDOF HELPER FUNCTIONS */
 
   /** EVENT HANDLERS */
-  function handleGridDrop(e: DragEvent) {
-    if (gridItemBeingDragged != null) {
-      placeGridItemOnGrid(e.clientX, e.clientY, gridItemBeingDragged);
+  // TODO: Closely resembles {placeGridItemOnGrid}, maybe use a generic function instead?
+  function handleGridMoveOver(x: number, y: number) {
+    positionsBeingHovered = [];
+    let position = $gridStore.getClosestGridPositionToPosition(x, y);
+    if (gridItemBeingDragged === null) {
+      positionsBeingHovered.push(position);
       return;
+    }
+    let offsetX = x - gridItemBeingDragged.position.x;
+    let offsetY = y - gridItemBeingDragged.position.y;
+
+    // Check if the GridItem being dragged is dropped on an occupied spot
+    if (position && position.item != null) {
+      if (position.item == gridItemBeingDragged) return;
+      // Inform user about potential data transfer of dragged gridItems
+    } else {
+      // Fill list with the grid positions where the currently selected/dragged items will be placed
+      $gridStore.getSelectedItems().forEach((gridItem) => {
+        let or_gridPosition = $gridStore.gridPositions.find(
+          (_position) =>
+            _position.item != null && _position.item.id == gridItem.id
+        );
+        let new_gridPosition = $gridStore.getClosestGridPositionToPosition(
+          or_gridPosition.x + offsetX,
+          or_gridPosition.y + offsetY,
+          (position: GridPositionObject) =>
+            position.item == null || position.item == gridItem
+        );
+        positionsBeingHovered.push(new_gridPosition);
+      });
+    }
+  }
+
+  function handleGridDrop(e: DragEvent) {
+    positionsBeingHovered = [];
+    if (gridItemBeingDragged !== null) {
+      placeGridItemOnGrid(e.clientX, e.clientY, gridItemBeingDragged);
+      gridItemBeingDragged = null;
     }
 
     let position = $gridStore.getClosestGridPositionToPosition(
@@ -134,9 +177,8 @@
       // Do nothing for now
       return;
     } else {
-      if (!isStringAPositiveNumber(e.dataTransfer.getData("program_id").trim()))
-        return;
-      let programId: number = Number(e.dataTransfer.getData("program_id"));
+      if (!dragAndDropKeyExists("program_id")) return;
+      let programId: number = Number($dragAndDropStore["program_id"]);
       if (isNaN(programId)) return;
       addGridItem(
         new GridItemObject(
@@ -146,16 +188,20 @@
         )
       );
     }
+    clearDragAndDropData();
   }
 
   function handleGridItemDragStart(x: number, y: number, item: GridItemObject) {
     gridItemBeingDragged = item;
   }
-  function handleGridItemDragMove(x: number, y: number, item: GridItemObject) {
-    return;
+
+  function handleGridDragOver(e: DragEvent) {
+    if (!dragAndDropKeyExists("program_id")) return;
+    e.preventDefault();
+    handleGridMoveOver(e.clientX, e.clientY);
   }
   function handleGridItemDragEnd(x: number, y: number, item: GridItemObject) {
-    return;
+    hideGridHelperLines();
   }
   function handleGridItemTouchStart(
     x: number,
@@ -164,12 +210,13 @@
   ) {
     gridItemBeingDragged = item;
   }
-  function handleGridItemTouchMove(x: number, y: number, item: GridItemObject) {
-    return;
+  function handleGridItemTouchMove(e: TouchEvent) {
+    e.preventDefault();
+    handleGridMoveOver(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
   }
   function handleGridItemTouchEnd(x: number, y: number, item: GridItemObject) {
-    console.log(`${x} ${y}`);
     placeGridItemOnGrid(x, y, item);
+    hideGridHelperLines();
   }
   /** ENDOF EVENT HANDLERS */
 </script>
@@ -178,20 +225,27 @@
 
 <div
   class="grid"
-  style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem;"
+  style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem; margin-bottom: {$gridStore.bottomOffset}rem;"
   on:mousedown={hideMenu}
   on:drop={handleGridDrop}
+  on:dragover={handleGridDragOver}
+  on:touchmove={handleGridItemTouchMove}
 >
   {#each $gridStore.gridPositions as gridPosition}
-    <GridPosition
-      {gridPosition}
-      onDragStart={handleGridItemDragStart}
-      onDragMove={handleGridItemDragMove}
-      onDragEnd={handleGridItemDragEnd}
-      onTouchStart={handleGridItemTouchStart}
-      onTouchMove={handleGridItemTouchMove}
-      onTouchEnd={handleGridItemTouchEnd}
-    />
+    <div
+      class="grid-child {gridItemBeingDragged !== null ||
+      positionsBeingHovered.length > 0
+        ? 'show-outline'
+        : ''} {positionsBeingHovered.includes(gridPosition) ? 'hovered' : ''}"
+    >
+      <GridPosition
+        {gridPosition}
+        onDragStart={handleGridItemDragStart}
+        onDragEnd={handleGridItemDragEnd}
+        onTouchStart={handleGridItemTouchStart}
+        onTouchEnd={handleGridItemTouchEnd}
+      />
+    </div>
   {/each}
 </div>
 
@@ -201,5 +255,18 @@
     display: -ms-inline-grid;
     display: -moz-inline-grid;
     overflow: hidden;
+
+    .grid-child {
+      outline: 1px dashed #ffffff00;
+      transition: outline 0.25s;
+    }
+
+    .grid-child.show-outline {
+      outline: 1px dashed #ffffff55;
+
+      &.hovered {
+        outline: 1px solid #ffffff77;
+      }
+    }
   }
 </style>

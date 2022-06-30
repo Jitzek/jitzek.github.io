@@ -15,7 +15,7 @@
   import {
     hideContextMenu,
     showContextMenu,
-  } from "$stores/desktop/ContextMenuStore";
+  } from "$stores/shared/ContextMenuStore";
   import { hideMenu } from "$stores/desktop/MenuStore";
   import { removeProgramShortcut } from "$stores/desktop/TaskbarStore";
   //
@@ -103,7 +103,7 @@
   }
 
   .launcher:hover {
-    background-color: var(--background-color-secondary-hover);
+    background-color: var(--input_hover_bg_color);
 
     img {
       width: 100%;

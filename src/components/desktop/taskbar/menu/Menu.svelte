@@ -13,11 +13,10 @@
   //
 
   // "objects"
-  import { Theme } from "$objects/shared/Theme";
+  //
   //
 
   // "stores"
-  import { theme as theme_store } from "$stores/shared/ThemeStore";
   import { showMenuStore } from "$stores/desktop/MenuStore";
   //
 
@@ -31,11 +30,11 @@
   /** ENDOF EXPORTS */
 
   /** VARIABLE DECLARATION */
-  let theme: Theme = Theme.Dark;
+  //
   /** ENDOF VARIABLE DECLERATION */
 
   /** STORE CALLBACKS */
-  theme_store.subscribe((new_theme: Theme) => (theme = new_theme));
+  //
   /** ENDOF STORE CALLBACKS */
 
   /** REACTIVE VARIABLES */
@@ -56,7 +55,7 @@
 
 {#if $showMenuStore}
   <div
-    class="menu-container {theme}"
+    class="menu-container"
     style="bottom: {offset}rem; --offset: {offset}rem;"
     in:slide={{ duration: 500 }}
     out:slide={{ duration: 500 }}
@@ -74,13 +73,13 @@
           <SwitchToMobileButton />
         </Tooltip>
         <div style="padding-left: 0.75rem;" />
-        <Tooltip
-          tooltip="Toggle {theme == Theme.Dark ? 'Light' : 'Dark'} mode"
-          position="bottom"
-          width="4.35rem"
-        >
-          <ChangeThemeSwitch />
-        </Tooltip>
+        <!-- <Tooltip
+					tooltip="Toggle {theme == Theme.Dark ? 'Light' : 'Dark'} mode"
+					position="bottom"
+					width="4.35rem"
+				>
+					<ChangeThemeSwitch />
+				</Tooltip> -->
       </div>
     </div>
     <Categories />
@@ -92,10 +91,10 @@
 
   .menu-container {
     // background-color: rgba(0, 0, 0, 0.2);
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg_color_primary);
 
     min-width: $--menu-min-width;
-    width: fit-content;
+    width: min-content;
     transition: bottom 0.25s;
     position: absolute;
 

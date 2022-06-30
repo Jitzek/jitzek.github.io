@@ -49,12 +49,12 @@
     svg {
       height: 0.85rem;
       transition: height 0.15s;
-      fill: var(--font-color);
+      fill: var(--input_fg_color);
     }
   }
 
   .window-minimize-button:hover {
-    background-color: var(--background-color-hover);
+    background-color: var(--input_hover_bg_color);
     svg {
       height: 1rem;
     }

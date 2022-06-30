@@ -1,10 +1,11 @@
 import { Grid } from "$objects/shared/grid/Grid";
 import type { GridItem } from "$objects/shared/grid/GridItem";
 import type { Program } from "$objects/shared/program/Program";
-import { derived, Readable, writable, Writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
+import type { Writable, Readable } from "svelte/store";
 
 let _gridStore: Writable<Grid> = writable(new Grid());
-export let gridStore: Readable<Grid> = derived(
+export const gridStore: Readable<Grid> = derived(
   _gridStore,
   ($_gridStore) => $_gridStore
 );

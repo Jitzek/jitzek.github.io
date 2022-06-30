@@ -6,4 +6,9 @@ declare namespace svelte.JSX {
     mousedownoutside?: MouseEvent<T>;
     mouseupoutside?: MouseEvent<T>;
   }
+
+  interface HTMLProps<HTMLElement> {
+    longpresstouch?: CustomEvent<T>;
+    longpressmouse?: CustomEvent<T>;
+  }
 }

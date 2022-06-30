@@ -5,7 +5,6 @@
 
   // "components"
   import Shortcut from "$components/shared/grid/Shortcut.svelte";
-  import { clickOutside } from "$components/shared/events/mouseOutside";
   //
 
   // "objects"
@@ -18,8 +17,19 @@
   import {
     deselectGridItem,
     gridStore,
+    removeGridItem,
     selectGridItem,
   } from "$stores/shared/GridStore";
+  import {
+    hideContextMenu,
+    showContextMenu,
+  } from "$stores/shared/ContextMenuStore";
+  //
+
+  // "actions"
+  import { clickOutside } from "$actions/mouseOutside";
+  import { longpressTouch } from "$actions/longpress";
+  import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -32,11 +42,14 @@
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
+  /** @deprecated due to potential performance issues */
   export let onDragMove: (
     x: number,
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
   export let onDragEnd: (x: number, y: number, item: GridItemObject) => void = (
     x: number,
     y: number,
@@ -47,11 +60,14 @@
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
+  /** @deprecated due to potential performance issues */
   export let onTouchMove: (
     x: number,
     y: number,
     item: GridItemObject
   ) => void = (x: number, y: number, item: GridItemObject) => {};
+
   export let onTouchEnd: (
     x: number,
     y: number,
@@ -69,7 +85,7 @@
   let ctrlDown: boolean = false;
 
   let touchStart: number;
-  let touchTimeForOpen: number = 500;
+  let longPressTouchTime: number = 250;
   let touchMoving: boolean = false;
   let touchCanceled: boolean = false;
   /** ENDOF VARIABLE DECLERATION */
@@ -83,21 +99,42 @@
   /** ENDOF REACTIVE VARIABLES */
 
   /** HELPER FUNCTIONS */
-  //
+  function showContextMenuHelper(x: number, y: number) {
+    showContextMenu(x, y, [
+      {
+        name: "Launch",
+        icon: gridPosition.item.program.icon,
+        onClick: () => {
+          hideContextMenu();
+          gridPosition.item.program.createProcess().bringToTop();
+        },
+      },
+      {
+        name: "Remove Desktop Shortcut",
+        icon: null,
+        onClick: () => {
+          hideContextMenu();
+          removeGridItem(gridPosition.item.id);
+        },
+      },
+    ]);
+  }
   /** ENDOF HELPER FUNCTIONS */
 
   /** EVENT HANDLERS */
+  /** @deprecated functionality might be handled in {Grid.svelte} instead **/
   function window_handleDragOver(e: DragEvent) {
     e.preventDefault();
     if (isDragging) {
-      let gridPosition: GridPositionObject | null = $gridStore.getGridPositionAtPosition(
+      let gridPositionBeingDraggedOver: GridPositionObject | null = $gridStore.getClosestGridPositionToPosition(
         e.clientX,
         e.clientY
       );
       if (
-        gridPosition &&
-        gridPosition.item != null &&
-        gridPosition.item.id != gridPosition.item.id
+        gridPositionBeingDraggedOver &&
+        gridPositionBeingDraggedOver.item !== null &&
+        gridPosition.item !== null &&
+        gridPositionBeingDraggedOver.item.id !== gridPosition.item.id
       ) {
         e.dataTransfer.dropEffect = "link";
       } else {
@@ -118,6 +155,29 @@
   function window_handleKeyUp(e: KeyboardEvent) {
     shiftDown = e.shiftKey;
     ctrlDown = e.ctrlKey;
+  }
+  function window_handleDragEnd(_e: DragEvent) {
+    if (gridPosition.item === null) return;
+    handleMoveEnd(clientX, clientY);
+    onDragEnd(clientX, clientY, gridPosition.item);
+  }
+  function window_handleTouchEnd(_e: TouchEvent) {
+    if (gridPosition.item === null) return;
+    let touchEnd: number = +new Date();
+    touchCanceled = true;
+    const x = clientX;
+    const y = clientY;
+    if (touchMoving && gridPosition.item.selected) {
+      // This is currently bugged on Mozilla Firefox
+      // preventDefault() in contextmenu listener cancels touch event generation (sends touchcancel)
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1481923
+      handleMoveEnd(x, y);
+    } else if (!touchMoving && touchEnd - touchStart < longPressTouchTime) {
+      // Open program
+      gridPosition.item.program.createProcess().bringToTop();
+    }
+    onTouchEnd(x, y, gridPosition.item);
+    deselectGridItem(gridPosition.item);
   }
 
   function handleMoveStart(x: number, y: number) {
@@ -149,7 +209,7 @@
       if (!touchCanceled && !touchMoving) {
         selectGridItem(gridPosition.item);
       }
-    }, touchTimeForOpen);
+    }, longPressTouchTime);
     onTouchStart(x, y, gridPosition.item);
   }
 
@@ -160,38 +220,13 @@
     const y = e.targetTouches[0].clientY;
     handleMove(x, y);
     onTouchMove(x, y, gridPosition.item);
-  }
-
-  function handleTouchEnd(e: TouchEvent) {
-    let touchEnd: number = +new Date();
-    touchCanceled = true;
-    const x = clientX;
-    const y = clientY;
-    if (touchMoving && gridPosition.item.selected) {
-      // This is currently bugged on Mozilla Firefox
-      // preventDefault() in contextmenu listener cancels touch event generation (sends touchcancel)
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1481923
-      handleMoveEnd(x, y);
-    } else if (!touchMoving && touchEnd - touchStart < touchTimeForOpen) {
-      // Open program
-      gridPosition.item.program.createProcess().bringToTop();
-    }
-    onTouchEnd(x, y, gridPosition.item);
-    deselectGridItem(gridPosition.item);
+    hideContextMenu();
   }
 
   function handleDragStart(e: DragEvent) {
-    e.dataTransfer.setData(
-      "program_id",
-      gridPosition.item.program.id.toString()
-    );
+    setDragAndDropData({ program_id: gridPosition.item.program.id.toString() });
     handleMoveStart(e.clientX, e.clientY);
     onDragStart(e.clientX, e.clientY, gridPosition.item);
-  }
-
-  function handleDragEnd(e: DragEvent) {
-    handleMoveEnd(clientX, clientY);
-    onDragEnd(clientX, clientY, gridPosition.item);
   }
 
   function handleDrop(e: DragEvent) {
@@ -205,7 +240,22 @@
     }
   }
 
+  function handleContextMenu(e: MouseEvent) {
+    e.preventDefault();
+    showContextMenuHelper(e.clientX, e.clientY);
+  }
+
+  function handleLongPressTouch(e: CustomEvent) {
+    e.preventDefault();
+    showContextMenuHelper(e.detail.clientX, e.detail.clientY);
+  }
+
   function handleMouseDown(e: MouseEvent) {
+    if (!ctrlDown && $gridStore.getSelectedItems().length <= 1) {
+      $gridStore.gridItems.forEach((gridItem) => {
+        if (gridItem.id !== gridPosition.item.id) deselectGridItem(gridItem);
+      });
+    }
     selectGridItem(gridPosition.item);
   }
 
@@ -219,6 +269,8 @@
   on:dragover={window_handleDragOver}
   on:keydown={window_handleKeyDown}
   on:keyup={window_handleKeyUp}
+  on:dragend={window_handleDragEnd}
+  on:touchend={window_handleTouchEnd}
 />
 
 {#if gridPosition.item == null}
@@ -238,19 +290,19 @@
       class="grid-element"
       style="grid-row: {gridPosition.row}; grid-column: {gridPosition.column}; width: {gridPosition.width}rem; height: {gridPosition.height}rem;"
       draggable={true}
-      on:contextmenu={(e) => e.preventDefault()}
+      on:contextmenu={handleContextMenu}
       on:touchstart={handleTouchStart}
       on:touchmove={handleTouchMove}
-      on:touchend={handleTouchEnd}
       on:dragstart={handleDragStart}
-      on:dragend={handleDragEnd}
       on:drop={handleDrop}
       use:clickOutside
       on:clickoutside={handleClickOutside}
+      use:longpressTouch={500}
+      on:longpresstouch={handleLongPressTouch}
       on:mousedown={handleMouseDown}
       on:dblclick={handleDoubleClick}
     >
-      <Shortcut id={gridPosition.item.id} program={gridPosition.item.program} />
+      <Shortcut program={gridPosition.item.program} />
     </div>
   </div>
 {/if}

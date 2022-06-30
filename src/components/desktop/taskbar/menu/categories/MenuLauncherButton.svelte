@@ -14,13 +14,14 @@
   import {
     hideContextMenu,
     showContextMenu,
-  } from "$stores/desktop/ContextMenuStore";
+  } from "$stores/shared/ContextMenuStore";
   import { hideMenu } from "$stores/desktop/MenuStore";
   import {
     addProgramShortcut,
     containsProgramShortcut,
     removeProgramShortcut,
   } from "$stores/desktop/TaskbarStore";
+  import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -82,7 +83,7 @@
   }
 
   function handleMenuLauncherButtonDragStart(e: DragEvent) {
-    e.dataTransfer.setData("program_id", program.id.toString());
+    setDragAndDropData({ program_id: program.id.toString() });
   }
   /** ENDOF EVENT HANDLERS */
 </script>
@@ -109,16 +110,13 @@
 
 <style lang="scss">
   .menu-launcher-button {
-    background-color: rgba(0, 0, 0, 0);
-    transition: background-color 0.25s;
-
-    display: block;
+    @include input-inherit;
     outline: none;
     border: none;
 
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
+    transition: background-color 0.25s;
+
+    display: block;
 
     cursor: pointer;
 
@@ -143,21 +141,27 @@
       .name-and-description {
         display: inline-block;
         text-align: left;
-        color: var(--font-color);
+        color: var(--fg_color_primary);
 
         .description {
-          color: var(--font-color-secondary);
+          color: var(--fg_color_secondary);
+          font-size: 0.85rem;
         }
       }
     }
   }
 
   .menu-launcher-button:hover,
+  .menu-launcher-button:focus {
+    @include input-hover-inherit;
+  }
+
   .menu-launcher-button.activated {
-    background-color: var(--background-color-secondary-hover);
+    @include input-active-inherit;
   }
 
   .menu-launcher-button:hover,
+  .menu-launcher-button:focus,
   .menu-launcher-button.activated {
     img {
       width: 2.75rem;

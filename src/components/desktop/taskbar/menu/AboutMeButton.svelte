@@ -1,30 +1,25 @@
 <script lang="ts">
-  export let icon: string;
+  import ProfileIcon from "$components/shared/ProfileIcon.svelte";
+
   export let name: string;
 </script>
 
 <button class="about-me-button">
   <div class="about-me-button-content">
-    <img src={icon} alt="User Icon" />
-    <p>{name}</p>
+    <div class="profile-icon-container">
+      <ProfileIcon zoom={4} />
+    </div>
+    <p class="profile-name-container">{name}</p>
   </div>
 </button>
 
 <style lang="scss">
   .about-me-button {
-    background-color: rgba(0, 0, 0, 0);
-    outline: none;
+    @include input-inherit;
     border: none;
-
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
+    outline: none;
 
     padding: 0.5rem 1rem 0.5rem 1rem;
-
-    color: inherit;
-    font-family: inherit;
-    font-size: 1.25rem;
 
     width: 100%;
     min-height: 6rem;
@@ -41,17 +36,19 @@
 
       max-height: 100px;
 
-      img {
+      .profile-icon-container {
         display: inline;
         margin: 0;
         margin-right: 8px;
         width: 3rem;
-        height: auto;
+        height: 3rem;
+        border-radius: 100%;
+        overflow: hidden;
 
         transition: width 0.25s;
       }
 
-      p {
+      .profile-name-container {
         font-size: 1.25rem;
         transition: font-size 0.5s;
       }
@@ -59,13 +56,13 @@
   }
 
   .about-me-button:hover {
-    background-color: var(--background-color-secondary-hover);
+    @include input-hover-inherit;
   }
 
   @media only screen and (min-width: 600px) {
     .about-me-button:hover {
-      p {
-        font-size: 1.5rem;
+      .profile-name-container {
+        font-size: 1.35rem;
       }
     }
   }

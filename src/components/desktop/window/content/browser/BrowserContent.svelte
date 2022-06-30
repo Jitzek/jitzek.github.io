@@ -1,102 +1,109 @@
 <script lang="ts">
-  /** IMPORTS */
-  // "svelte"
-  import { onMount } from "svelte";
-  //
+    /** IMPORTS */
+    // "svelte"
+    import { onMount } from "svelte";
+    //
 
-  // "components"
-  import RefreshButton from "$components/desktop/window/content/browser/RefreshButton.svelte";
-  import Address from "$components/desktop/window/content/browser/Address.svelte";
-  //
+    // "components"
+    import RefreshButton from "$components/desktop/window/content/browser/RefreshButton.svelte";
+    import Address from "$components/desktop/window/content/browser/Address.svelte";
+    import BackButton from "./BackButton.svelte";
+    import ForwardButton from "./ForwardButton.svelte";
+    import { base } from "$app/paths";
+    //
 
-  // "objects"
-  //
+    // "objects"
+    //
 
-  // "stores"
-  //
+    // "stores"
+    //
 
-  /** ENDOF IMPORTS*/
+    /** ENDOF IMPORTS*/
 
-  /** EXPORTS */
-  export let url: string;
-  export let title: string;
-  export let onSelection: Function = () => {};
-  /** ENDOF EXPORTS */
+    /** EXPORTS */
+    export let url: string;
+    export let title: string;
+    export let onSelection: Function = () => {};
+    /** ENDOF EXPORTS */
 
-  /** VARIABLE DECLARATION */
-  let iframeElement: HTMLIFrameElement;
+    /** VARIABLE DECLARATION */
+    let iframeElement: HTMLIFrameElement;
 
-  let onSelectionSpamPrevention: boolean = false;
+    let onSelectionSpamPrevention: boolean = false;
 
-  onMount(() => {
-    // Detect onClick within iframe element
-    // TODO: Find a more elegant solution
-    setInterval(() => {
-      if (document.activeElement === iframeElement) {
-        if (!onSelectionSpamPrevention) onSelection();
-        onSelectionSpamPrevention = true;
-      } else onSelectionSpamPrevention = false;
-    }, 100);
-  });
-  /** ENDOF VARIABLE DECLERATION */
+    onMount(() => {
+        // Detect onClick within iframe element
+        // TODO: Find a more elegant solution
+        setInterval(() => {
+            if (document.activeElement === iframeElement) {
+                if (!onSelectionSpamPrevention) onSelection();
+                onSelectionSpamPrevention = true;
+            } else onSelectionSpamPrevention = false;
+        }, 100);
+    });
+    /** ENDOF VARIABLE DECLERATION */
 
-  /** STORE CALLBACKS */
-  //
-  /** ENDOF STORE CALLBACKS */
+    /** STORE CALLBACKS */
+    //
+    /** ENDOF STORE CALLBACKS */
 
-  /** REACTIVE VARIABLES */
-  //
-  /** ENDOF REACTIVE VARIABLES */
+    /** REACTIVE VARIABLES */
+    //
+    /** ENDOF REACTIVE VARIABLES */
 
-  /** HELPER FUNCTIONS */
-  //
-  /** ENDOF HELPER FUNCTIONS */
+    /** HELPER FUNCTIONS */
+    //
+    /** ENDOF HELPER FUNCTIONS */
 
-  /** EVENT HANDLERS */
-  //
-  /** ENDOF EVENT HANDLERS */
+    /** EVENT HANDLERS */
+    //
+    /** ENDOF EVENT HANDLERS */
 </script>
 
 <div class="web-page">
-  <div class="address-bar">
-    <RefreshButton onClick={() => (iframeElement.src += "")} />
-    <div class="address-container">
-      <Address address={url} />
+    <div class="address-bar">
+        <!-- Unused due to missing cross-origin permissions -->
+        <!-- <BackButton onClick={() => (iframeElement.contentWindow.history.back())} /> -->
+        <!-- <ForwardButton onClick={() => (iframeElement.contentWindow.history.forward())} /> -->
+        <!--                                                -->
+        <RefreshButton onClick={() => (iframeElement.src += "")} />
+        <div class="address-container">
+            <Address address={url} />
+        </div>
     </div>
-  </div>
-  <iframe
-    bind:this={iframeElement}
-    src={url}
-    {title}
-    allow="fullscreen"
-    id="iframe"
-  />
+    <iframe
+        bind:this={iframeElement}
+        src={url}
+        {title}
+        allow="fullscreen"
+        id="iframe"
+    />
 </div>
 
 <style lang="scss">
-  .web-page {
-    $--address-bar-height: 2rem;
+    .web-page {
+        $--address-bar-height: 2rem;
 
-    width: 100%;
-    height: 100%;
-
-    .address-bar {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      height: $--address-bar-height;
-
-      .address-container {
-        display: flex;
-        justify-content: center;
         width: 100%;
-      }
-    }
+        height: 100%;
 
-    iframe {
-      all: unset;
-      width: 100%;
-      height: calc(100% - #{$--address-bar-height});
+        .address-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: $--address-bar-height;
+
+            .address-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        iframe {
+            all: unset;
+            width: 100%;
+            height: calc(100% - #{$--address-bar-height});
+        }
     }
-  }
 </style>
