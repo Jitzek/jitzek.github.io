@@ -15,11 +15,3 @@ export class Window {
         public minimized: boolean = false
     ) {}
 }
-
-// export namespace Window {
-//     export enum ContentType {
-//         NONE,
-//         URL,
-//         COMPONENT
-//     }
-// }

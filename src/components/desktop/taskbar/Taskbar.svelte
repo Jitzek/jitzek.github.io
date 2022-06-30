@@ -384,6 +384,7 @@
                         background-color: var(--fg_color_secondary);
                         height: 0.15rem;
                         width: 0.5rem;
+                        margin-right: 0.25rem;
                     }
                 }
                 .active-processes {

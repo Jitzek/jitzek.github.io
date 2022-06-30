@@ -86,7 +86,7 @@
     function handleStackClick(e: MouseEvent) {
         hideMenu();
         if (activeProcessStack.getActiveProcesses().length <= 1) {
-            activeProcessStack.getActiveProcesses().at(0).maximizeWindow();
+            activeProcessStack.getActiveProcesses().at(0).unMinimizeWindow();
             hideContextMenu();
             return;
         }
@@ -97,7 +97,7 @@
                 name: `${process.getProgram().name} ${i == 0 ? "" : ` (${i})`}`,
                 icon: process.getProgram().icon,
                 onClick: () => {
-                    process.maximizeWindow();
+                    process.unMinimizeWindow();
                     hideContextMenu();
                 },
             });
@@ -140,12 +140,20 @@
         }
     }
 
-    .active-process.hasFocus {
-        background-color: black;
+    .active-process:hover {
+        background-color: var(--input_hover_bg_color);
+
+        img {
+            width: 100%;
+        }
     }
 
-    .active-process:hover {
-        background-color: var(--background-color-secondary-hover);
+    .active-process.hasFocus {
+        background-color: var(--input_active_bg_color);
+    }
+
+    .active-process.hasFocus:hover {
+        background-color: var(--input_active_bg_color);
 
         img {
             width: 100%;

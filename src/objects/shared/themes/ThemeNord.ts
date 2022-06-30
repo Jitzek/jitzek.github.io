@@ -39,6 +39,6 @@ export class NordTheme implements Theme {
     input_hover_bg_color = "#3F4758";
     input_hover_border_color = "#262A35";
     input_active_fg_color = "#FFFFFF";
-    input_active_bg_color = "#3F4758";
+    input_active_bg_color = "#495266";
     input_active_border_color = "#262A35";
 }

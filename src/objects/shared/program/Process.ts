@@ -53,7 +53,7 @@ export class Process {
         notifyProcessesChanged();
     }
 
-    public maximizeWindow() {
+    public unMinimizeWindow() {
         if (!this.hasWindow()) return;
         this.window.minimized = false;
         this.bringToTop();

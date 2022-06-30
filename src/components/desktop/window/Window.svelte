@@ -1,7 +1,6 @@
 <script lang="ts">
     /** IMPORTS */
     // "svelte"
-    import { scale } from "svelte/transition";
     //
 
     // "components"
@@ -22,7 +21,6 @@
     /** ENDOF IMPORTS*/
 
     /** EXPORTS */
-    export let processUuid: string = "";
     export let title: string = "";
     export let icon: string = "";
 
@@ -58,6 +56,7 @@
     export let onSelection: Function = () => {};
     export let onMinimize: Function = () => {};
     export let onClose: Function = () => {};
+    export let onFullscreen: Function = () => {};
     /** ENDOF EXPORTS */
 
     /** VARIABLE DECLARATION */
@@ -111,14 +110,7 @@
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
-    processesStore.subscribe((processes) => {
-        let process: Process | undefined = processes.find((process) => {
-            process.uuid == processUuid;
-        });
-        if (process === undefined) return;
-
-        minimized = process.getWindow().minimized;
-    });
+    //
     /** ENDOF STORE CALLBACKS */
 
     /** REACTIVE VARIABLES */
@@ -299,6 +291,7 @@
 
     function handleWindowDoubleClick(e: MouseEvent) {
         fullscreen = !fullscreen;
+        onFullscreen();
     }
 
     function handleMinimizeButtonClick() {
@@ -307,6 +300,7 @@
     }
     function handleResizeButtonClick() {
         fullscreen = !fullscreen;
+        onFullscreen();
     }
     function handleCloseButtonClick() {
         onClose();
@@ -327,107 +321,100 @@
     on:mousemove={window_handleMouseMove}
 />
 
-{#if !minimized}
-    <div
-        bind:this={windowElement}
-        class="window"
-        style="
+<div
+    class:minimized
+    bind:this={windowElement}
+    class="window"
+    style="
 			width: {fullscreen ? maxWidth : width + x <= maxWidth ? width : maxWidth - x}px;
 			height: {fullscreen
-            ? maxHeight
-            : height + y <= maxHeight
-            ? height
-            : maxHeight - y}px; 
+        ? maxHeight
+        : height + y <= maxHeight
+        ? height
+        : maxHeight - y}px; 
 			bottom: {heightOffset}px;
 			transform: translate({fullscreen ? 0 : x}px, -{fullscreen ? 0 : y}px);
 			min-width: {minWidth}px;
 			min-height: {minHeight}px;
 			z-index: {z_index};
 			"
-        in:scale={{ duration: 250 }}
-        out:scale={{ duration: 250 }}
-        on:mousedown={handleWindowMouseDown}
+    on:mousedown={handleWindowMouseDown}
+>
+    <!-- Draggable bar -->
+    <div
+        class="control-bar"
+        draggable="true"
+        on:dragstart={handleWindowDragStart}
+        on:touchstart={handleWindowTouchStart}
+        on:dragend={handleWindowDragEnd}
+        on:touchend={handleWindowTouchEnd}
+        on:dblclick={handleWindowDoubleClick}
     >
-        <!-- Draggable bar -->
-        <div
-            class="control-bar"
-            draggable="true"
-            on:dragstart={handleWindowDragStart}
-            on:touchstart={handleWindowTouchStart}
-            on:dragend={handleWindowDragEnd}
-            on:touchend={handleWindowTouchEnd}
-            on:dblclick={handleWindowDoubleClick}
-        >
-            <div class="window-info" on:dragstart={(e) => e.preventDefault()}>
-                <img class="window-icon" src={icon} alt={title} />
-                <p class="window-title">{title}</p>
-            </div>
-            <div class="control-buttons">
-                <WindowMinimizeButton
-                    width={"2.5rem"}
-                    height={"100%"}
-                    on:click={() => handleMinimizeButtonClick()}
-                />
-                <WindowResizeButton
-                    isFullscreen={fullscreen}
-                    width={"2.5rem"}
-                    height={"100%"}
-                    on:click={() => handleResizeButtonClick()}
-                />
-                <WindowCloseButton
-                    width={"2.5rem"}
-                    height={"100%"}
-                    on:click={() => handleCloseButtonClick()}
-                />
-            </div>
+        <div class="window-info" on:dragstart={(e) => e.preventDefault()}>
+            <img class="window-icon" src={icon} alt={title} />
+            <p class="window-title">{title}</p>
         </div>
-        <div bind:this={windowContentElement} class="window-content">
-            <slot name="content" />
+        <div class="control-buttons">
+            <WindowMinimizeButton
+                width={"2.5rem"}
+                height={"100%"}
+                on:click={() => handleMinimizeButtonClick()}
+            />
+            <WindowResizeButton
+                isFullscreen={fullscreen}
+                width={"2.5rem"}
+                height={"100%"}
+                on:click={() => handleResizeButtonClick()}
+            />
+            <WindowCloseButton
+                width={"2.5rem"}
+                height={"100%"}
+                on:click={() => handleCloseButtonClick()}
+            />
         </div>
-
-        {#if !fullscreen}
-            <div
-                on:mousedown={(e) => handleWindowResizeStart(e, Direction.TOP)}
-                class="border-top"
-            />
-            <div
-                on:mousedown={(e) => handleWindowResizeStart(e, Direction.LEFT)}
-                class="border-left"
-            />
-            <div
-                on:mousedown={(e) =>
-                    handleWindowResizeStart(e, Direction.RIGHT)}
-                class="border-right"
-            />
-            <div
-                on:mousedown={(e) =>
-                    handleWindowResizeStart(e, Direction.BOTTOM)}
-                class="border-bottom"
-            />
-
-            <div
-                on:mousedown={(e) =>
-                    handleWindowResizeStart(e, Direction.TOPLEFT)}
-                class="border-top-left"
-            />
-            <div
-                on:mousedown={(e) =>
-                    handleWindowResizeStart(e, Direction.TOPRIGHT)}
-                class="border-top-right"
-            />
-            <div
-                on:mousedown={(e) =>
-                    handleWindowResizeStart(e, Direction.BOTTOMLEFT)}
-                class="border-bottom-left"
-            />
-            <div
-                on:mousedown={(e) =>
-                    handleWindowResizeStart(e, Direction.BOTTOMRIGHT)}
-                class="border-bottom-right"
-            />
-        {/if}
     </div>
-{/if}
+    <div bind:this={windowContentElement} class="window-content">
+        <slot name="content" />
+    </div>
+
+    {#if !fullscreen}
+        <div
+            on:mousedown={(e) => handleWindowResizeStart(e, Direction.TOP)}
+            class="border-top"
+        />
+        <div
+            on:mousedown={(e) => handleWindowResizeStart(e, Direction.LEFT)}
+            class="border-left"
+        />
+        <div
+            on:mousedown={(e) => handleWindowResizeStart(e, Direction.RIGHT)}
+            class="border-right"
+        />
+        <div
+            on:mousedown={(e) => handleWindowResizeStart(e, Direction.BOTTOM)}
+            class="border-bottom"
+        />
+
+        <div
+            on:mousedown={(e) => handleWindowResizeStart(e, Direction.TOPLEFT)}
+            class="border-top-left"
+        />
+        <div
+            on:mousedown={(e) => handleWindowResizeStart(e, Direction.TOPRIGHT)}
+            class="border-top-right"
+        />
+        <div
+            on:mousedown={(e) =>
+                handleWindowResizeStart(e, Direction.BOTTOMLEFT)}
+            class="border-bottom-left"
+        />
+        <div
+            on:mousedown={(e) =>
+                handleWindowResizeStart(e, Direction.BOTTOMRIGHT)}
+            class="border-bottom-right"
+        />
+    {/if}
+</div>
 
 <style lang="scss">
     $--border-offset: -2px;
@@ -557,5 +544,9 @@
             right: $--border-offset;
             cursor: se-resize;
         }
+    }
+
+    .window.minimized {
+        display: none;
     }
 </style>

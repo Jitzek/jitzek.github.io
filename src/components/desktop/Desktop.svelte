@@ -25,7 +25,8 @@
         removeProcessByUuid,
         maxWindowZIndex,
         maxWindowZIndexStore,
-focusWindow,
+        focusWindow,
+        notify as notifyProcessesChanged,
     } from "$stores/shared/ProcessesStore";
     import { contextMenuStore } from "$stores/shared/ContextMenuStore";
     import { hideMenu } from "$stores/desktop/MenuStore";
@@ -80,6 +81,7 @@ focusWindow,
     function handleWindowClose(uuid: string) {
         removeProcessByUuid(uuid);
     }
+    function handleWindowFullscreen(uuid: string) {}
     /** ENDOF EVENT HANDLERS */
 </script>
 
@@ -112,13 +114,13 @@ focusWindow,
                 bind:fullscreen={window.fullscreen}
                 bind:minimized={window.minimized}
                 bind:z_index={window.z_index}
-                processUuid={uuid}
                 title={name}
                 {icon}
                 heightOffset={convertRemToPixels(taskbarHeight)}
                 onSelection={() => handleWindowSelection(uuid)}
                 onMinimize={() => handleWindowMinimize(uuid)}
                 onClose={() => handleWindowClose(uuid)}
+                onFullscreen={() => handleWindowFullscreen(uuid)}
             >
                 <svelte:component
                     this={window.component}
