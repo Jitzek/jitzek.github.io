@@ -146,7 +146,7 @@
         	As a workaround we can keep track of the end position by taking the last clientX and clientY of the dragover event.
     	*/
     handleMove(e.clientX, e.clientY);
-    onDragMove(e.clientX, e.clientY, gridPosition.item);
+    // onDragMove(e.clientX, e.clientY, gridPosition.item);
   }
   function window_handleKeyDown(e: KeyboardEvent) {
     shiftDown = e.shiftKey;
@@ -219,7 +219,7 @@
     const x = e.targetTouches[0].clientX;
     const y = e.targetTouches[0].clientY;
     handleMove(x, y);
-    onTouchMove(x, y, gridPosition.item);
+    // onTouchMove(x, y, gridPosition.item);
     hideContextMenu();
   }
 
