@@ -71,9 +71,9 @@
 
         .quick-bar-item {
             width: 20%;
+            text-align: center;
             margin-left: 1%;
             margin-right: 1%;
-            text-align: center;
         }
     }
 </style>

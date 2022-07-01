@@ -53,6 +53,9 @@
 
     let gridItemBeingDragged: GridItemObject = null;
     let positionsBeingHovered: GridPositionObject[] = [];
+
+    let lastKnownX = 0;
+    let lastKnownY = 0;
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
@@ -91,6 +94,9 @@
 
     /** HELPER FUNCTIONS */
     function placeGridItemOnGrid(x: number, y: number, item: GridItemObject) {
+        // lastKnownX and lastKnownY seems more reliable
+        x = lastKnownX;
+        y = lastKnownY;
         let offsetX = x - item.position.x;
         let offsetY = y - item.position.y;
 
@@ -130,10 +136,14 @@
     /** EVENT HANDLERS */
     // TODO: Closely resembles {placeGridItemOnGrid}, maybe use a generic function instead?
     function handleGridMoveOver(x: number, y: number) {
+        lastKnownX = x;
+        lastKnownY = y;
         positionsBeingHovered = [];
         let position = $gridStore.getClosestGridPositionToPosition(x, y);
         if (gridItemBeingDragged === null) {
-            positionsBeingHovered.push(position);
+            if (dragAndDropKeyExists("program_id")) {
+                positionsBeingHovered.push(position);
+            }
             return;
         }
         let offsetX = x - gridItemBeingDragged.position.x;
@@ -163,16 +173,22 @@
     }
 
     function handleGridDrop(e: DragEvent) {
+        handlePlaceItem(e.clientX, e.clientY);
+    }
+
+    function handlePlaceItem(x: number, y: number) {
+        x = x === undefined ? lastKnownX : x;
+        y = y === undefined ? lastKnownY : y;
+
         positionsBeingHovered = [];
+
         if (gridItemBeingDragged !== null) {
-            placeGridItemOnGrid(e.clientX, e.clientY, gridItemBeingDragged);
+            placeGridItemOnGrid(x, y, gridItemBeingDragged);
             gridItemBeingDragged = null;
+            return;
         }
 
-        let position = $gridStore.getClosestGridPositionToPosition(
-            e.clientX,
-            e.clientY
-        );
+        let position = $gridStore.getClosestGridPositionToPosition(x, y);
         if (position.item !== null) {
             // Position is already occupied by another grid item
             // Do nothing for now
@@ -200,8 +216,12 @@
         gridItemBeingDragged = item;
     }
 
-    function handleGridDragOver(e: DragEvent) {
-        if (!dragAndDropKeyExists("program_id")) return;
+    function window_handleGridDragOver(e: DragEvent) {
+        if (
+            gridItemBeingDragged === null &&
+            !dragAndDropKeyExists("program_id")
+        )
+            return;
         e.preventDefault();
         handleGridMoveOver(e.clientX, e.clientY);
     }
@@ -213,36 +233,59 @@
         y: number,
         item: GridItemObject
     ) {
-        gridItemBeingDragged = item;
+        // gridItemBeingDragged = item;
     }
-    function handleGridItemTouchMove(e: TouchEvent) {
-        if (!dragAndDropKeyExists("program_id")) return;
+    function window_handleGridItemTouchMove(e: TouchEvent) {
+        // if (!dragAndDropKeyExists("program_id")) return;
         e.preventDefault();
         handleGridMoveOver(
             e.targetTouches[0].clientX,
             e.targetTouches[0].clientY
         );
     }
+
     function handleGridItemTouchEnd(
         x: number,
         y: number,
         item: GridItemObject
     ) {
-        placeGridItemOnGrid(x, y, item);
+        handlePlaceItem(x, y);
         hideGridHelperLines();
     }
+
+    function handleGridItemTouchDragStart(
+        x: number,
+        y: number,
+        item: GridItemObject
+    ) {
+        gridItemBeingDragged = item;
+    }
+
+    function handleGridItemTouchDragEnd(
+        x: number,
+        y: number,
+        item: GridItemObject
+    ) {
+        handlePlaceItem(x, y);
+        hideGridHelperLines();
+        gridItemBeingDragged = null;
+    }
+
     /** ENDOF EVENT HANDLERS */
 </script>
 
-<svelte:window bind:innerWidth={screenWidth} bind:innerHeight={screenHeight} />
+<svelte:window
+    bind:innerWidth={screenWidth}
+    bind:innerHeight={screenHeight}
+    on:dragover={window_handleGridDragOver}
+    on:touchmove={window_handleGridItemTouchMove}
+/>
 
 <div
     class="grid"
     style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem; margin-bottom: {$gridStore.bottomOffset}rem;"
     on:mousedown={hideMenu}
     on:drop={handleGridDrop}
-    on:dragover={handleGridDragOver}
-    on:touchmove={handleGridItemTouchMove}
 >
     {#each $gridStore.gridPositions as gridPosition}
         <div
@@ -259,6 +302,8 @@
                 onDragEnd={handleGridItemDragEnd}
                 onTouchStart={handleGridItemTouchStart}
                 onTouchEnd={handleGridItemTouchEnd}
+                onTouchDragStart={handleGridItemTouchDragStart}
+                onTouchDragEnd={handleGridItemTouchDragEnd}
             />
         </div>
     {/each}

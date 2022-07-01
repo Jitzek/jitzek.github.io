@@ -83,7 +83,7 @@
 
 <QuickBar
     heightInRem={3.5}
-    distanceFromBottomInRem={3.5}
+    distanceFromBottomInRem={4}
     onApplicationsButtonPress={openApplicationDrawer}
 />
 

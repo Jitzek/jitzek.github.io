@@ -15,13 +15,13 @@
         hideContextMenu,
         showContextMenu,
     } from "$stores/shared/ContextMenuStore";
-    import { hideMenu } from "$stores/desktop/MenuStore";
     import {
         addProgramShortcut,
         containsProgramShortcut,
         removeProgramShortcut,
     } from "$stores/desktop/TaskbarStore";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
+    import { hideMenu as hideApplicationsMenu } from "$stores/mobile/ApplicationsStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -33,7 +33,10 @@
     /** ENDOF EXPORTS */
 
     /** VARIABLE DECLARATION */
-    //
+    let touchStart: number;
+    let longPressTouchTime: number = 500;
+    let touchMoving: boolean = false;
+    let touchCanceled: boolean = false;
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
@@ -49,18 +52,38 @@
     /** ENDOF HELPER FUNCTIONS */
 
     /** EVENT HANDLERS */
-    function handleMenuLauncherButtonContextMenu(e: MouseEvent) {
+    function handleApplicationLauncherButtonContextMenu(e: MouseEvent) {
         e.preventDefault();
     }
 
-    function handleMenuLauncherButtonClick() {
+    function handleApplicationLauncherButtonClick() {
         program.createProcess().bringToTop();
-        hideMenu();
     }
 
-    function handleMenuLauncherButtonDragStart(e: DragEvent) {
+    function handleApplicationLauncherButtonDragStart(e: DragEvent) {
         setDragAndDropData({ program_id: program.id.toString() });
     }
+
+    function handleApplicationLauncherButtonTouchStart(e: TouchEvent) {
+        e.preventDefault();
+        touchMoving = false;
+        touchCanceled = false;
+        touchStart = +new Date();
+        setTimeout(() => {
+            if (!touchCanceled && !touchMoving) {
+                hideApplicationsMenu();
+                setDragAndDropData({
+                    program_id: program.id.toString(),
+                });
+            }
+        }, longPressTouchTime);
+    }
+
+    function handleApplicationLauncherButtonTouchMove(e: TouchEvent) {
+        e.preventDefault();
+        touchMoving = true;
+    }
+
     /** ENDOF EVENT HANDLERS */
 </script>
 
@@ -73,11 +96,13 @@
 {:else}
     <button
         class="application-launcher-button"
-        on:click={handleMenuLauncherButtonClick}
-        on:contextmenu={handleMenuLauncherButtonContextMenu}
+        on:click={handleApplicationLauncherButtonClick}
+        on:contextmenu={handleApplicationLauncherButtonContextMenu}
         draggable={true}
-        on:dragstart={handleMenuLauncherButtonDragStart}
+        on:dragstart={handleApplicationLauncherButtonDragStart}
         class:ghost
+        on:touchstart={handleApplicationLauncherButtonTouchStart}
+        on:touchmove={handleApplicationLauncherButtonTouchMove}
         style="width: {sizeInRem}rem; height: {sizeInRem};"
     >
         <div class="application-launcher-button-content">
