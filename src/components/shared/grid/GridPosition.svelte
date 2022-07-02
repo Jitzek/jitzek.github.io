@@ -36,6 +36,7 @@
     import { clickOutside } from "$actions/mouseOutside";
     import { longpressTouch } from "$actions/longpress";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
+    import { processesStore } from "$stores/shared/ProcessesStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -49,20 +50,7 @@
         item: GridItemObject
     ) => void = (x: number, y: number, item: GridItemObject) => {};
 
-    /** @deprecated due to potential performance issues */
-    export let onDragMove: (
-        x: number,
-        y: number,
-        item: GridItemObject
-    ) => void = (x: number, y: number, item: GridItemObject) => {};
-
     export let onDragEnd: (
-        x: number,
-        y: number,
-        item: GridItemObject
-    ) => void = (x: number, y: number, item: GridItemObject) => {};
-
-    export let onTouchStart: (
         x: number,
         y: number,
         item: GridItemObject
@@ -204,7 +192,23 @@
                 touchEnd - touchStart < longPressTouchTime
             ) {
                 // Open program
-                gridPosition.item.program.createProcess().bringToTop();
+                let processAlreadyRunning = false;
+                if ($mobile) {
+                    for (let process of $processesStore) {
+                        if (
+                            process.getProgramId() ===
+                            gridPosition.item.program.id
+                        ) {
+                            process.bringToTop();
+                            process.unMinimizeWindow();
+                            processAlreadyRunning = true;
+                            break;
+                        }
+                    }
+                }
+                if (!processAlreadyRunning || !$mobile) {
+                    gridPosition.item.program.createProcess().bringToTop();
+                }
             }
             deselectGridItem(gridPosition.item);
         } else if (!dragAndDropKeyExists("program_id")) {

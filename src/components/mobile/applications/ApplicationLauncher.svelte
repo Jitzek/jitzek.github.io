@@ -22,6 +22,7 @@
     } from "$stores/desktop/TaskbarStore";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
     import { hideMenu as hideApplicationsMenu } from "$stores/mobile/ApplicationsStore";
+    import { notify, processesStore } from "$stores/shared/ProcessesStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -86,6 +87,14 @@
 
         if (!touchMoving && touchEnd - touchStart < longPressTouchTime) {
             // Open program
+            for (let process of $processesStore) {
+                if (process.getProgramId() === program.id) {
+                    process.bringToTop();
+                    process.unMinimizeWindow();
+                    console.log("success");
+                    return;
+                }
+            }
             program.createProcess().bringToTop();
         }
     }

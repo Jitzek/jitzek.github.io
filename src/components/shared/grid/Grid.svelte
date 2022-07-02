@@ -237,7 +237,7 @@
     }
     function window_handleGridItemTouchMove(e: TouchEvent) {
         // if (!dragAndDropKeyExists("program_id")) return;
-        e.preventDefault();
+        // e.preventDefault();
         handleGridMoveOver(
             e.targetTouches[0].clientX,
             e.targetTouches[0].clientY
@@ -300,7 +300,6 @@
                 {gridPosition}
                 onDragStart={handleGridItemDragStart}
                 onDragEnd={handleGridItemDragEnd}
-                onTouchStart={handleGridItemTouchStart}
                 onTouchEnd={handleGridItemTouchEnd}
                 onTouchDragStart={handleGridItemTouchDragStart}
                 onTouchDragEnd={handleGridItemTouchDragEnd}
