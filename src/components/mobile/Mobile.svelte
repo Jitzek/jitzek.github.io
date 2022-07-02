@@ -16,6 +16,8 @@
 
     // "objects"
     import { convertRemToPixels } from "$objects/shared/conversions";
+    import type { Window as WindowObject } from "$objects/shared/program/Window";
+    import type { Process as ProcessObject } from "$objects/shared/program/Process";
     //
 
     // "stores"
@@ -24,6 +26,12 @@
         showMenu as showApplicationsMenu,
         hideMenu as hideApplicationsMenu,
     } from "$stores/mobile/ApplicationsStore";
+    import {
+        maxWindowZIndex,
+        processesStore,
+        removeProcessByUuid,
+    } from "$stores/shared/ProcessesStore";
+    import MobileWindow from "./window/MobileWindow.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -34,10 +42,24 @@
 
     /** VARIABLE DECLARATION */
     let wallpaper: string = "/images/wallpapers/custom-design-01-1280x720.png";
+    let currentProcess: ProcessObject | null = null;
+    let currentWindow: WindowObject | null = null;
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
-    //
+    processesStore.subscribe((processes) => {
+        let process = processes.find(
+            (process) => process.getWindow().z_index >= maxWindowZIndex
+        );
+        if (process === undefined) {
+            currentProcess = null;
+            return;
+        }
+        currentProcess = process;
+        currentWindow = currentProcess.getWindow();
+        // currentWindow.fullscreen = true;
+        // currentWindow.minimized = false;
+    });
     /** ENDOF STORE CALLBACKS */
 
     /** REACTIVE VARIABLES */
@@ -56,9 +78,16 @@
     /** EVENT HANDLERS */
     function handleOpenWindowsButtonPress() {}
     function handleHomeButtonPress() {
+        if (currentProcess !== null) {
+            currentWindow.minimized = true;
+        }
         closeApplicationDrawer();
     }
     function handleReturnButtonPress() {
+        if (currentProcess !== null) {
+            removeProcessByUuid(currentProcess.uuid);
+            return;
+        }
         closeApplicationDrawer();
     }
     /** ENDOF EVENT HANDLERS */
@@ -88,6 +117,25 @@
 />
 
 <Applications distanceFromBottomInRem={3.5} distanceFromTopInRem={2.5} />
+
+<div class="window-container">
+    {#if currentProcess !== null}
+        <MobileWindow
+            fullscreen={true}
+            minimized={currentWindow.minimized}
+            title={currentProcess.name}
+            icon={currentProcess.getProgram().icon}
+            bottomOffset={convertRemToPixels(3.5)}
+            topOffset={convertRemToPixels(2.5)}
+        >
+            <svelte:component
+                this={currentProcess.getWindow().component}
+                {...currentProcess.getWindow().componentAttributes}
+                slot="content"
+            />
+        </MobileWindow>
+    {/if}
+</div>
 
 <StatusBar
     statusBarHeightInRem={2.5}

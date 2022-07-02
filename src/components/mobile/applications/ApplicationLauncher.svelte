@@ -34,6 +34,7 @@
 
     /** VARIABLE DECLARATION */
     let touchStart: number;
+    let touchEnd: number;
     let longPressTouchTime: number = 500;
     let touchMoving: boolean = false;
     let touchCanceled: boolean = false;
@@ -79,6 +80,15 @@
         }, longPressTouchTime);
     }
 
+    function handleApplicationLauncherButtonTouchEnd(e: TouchEvent) {
+        touchEnd = +new Date();
+        touchCanceled = true;
+
+        if (!touchMoving && touchEnd - touchStart < longPressTouchTime) {
+            // Open program
+            program.createProcess().bringToTop();
+        }
+    }
     function handleApplicationLauncherButtonTouchMove(e: TouchEvent) {
         e.preventDefault();
         touchMoving = true;
@@ -102,6 +112,7 @@
         on:dragstart={handleApplicationLauncherButtonDragStart}
         class:ghost
         on:touchstart={handleApplicationLauncherButtonTouchStart}
+        on:touchend={handleApplicationLauncherButtonTouchEnd}
         on:touchmove={handleApplicationLauncherButtonTouchMove}
         style="width: {sizeInRem}rem; height: {sizeInRem};"
     >
