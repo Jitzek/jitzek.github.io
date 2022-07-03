@@ -115,6 +115,8 @@
             scrollOffsetInPx = i * innerWidth;
             break;
         }
+
+        currentPage = 1 + scrollOffsetInPx / innerWidth;
     }
     function handleApplicationsContainerTouchStart(e: TouchEvent) {
         handleApplicationsContainerMoveStart(e.targetTouches[0].clientX);
