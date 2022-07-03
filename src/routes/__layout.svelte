@@ -47,6 +47,7 @@
             position: relative;
             text-align: center;
             z-index: 1;
+            pointer-events: none;
         }
         .slot-container {
             all: unset;

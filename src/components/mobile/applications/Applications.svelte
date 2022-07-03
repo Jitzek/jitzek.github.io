@@ -21,7 +21,7 @@
         categoryAll,
     } from "$stores/shared/CategoriesStore";
     import { programsStore } from "$stores/shared/ProgramsStore";
-    import { forIn } from "lodash";
+    import { forIn, max } from "lodash";
     import ApplicationLauncher from "./ApplicationLauncher.svelte";
     //
 
@@ -95,11 +95,17 @@
         if (!isDragging) return;
         changeCursor(Cursor.AUTO);
         isDragging = false;
-        // Go to next or previous page if the user is swiping fast
+        // Go to next or previous page if the user is swiping fast enough
         if (velocityX > 0 && velocityX > 2) {
-            scrollOffsetInPx += innerWidth;
+            scrollOffsetInPx =
+                scrollOffsetInPx + innerWidth > maxX
+                    ? maxX
+                    : scrollOffsetInPx + innerWidth;
         } else if (velocityX < 0 && velocityX < -2) {
-            scrollOffsetInPx -= innerWidth;
+            scrollOffsetInPx =
+                scrollOffsetInPx - innerWidth < 0
+                    ? 0
+                    : scrollOffsetInPx - innerWidth;
         }
         // Check to which page the applications container should be locked to
         for (let i = 0; i < categories.length; i++) {

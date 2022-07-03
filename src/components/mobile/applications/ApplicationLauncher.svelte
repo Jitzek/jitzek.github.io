@@ -24,7 +24,7 @@
     import { hideMenu as hideApplicationsMenu } from "$stores/mobile/ApplicationsStore";
     import { notify, processesStore } from "$stores/shared/ProcessesStore";
     import { touchDragOrPress } from "$actions/touchdrag";
-import { executeProgramById } from "$stores/shared/ProgramsStore";
+    import { executeProgramById } from "$stores/shared/ProgramsStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -36,11 +36,7 @@ import { executeProgramById } from "$stores/shared/ProgramsStore";
     /** ENDOF EXPORTS */
 
     /** VARIABLE DECLARATION */
-    let touchStart: number;
-    let touchEnd: number;
-    let longPressTouchTime: number = 500;
-    let touchMoving: boolean = false;
-    let touchCanceled: boolean = false;
+    //
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
@@ -79,7 +75,7 @@ import { executeProgramById } from "$stores/shared/ProgramsStore";
                     return;
                 }
             }
-            program.createProcess().bringToTop();
+            executeProgramById(program.id)?.bringToTop();
             return;
         }
         if (!e.detail.drag) return;
