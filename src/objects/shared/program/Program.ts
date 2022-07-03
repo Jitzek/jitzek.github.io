@@ -4,6 +4,7 @@ import { processesStore, addProcess } from "$stores/shared/ProcessesStore";
 import type { Category } from "./Category";
 // import { cloneDeep } from "lodash";
 import lodash from "lodash";
+import type { Redirect } from "./Redirect";
 const { cloneDeep } = lodash;
 
 let c_program_id = 0;
@@ -23,12 +24,20 @@ export class Program {
     public description: string,
     public categories: Array<Category>,
     public icon: string,
-    public window: Window | null = null
+    public window: Window | null = null,
+    public redirect: Redirect | null = null
   ) {}
 
   public createProcess(): Process {
+    if (this.redirect) {
+      return;
+    }
     let newProcess = new Process(cloneDeep(this));
     addProcess(newProcess);
     return newProcess;
+  }
+
+  public redirectTo(): void {
+    window.open(this.redirect.url, "_blank");
   }
 }

@@ -94,7 +94,7 @@
     <Grid
         bottomOffset={taskbarHeight}
         columnWidth={5}
-        columnHeight={6}
+        columnHeight={7}
         gap={1.5}
         padding={1}
     />

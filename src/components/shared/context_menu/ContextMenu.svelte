@@ -4,7 +4,7 @@
   //
 
   // "components"
-  import { clickOutside } from "$actions/mouseOutside";
+  import { clickOutside } from "$actions/mouseoutside";
   //
 
   // "objects"
