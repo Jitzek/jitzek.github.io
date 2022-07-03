@@ -45,6 +45,8 @@
     let startX = 0;
     let applicationRowCount: Array<number> = [];
     let graceZone = 0;
+
+    let velocityX = 0;
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
@@ -79,6 +81,7 @@
     function handleApplicationsContainerMove(x: number) {
         if (!isDragging) return;
         deltaX = startX - (startX + x);
+        velocityX = startX + deltaX - scrollOffsetInPx;
         scrollOffsetInPx = startX + deltaX;
         if (scrollOffsetInPx <= minX) scrollOffsetInPx = minX;
         else if (scrollOffsetInPx >= maxX) scrollOffsetInPx = maxX;
@@ -92,6 +95,12 @@
         if (!isDragging) return;
         changeCursor(Cursor.AUTO);
         isDragging = false;
+        // Go to next or previous page if the user is swiping fast
+        if (velocityX > 0 && velocityX > 2) {
+            scrollOffsetInPx += innerWidth;
+        } else if (velocityX < 0 && velocityX < -2) {
+            scrollOffsetInPx -= innerWidth;
+        }
         // Check to which page the applications container should be locked to
         for (let i = 0; i < categories.length; i++) {
             if (i * innerWidth + graceZone < scrollOffsetInPx) {

@@ -272,7 +272,7 @@
                         <Launcher
                             {program}
                             {row}
-                            height={`${columnRadius}rem`}
+                            size={`${columnRadius}rem`}
                         />
                     {/if}
                 {/each}

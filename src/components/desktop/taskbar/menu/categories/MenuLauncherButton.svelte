@@ -22,6 +22,7 @@
         removeProgramShortcut,
     } from "$stores/desktop/TaskbarStore";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
+import { executeProgramById } from "$stores/shared/ProgramsStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -78,7 +79,7 @@
     }
 
     function handleMenuLauncherButtonClick() {
-        program.createProcess().bringToTop();
+        executeProgramById(program.id)?.bringToTop();;
         hideMenu();
     }
 

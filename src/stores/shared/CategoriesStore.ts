@@ -16,6 +16,10 @@ export const categoriesStore: Writable<Array<Category>> = writable([
   categoryAll,
   categoryFavourites,
   new Category(
+    Category.Name.SOCIALS,
+    "/images/category-icons/social.svg"
+  ),
+  new Category(
     Category.Name.CATEGORY_2,
     "/images/category-icons/utilities-terminal.svg"
   ),

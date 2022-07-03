@@ -33,10 +33,12 @@
     //
 
     // "actions"
-    import { clickOutside } from "$actions/mouseOutside";
+    import { clickOutside } from "$actions/mouseoutside";
     import { longpressTouch } from "$actions/longpress";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
     import { processesStore } from "$stores/shared/ProcessesStore";
+    import { touchDragOrPress } from "$actions/touchdrag";
+    import { executeProgramById } from "$stores/shared/ProgramsStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -117,7 +119,9 @@
                 icon: gridPosition.item.program.icon,
                 onClick: () => {
                     hideContextMenu();
-                    gridPosition.item.program.createProcess().bringToTop();
+                    executeProgramById(
+                        gridPosition.item.program.id
+                    )?.bringToTop();
                 },
             },
             {
@@ -173,8 +177,6 @@
         onDragEnd(clientX, clientY, gridPosition.item);
     }
     function window_handleTouchEnd(_e: TouchEvent) {
-        let touchEnd: number = +new Date();
-        touchCanceled = true;
         const x = clientX;
         const y = clientY;
         if (touchDragging) {
@@ -187,28 +189,6 @@
                 // preventDefault() in contextmenu listener cancels touch event generation (sends touchcancel)
                 // https://bugzilla.mozilla.org/show_bug.cgi?id=1481923
                 handleMoveEnd(x, y);
-            } else if (
-                !touchMoving &&
-                touchEnd - touchStart < longPressTouchTime
-            ) {
-                // Open program
-                let processAlreadyRunning = false;
-                if ($mobile) {
-                    for (let process of $processesStore) {
-                        if (
-                            process.getProgramId() ===
-                            gridPosition.item.program.id
-                        ) {
-                            process.bringToTop();
-                            process.unMinimizeWindow();
-                            processAlreadyRunning = true;
-                            break;
-                        }
-                    }
-                }
-                if (!processAlreadyRunning || !$mobile) {
-                    gridPosition.item.program.createProcess().bringToTop();
-                }
             }
             deselectGridItem(gridPosition.item);
         } else if (!dragAndDropKeyExists("program_id")) {
@@ -232,25 +212,41 @@
 
     function handleMoveEnd(x: number, y: number) {}
 
-    function handleTouchStart(e: TouchEvent) {
+    function handleTouchDragOrPress(e: CustomEvent) {
         e.preventDefault();
-        touchMoving = false;
-        touchCanceled = false;
-        touchStart = +new Date();
+
+        if (e.detail.press) {
+            // Open program
+            let processAlreadyRunning = false;
+            if ($mobile) {
+                for (let process of $processesStore) {
+                    if (
+                        process.getProgramId() === gridPosition.item.program.id
+                    ) {
+                        process.bringToTop();
+                        process.unMinimizeWindow();
+                        processAlreadyRunning = true;
+                        break;
+                    }
+                }
+            }
+            if (!processAlreadyRunning || !$mobile) {
+                executeProgramById(gridPosition.item.program.id)?.bringToTop();
+            }
+            return;
+        }
+        if (!e.detail.drag) return;
+
         const x = (e.target as HTMLElement).offsetLeft;
         const y = (e.target as HTMLElement).offsetTop;
         handleMoveStart(x, y);
-        setTimeout(() => {
-            if (!touchCanceled && !touchMoving) {
-                selectGridItem(gridPosition.item);
-                // setDragAndDropData({
-                //     program_id: gridPosition.item.program.id.toString(),
-                // });
-                onTouchDragStart(x, y, gridPosition.item);
-                // onDragStart(x, y, gridPosition.item);
-                touchDragging = true;
-            }
-        }, longPressTouchTime);
+        selectGridItem(gridPosition.item);
+        // setDragAndDropData({
+        //     program_id: gridPosition.item.program.id.toString(),
+        // });
+        onTouchDragStart(x, y, gridPosition.item);
+        // onDragStart(x, y, gridPosition.item);
+        touchDragging = true;
     }
 
     function handleTouchMove(e: TouchEvent) {
@@ -303,8 +299,9 @@
     }
 
     function handleDoubleClick(e: MouseEvent) {
-        gridPosition.item.program.createProcess().bringToTop();
+        executeProgramById(gridPosition.item.program.id)?.bringToTop();
     }
+
     /** ENDOF EVENT HANDLERS */
 </script>
 
@@ -336,8 +333,9 @@
             style="grid-row: {gridPosition.row}; grid-column: {gridPosition.column}; width: {gridPosition.width}rem; height: {gridPosition.height}rem;"
             draggable={true}
             on:contextmenu={handleContextMenu}
-            on:touchstart={handleTouchStart}
-            on:touchmove={handleTouchMove}
+            use:touchDragOrPress={250}
+            on:touchdragorpress={handleTouchDragOrPress}
+            on:touchdragmove={handleTouchMove}
             on:dragstart={handleDragStart}
             on:drop={handleDrop}
             use:clickOutside

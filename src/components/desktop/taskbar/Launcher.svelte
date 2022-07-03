@@ -18,6 +18,7 @@
   } from "$stores/shared/ContextMenuStore";
   import { hideMenu } from "$stores/desktop/MenuStore";
   import { removeProgramShortcut } from "$stores/desktop/TaskbarStore";
+  import { executeProgramById } from "$stores/shared/ProgramsStore";
   //
 
   /** ENDOF IMPORTS*/
@@ -25,7 +26,7 @@
   /** EXPORTS */
   export let program: ProgramObject;
   export let row: number;
-  export let height: string;
+  export let size: string;
   /** ENDOF EXPORTS */
 
   /** VARIABLE DECLARATION */
@@ -53,7 +54,7 @@
         icon: program.icon,
         onClick: () => {
           hideContextMenu();
-          program.createProcess().bringToTop();
+          executeProgramById(program.id)?.bringToTop();
           hideMenu();
         },
       },
@@ -70,7 +71,7 @@
 
   function handleLauncherClick(_e: MouseEvent) {
     hideMenu();
-    program.createProcess().bringToTop();
+    executeProgramById(program.id)?.bringToTop();
   }
   /** ENDOF EVENT HANDLERS */
 </script>
@@ -81,7 +82,7 @@
   on:contextmenu={handleContextMenu}
 >
   <Tooltip tooltip={program.name} position="top">
-    <button class="launcher" style="height: {height}">
+    <button class="launcher" style="height: {size}; width: {size};">
       <img src={program.icon} alt={program.name} width="100%" height="auto" />
     </button>
   </Tooltip>

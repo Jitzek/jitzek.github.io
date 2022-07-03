@@ -9,6 +9,8 @@ import {
 } from "$stores/shared/CategoriesStore";
 import { Category } from "$objects/shared/program/Category";
 import BrowserContent from "$components/desktop/window/content/browser/BrowserContent.svelte";
+import { Redirect } from "$objects/shared/program/Redirect";
+import type { Process } from "$objects/shared/program/Process";
 
 let _programsStore: Array<Program> = [];
 export const programsStore: Writable<Array<Program>> = writable([
@@ -36,6 +38,14 @@ export const programsStore: Writable<Array<Program>> = writable([
             600
         )
     ),
+    new Program(
+        "GitHub",
+        "",
+        [getCategoryByName(Category.Name.SOCIALS)],
+        "https://github.com/fluidicon.png",
+        null,
+        new Redirect("https://github.com/Jitzek")
+    ),
 ]);
 programsStore.subscribe((programs) => (_programsStore = programs));
 
@@ -58,4 +68,16 @@ export function removeProgramById(id: number) {
 
 export function getProgramById(id: number): Program | undefined {
     return _programsStore.find((_program) => _program.id === id);
+}
+
+export function executeProgramById(id: number): Process | null {
+    let program = getProgramById(id);
+    if (program === undefined) return null;
+    if (program.window !== null) {
+        return program.createProcess();
+    }
+    if (program.redirect !== null) {
+        program.redirectTo();
+    }
+    return null;
 }

@@ -44,15 +44,22 @@
     /** ENDOF HELPER FUNCTIONS */
 
     /** EVENT HANDLERS */
+    function handleNavigationButtonDown(element: HTMLButtonElement) {
+        element.classList.add("pressed");
+    }
+
+    function handleNavigationButtonMove(element: HTMLButtonElement) {
+        element.classList.remove("pressed");
+    }
+
     function handleNavigationButtonPress(
         element: HTMLButtonElement,
         callback: Function
     ) {
         callback();
-        element.classList.add("pressed");
         setTimeout(() => {
             element.classList.remove("pressed");
-        }, 250);
+        }, 100);
     }
     /** ENDOF EVENT HANDLERS */
 </script>
@@ -62,6 +69,18 @@
     <button
         bind:this={openWindowsButtonElement}
         class="navigation-bar-button open-windows-button-container"
+        on:touchstart={() => {
+            handleNavigationButtonDown(openWindowsButtonElement);
+        }}
+        on:mousedown={() => {
+            handleNavigationButtonDown(openWindowsButtonElement);
+        }}
+        on:touchmove={() => {
+            handleNavigationButtonMove(openWindowsButtonElement);
+        }}
+        on:mousemove={() => {
+            handleNavigationButtonMove(homeButtonElement);
+        }}
         on:click={() =>
             handleNavigationButtonPress(
                 openWindowsButtonElement,
@@ -75,6 +94,18 @@
     <button
         bind:this={homeButtonElement}
         class="navigation-bar-button middle-button-container"
+        on:touchstart={() => {
+            handleNavigationButtonDown(homeButtonElement);
+        }}
+        on:mousedown={() => {
+            handleNavigationButtonDown(homeButtonElement);
+        }}
+        on:touchmove={() => {
+            handleNavigationButtonMove(homeButtonElement);
+        }}
+        on:mousemove={() => {
+            handleNavigationButtonMove(homeButtonElement);
+        }}
         on:click={() =>
             handleNavigationButtonPress(homeButtonElement, onHomeButtonPress)}
     >
@@ -85,6 +116,18 @@
     <button
         bind:this={backButtonElement}
         class="navigation-bar-button return-button-container"
+        on:touchstart={() => {
+            handleNavigationButtonDown(backButtonElement);
+        }}
+        on:mousedown={() => {
+            handleNavigationButtonDown(backButtonElement);
+        }}
+        on:touchmove={() => {
+            handleNavigationButtonMove(backButtonElement);
+        }}
+        on:mousemove={() => {
+            handleNavigationButtonMove(backButtonElement);
+        }}
         on:click={() =>
             handleNavigationButtonPress(backButtonElement, onBackButtonPress)}
     >
@@ -120,7 +163,7 @@
             align-items: center;
             border-radius: 2.5rem;
 
-            transition: background-color 0.25s;
+            transition: background-color 0.25s ease-out;
         }
 
         .navigation-bar-button.pressed {

@@ -94,7 +94,7 @@
 
     /** HELPER FUNCTIONS */
     function placeGridItemOnGrid(x: number, y: number, item: GridItemObject) {
-        // lastKnownX and lastKnownY seems more reliable
+        // lastKnownX and lastKnownY seem more reliable
         x = lastKnownX;
         y = lastKnownY;
         let offsetX = x - item.position.x;

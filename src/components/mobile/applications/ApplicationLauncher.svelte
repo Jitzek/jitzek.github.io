@@ -23,6 +23,8 @@
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
     import { hideMenu as hideApplicationsMenu } from "$stores/mobile/ApplicationsStore";
     import { notify, processesStore } from "$stores/shared/ProcessesStore";
+    import { touchDragOrPress } from "$actions/touchdrag";
+import { executeProgramById } from "$stores/shared/ProgramsStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -59,48 +61,40 @@
     }
 
     function handleApplicationLauncherButtonClick() {
-        program.createProcess().bringToTop();
+        executeProgramById(program.id)?.bringToTop();
     }
 
     function handleApplicationLauncherButtonDragStart(e: DragEvent) {
         setDragAndDropData({ program_id: program.id.toString() });
     }
 
-    function handleApplicationLauncherButtonTouchStart(e: TouchEvent) {
+    function handleApplicationLauncherButtonTouchDragOrPress(e: CustomEvent) {
         e.preventDefault();
-        touchMoving = false;
-        touchCanceled = false;
-        touchStart = +new Date();
-        setTimeout(() => {
-            if (!touchCanceled && !touchMoving) {
-                hideApplicationsMenu();
-                setDragAndDropData({
-                    program_id: program.id.toString(),
-                });
-            }
-        }, longPressTouchTime);
-    }
-
-    function handleApplicationLauncherButtonTouchEnd(e: TouchEvent) {
-        touchEnd = +new Date();
-        touchCanceled = true;
-
-        if (!touchMoving && touchEnd - touchStart < longPressTouchTime) {
+        if (e.detail.press) {
             // Open program
             for (let process of $processesStore) {
                 if (process.getProgramId() === program.id) {
                     process.bringToTop();
                     process.unMinimizeWindow();
-                    console.log("success");
                     return;
                 }
             }
             program.createProcess().bringToTop();
+            return;
         }
+        if (!e.detail.drag) return;
+
+        hideApplicationsMenu();
+        setDragAndDropData({
+            program_id: program.id.toString(),
+        });
     }
-    function handleApplicationLauncherButtonTouchMove(e: TouchEvent) {
+
+    function handleApplicationLauncherButtonTouchEnd(e: TouchEvent) {
         e.preventDefault();
-        touchMoving = true;
+    }
+    function handleApplicationLauncherButtonTouchDragMove(e: TouchEvent) {
+        e.preventDefault();
     }
 
     /** ENDOF EVENT HANDLERS */
@@ -120,9 +114,10 @@
         draggable={true}
         on:dragstart={handleApplicationLauncherButtonDragStart}
         class:ghost
-        on:touchstart={handleApplicationLauncherButtonTouchStart}
+        use:touchDragOrPress={250}
+        on:touchdragorpress={handleApplicationLauncherButtonTouchDragOrPress}
+        on:touchdragmove={handleApplicationLauncherButtonTouchDragMove}
         on:touchend={handleApplicationLauncherButtonTouchEnd}
-        on:touchmove={handleApplicationLauncherButtonTouchMove}
         style="width: {sizeInRem}rem; height: {sizeInRem};"
     >
         <div class="application-launcher-button-content">
