@@ -11,7 +11,6 @@ export function touchDragOrPress(node: any, duration: number) {
         touchDragging = false;
         touchCanceled = false;
         timer = setTimeout(() => {
-            console.log(duration);
             if (touchMoving) return;
             if (touchCanceled) {
                 node.dispatchEvent(
