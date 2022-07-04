@@ -161,7 +161,7 @@
 <div
     class="applications-container"
     style="--height: calc(100% - {distanceFromBottomInRem +
-        distanceFromTopInRem}rem); height: var(--height); bottom: {distanceFromBottomInRem}rem;"
+        distanceFromTopInRem}rem); height: var(--height); top: {distanceFromTopInRem}rem;"
     class:hide
     on:touchstart={handleApplicationsContainerTouchStart}
     on:mousedown={handleApplicationsContainerMouseDown}
@@ -226,7 +226,7 @@
         background-color: var(--bg_color_primary);
 
         .category-with-applications {
-            height: var(--height);
+            height: 90%;
             margin: auto;
             overflow: hidden;
             width: 100%;

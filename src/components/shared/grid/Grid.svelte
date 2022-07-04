@@ -176,6 +176,12 @@
         handlePlaceItem(e.clientX, e.clientY);
     }
 
+    function handleGridContextMenu(e: MouseEvent) {
+        // FIXME: Calling preventDefault() also calls touchCancel.
+        // This causes the touchMove to be canceled and no helper grid to appear.
+        // e.preventDefault();
+    }
+
     function handlePlaceItem(x: number, y: number) {
         x = x === undefined ? lastKnownX : x;
         y = y === undefined ? lastKnownY : y;
@@ -236,8 +242,6 @@
         // gridItemBeingDragged = item;
     }
     function window_handleGridItemTouchMove(e: TouchEvent) {
-        // if (!dragAndDropKeyExists("program_id")) return;
-        // e.preventDefault();
         handleGridMoveOver(
             e.targetTouches[0].clientX,
             e.targetTouches[0].clientY
@@ -286,6 +290,7 @@
     style="grid-template-columns: {$gridStore.gridTemplateColumns}; gap: {$gridStore.gap}rem; padding: {$gridStore.padding}rem; margin-top: {$gridStore.topOffset}rem; margin-bottom: {$gridStore.bottomOffset}rem;"
     on:mousedown={hideMenu}
     on:drop={handleGridDrop}
+    on:contextmenu={handleGridContextMenu}
 >
     {#each $gridStore.gridPositions as gridPosition}
         <div
