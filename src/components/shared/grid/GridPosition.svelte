@@ -129,7 +129,9 @@
                 icon: null,
                 onClick: () => {
                     hideContextMenu();
-                    removeGridItem(gridPosition.item.id);
+                    if (gridPosition.item !== null) {
+                        removeGridItem(gridPosition.item.id);
+                    }
                 },
             },
         ]);
