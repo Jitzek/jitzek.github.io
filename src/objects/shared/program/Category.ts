@@ -11,8 +11,6 @@ export namespace Category {
     export enum Name {
         ALL = "All",
         FAVOURITES = "Favourites",
-        SOCIALS = "Socials",
-        CATEGORY_1 = "A Category 1",
-        CATEGORY_2 = "B Category 2",
+        SOCIALS = "Socials"
     }
 }

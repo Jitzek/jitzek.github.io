@@ -22,7 +22,8 @@
         removeProgramShortcut,
     } from "$stores/desktop/TaskbarStore";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
-import { executeProgramById } from "$stores/shared/ProgramsStore";
+    import { executeProgramById } from "$stores/shared/ProgramsStore";
+    import Redirect from "$components/shared/svg/redirect.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -79,7 +80,7 @@ import { executeProgramById } from "$stores/shared/ProgramsStore";
     }
 
     function handleMenuLauncherButtonClick() {
-        executeProgramById(program.id)?.bringToTop();;
+        executeProgramById(program.id)?.bringToTop();
         hideMenu();
     }
 
@@ -99,6 +100,11 @@ import { executeProgramById } from "$stores/shared/ProgramsStore";
 >
     <div class="menu-launcher-button-content">
         <img src={program.icon} alt={program.name} />
+        {#if program.redirect}
+            <div class="redirect-indicator">
+                <Redirect offsetX="-1rem" offsetY="1rem" />
+            </div>
+        {/if}
         <div class="name-and-description">
             <span class="name">{program.name}</span>
             {#if program.description}
@@ -137,6 +143,11 @@ import { executeProgramById } from "$stores/shared/ProgramsStore";
                 width: 2.5rem;
                 transition: width 0.25s;
                 height: auto;
+            }
+
+            .redirect-indicator {
+                width: 0.75rem;
+                transition: width 0.25s;
             }
 
             .name-and-description {

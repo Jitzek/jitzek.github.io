@@ -25,6 +25,7 @@
     import { notify, processesStore } from "$stores/shared/ProcessesStore";
     import { touchDragOrPress } from "$actions/touchdrag";
     import { executeProgramById } from "$stores/shared/ProgramsStore";
+    import Redirect from "$components/shared/svg/redirect.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -118,6 +119,11 @@
     >
         <div class="application-launcher-button-content">
             <img src={program.icon} alt={program.name} /><br />
+            {#if program.redirect}
+                <div class="redirect-indicator">
+                    <Redirect offsetX="3.5rem" offsetY="-1rem" />
+                </div>
+            {/if}
             <span class="name">{program.name}</span>
         </div>
     </button>
@@ -142,6 +148,12 @@
             img {
                 width: 50%;
                 height: 50%;
+            }
+
+            .redirect-indicator {
+                width: 0.75rem;
+                transition: width 0.25s;
+                position: absolute;
             }
 
             text-align: center;
