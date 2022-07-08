@@ -1,11 +1,11 @@
 {
   ".svelte-kit/runtime/client/start.js": {
-    "file": "start-eb8c4c91.js",
+    "file": "start-7b4ad276.js",
     "src": ".svelte-kit/runtime/client/start.js",
     "isEntry": true,
     "imports": [
-      "_index-28a80238.js",
-      "_index-2d6e2862.js"
+      "_index-8487f2fb.js",
+      "_index-8ae8af0f.js"
     ],
     "dynamicImports": [
       "src/routes/__layout.svelte",
@@ -14,55 +14,55 @@
     ]
   },
   "src/routes/__layout.svelte": {
-    "file": "pages/__layout.svelte-2c551190.js",
+    "file": "pages/__layout.svelte-c5b401c5.js",
     "src": "src/routes/__layout.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-28a80238.js",
-      "_DragAndDropStore-09d1187f.js",
-      "_index-2d6e2862.js"
+      "_index-8487f2fb.js",
+      "_DragAndDropStore-950655da.js",
+      "_index-8ae8af0f.js"
     ],
     "css": [
       "assets/pages/__layout.svelte-a3069703.css"
     ]
   },
   "src/routes/__error.svelte": {
-    "file": "pages/__error.svelte-2b7599ac.js",
+    "file": "pages/__error.svelte-7a01630f.js",
     "src": "src/routes/__error.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-28a80238.js"
+      "_index-8487f2fb.js"
     ]
   },
   "src/routes/index.svelte": {
-    "file": "pages/index.svelte-c8167d40.js",
+    "file": "pages/index.svelte-459e1839.js",
     "src": "src/routes/index.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-28a80238.js",
-      "_DragAndDropStore-09d1187f.js",
-      "_index-2d6e2862.js"
+      "_index-8487f2fb.js",
+      "_DragAndDropStore-950655da.js",
+      "_index-8ae8af0f.js"
     ],
     "css": [
-      "assets/pages/index.svelte-c7c3c413.css"
+      "assets/pages/index.svelte-34afeac4.css"
     ]
   },
-  "_index-28a80238.js": {
-    "file": "chunks/index-28a80238.js"
+  "_index-8487f2fb.js": {
+    "file": "chunks/index-8487f2fb.js"
   },
-  "_index-2d6e2862.js": {
-    "file": "chunks/index-2d6e2862.js",
+  "_index-8ae8af0f.js": {
+    "file": "chunks/index-8ae8af0f.js",
     "imports": [
-      "_index-28a80238.js"
+      "_index-8487f2fb.js"
     ]
   },
-  "_DragAndDropStore-09d1187f.js": {
-    "file": "chunks/DragAndDropStore-09d1187f.js",
+  "_DragAndDropStore-950655da.js": {
+    "file": "chunks/DragAndDropStore-950655da.js",
     "imports": [
-      "_index-2d6e2862.js"
+      "_index-8ae8af0f.js"
     ]
   }
 }
