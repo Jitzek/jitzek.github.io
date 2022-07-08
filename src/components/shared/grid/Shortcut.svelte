@@ -1,8 +1,15 @@
 <script lang="ts">
-    import type { Program } from "$objects/shared/program/Program";
+    // components
+    import Redirect from "$components/shared/svg/redirect.svelte";
+    //
 
+    // objects
+    import type { Program } from "$objects/shared/program/Program";
+    //
+
+    // stores
     import { desktop } from "$stores/shared/DeviceTypeStore";
-    import Redirect from "../svg/redirect.svelte";
+    //
 
     export let program: Program;
 
