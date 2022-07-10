@@ -111,7 +111,7 @@
         draggable={true}
         on:dragstart={handleApplicationLauncherButtonDragStart}
         class:ghost
-        use:touchDragOrPress={250}
+        use:touchDragOrPress={200}
         on:touchdragorpress={handleApplicationLauncherButtonTouchDragOrPress}
         on:touchdragmove={handleApplicationLauncherButtonTouchDragMove}
         on:touchend={handleApplicationLauncherButtonTouchEnd}

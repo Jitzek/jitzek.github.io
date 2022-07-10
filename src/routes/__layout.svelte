@@ -31,7 +31,7 @@
 <svelte:window on:dragend={test} />
 
 <div class="layout-wrapper" bind:this={wrapper}>
-    <div class="build-label">This website is in development</div>
+    <!-- <div class="build-label">This website is in development</div> -->
     <div class="slot-container">
         <slot />
     </div>

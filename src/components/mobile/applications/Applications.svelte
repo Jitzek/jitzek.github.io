@@ -126,7 +126,9 @@
     function handleApplicationsContainerMouseDown(e: MouseEvent) {
         handleApplicationsContainerMoveStart(e.clientX);
     }
-    function handleApplicationsContainerContextMenu(e: MouseEvent) {}
+    function handleApplicationsContainerContextMenu(e: MouseEvent) {
+        e.preventDefault();
+    }
 
     function window_handleTouchMove(e: TouchEvent) {
         if (!isDragging) return;

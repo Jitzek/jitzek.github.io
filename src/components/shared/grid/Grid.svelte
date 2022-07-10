@@ -179,7 +179,7 @@
     function handleGridContextMenu(e: MouseEvent) {
         // FIXME: Calling preventDefault() also calls touchCancel.
         // This causes the touchMove to be canceled and no helper grid to appear.
-        // e.preventDefault();
+        e.preventDefault();
     }
 
     function handlePlaceItem(x: number, y: number) {
@@ -248,6 +248,11 @@
         );
     }
 
+    function window_handleTouchCancel(_e: TouchEvent) {
+        handlePlaceItem(lastKnownX, lastKnownY);
+        hideGridHelperLines();
+    }
+
     function handleGridItemTouchEnd(
         x: number,
         y: number,
@@ -283,6 +288,7 @@
     bind:innerHeight={screenHeight}
     on:dragover={window_handleGridDragOver}
     on:touchmove={window_handleGridItemTouchMove}
+    on:touchcancel={window_handleTouchCancel}
 />
 
 <div
