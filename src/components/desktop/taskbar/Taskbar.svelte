@@ -337,26 +337,12 @@
         }
 
         .taskbar-content {
-            display: -webkit-box;
-            display: -moz-box;
-            display: -ms-flexbox;
             display: -webkit-flex;
             display: flex;
 
-            -webkit-box-orient: horizontal;
-            -moz-box-orient: horizontal;
-            box-orient: horizontal;
             flex-direction: row;
 
-            -webkit-box-pack: start;
-            -moz-box-pack: start;
-            box-pack: start;
             justify-content: start;
-
-            -webkit-box-align: center;
-            -moz-box-align: center;
-            box-align: center;
-            align-items: center;
 
             .menu-button-container {
                 position: relative;
