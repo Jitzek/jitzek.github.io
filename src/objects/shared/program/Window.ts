@@ -11,7 +11,7 @@ export class Window {
         public x: number | null = null,
         // Keep null for automatic center
         public y: number | null = null,
-        public fullscreen: boolean = false,
+        public maximized: boolean = false,
         public minimized: boolean = false
     ) {}
 }

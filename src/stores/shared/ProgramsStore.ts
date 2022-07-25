@@ -27,6 +27,18 @@ export const programsStore: Writable<Array<Program>> = writable([
         )
     ),
     new Program(
+        "Fillcan",
+        "A C++20 library for rendering graphics using Vulkan.",
+        [categoryFavourites],
+        "/images/program-icons/fillcan-128x128.png",
+        new Window(
+            BrowserContent,
+            { title: "Fillcan", url: "https://jitzek.github.io/fillcan/" },
+            800,
+            1000
+        )
+    ),
+    new Program(
         "GitHub",
         "Open a new tab to my GitHub profile page",
         [getCategoryByName(Category.Name.SOCIALS)],

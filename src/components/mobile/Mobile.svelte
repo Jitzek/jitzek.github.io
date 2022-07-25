@@ -121,11 +121,11 @@
 <div class="window-container">
     {#if currentProcess !== null}
         <MobileWindow
-            fullscreen={true}
+            maximized={true}
             minimized={currentWindow.minimized}
             title={currentProcess.name}
             icon={currentProcess.getProgram().icon}
-            bottomOffset={convertRemToPixels(3.5)}
+            bottomOffset={convertRemToPixels(1.5)}
             topOffset={convertRemToPixels(2.5)}
         >
             <svelte:component

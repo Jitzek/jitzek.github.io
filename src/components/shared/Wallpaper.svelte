@@ -1,6 +1,6 @@
 <script lang="ts">
   export let src: string =
-    "/static/images/wallpapers/custom-design-01-1280x720.png";
+    "/static/images/wallpapers/custom-design-01-1920x1080.png";
 </script>
 
 <img {src} alt="wallpaper" unselectable={true} draggable={false} />

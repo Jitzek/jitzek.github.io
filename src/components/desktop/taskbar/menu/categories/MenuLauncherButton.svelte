@@ -23,7 +23,8 @@
     } from "$stores/desktop/TaskbarStore";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
     import { executeProgramById } from "$stores/shared/ProgramsStore";
-    import Redirect from "$components/shared/svg/redirect.svelte";
+    import Redirect from "$components/shared/svg/RedirectIcon.svelte";
+import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -56,6 +57,7 @@
             {
                 name: "Launch",
                 icon: program.icon,
+                icon_props: null,
                 onClick: () => {
                     hideContextMenu();
                     program.createProcess().bringToTop();
@@ -69,6 +71,7 @@
                 icon: containsProgramShortcut(program)
                     ? "/images/desktop/unpin.svg"
                     : "/images/desktop/pin.svg",
+                icon_props: null,
                 onClick: () => {
                     hideContextMenu();
                     containsProgramShortcut(program)
@@ -102,7 +105,7 @@
         <img src={program.icon} alt={program.name} />
         {#if program.redirect}
             <div class="redirect-indicator">
-                <Redirect offsetX="-1rem" offsetY="1rem" />
+                <RedirectIcon offsetX="-1rem" offsetY="1rem" />
             </div>
         {/if}
         <div class="name-and-description">

@@ -19,9 +19,12 @@
     } from "$stores/shared/ContextMenuStore";
     import { hideMenu } from "$stores/desktop/MenuStore";
     import {
-        maxWindowZIndex,
         processesStore,
+        removeProcess,
     } from "$stores/shared/ProcessesStore";
+    import CloseIcon from "$components/shared/svg/CloseIcon.svelte";
+    import MinimizeIcon from "$components/shared/svg/MinimizeIcon.svelte";
+    import MaximizeIcon from "$components/shared/svg/MaximizeIcon.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -61,26 +64,170 @@
 
     /** EVENT HANDLERS */
     function handleContextMenu(e: MouseEvent) {
-        //   e.preventDefault();
-        //   showContextMenu(e.clientX, e.clientY, [
-        //     {
-        //       name: "Launch",
-        //       icon: activeProcessStack.getProgram().icon,
-        //       onClick: () => {
-        //         hideContextMenu();
-        //         program.createProcess().bringToTop();
-        //         hideMenu();
-        //       },
-        //     },
-        //     {
-        //       name: "Unpin from taskbar",
-        //       icon: "/images/desktop/unpin.svg",
-        //       onClick: () => {
-        //         hideContextMenu();
-        //         removeProgramShortcut(program);
-        //       },
-        //     },
-        //   ]);
+        e.preventDefault();
+        let options: ContextMenuOptionObject[] = [];
+        if (activeProcessStack.getActiveProcesses().length > 1) {
+            options = options.concat([
+                {
+                    name: "Minimize All",
+                    icon: MinimizeIcon,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .forEach((activeProcess) => {
+                                activeProcess.minimizeWindow();
+                            });
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Unminimize All",
+                    icon: null,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .forEach((activeProcess) => {
+                                activeProcess.unMinimizeWindow();
+                            });
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Maximize All",
+                    icon: MaximizeIcon,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .forEach((activeProcess) => {
+                                activeProcess.maximizeWindow();
+                            });
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Unmaximize All",
+                    icon: null,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .forEach((activeProcess) => {
+                                activeProcess.unMaximizeWindow();
+                            });
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Close All",
+                    icon: CloseIcon,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .forEach((activeProcess) => {
+                                removeProcess(activeProcess);
+                            });
+                        hideMenu();
+                    },
+                },
+            ]);
+        } else {
+            options = options.concat([
+                {
+                    name: "Minimize",
+                    icon: MinimizeIcon,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .at(0)
+                            .minimizeWindow();
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Unminimize",
+                    icon: null,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .at(0)
+                            .unMinimizeWindow();
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Maximize",
+                    icon: MaximizeIcon,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .at(0)
+                            .maximizeWindow();
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Unmaximize",
+                    icon: null,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        activeProcessStack
+                            .getActiveProcesses()
+                            .at(0)
+                            .unMaximizeWindow();
+                        hideMenu();
+                    },
+                },
+                {
+                    name: "Close",
+                    icon: CloseIcon,
+                    icon_props: {
+                        size: "35%",
+                    },
+                    onClick: () => {
+                        hideContextMenu();
+                        removeProcess(
+                            activeProcessStack.getActiveProcesses().at(0)
+                        );
+                        hideMenu();
+                    },
+                },
+            ]);
+        }
+        showContextMenu(e.clientX, e.clientY, options);
     }
 
     function handleStackClick(e: MouseEvent) {
@@ -96,6 +243,7 @@
             contextMenuOptions.push({
                 name: `${process.getProgram().name} ${i == 0 ? "" : ` (${i})`}`,
                 icon: process.getProgram().icon,
+                icon_props: null,
                 onClick: () => {
                     process.unMinimizeWindow();
                     hideContextMenu();
@@ -121,6 +269,13 @@
                 width="100%"
                 height="auto"
             />
+            {#if activeProcessStack.getActiveProcesses().length > 1}
+                <div class="process-count-container">
+                    <span class="process-count"
+                        >{activeProcessStack.getActiveProcesses().length}</span
+                    >
+                </div>
+            {/if}
         </button>
     </Tooltip>
 </div>
@@ -137,6 +292,31 @@
         img {
             width: 90%;
             transition: width 0.25s;
+        }
+
+        .process-count-container {
+            position: absolute;
+            bottom: 0.25rem;
+            right: 0.25rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: var(--fg_color_primary);
+            border-radius: 100%;
+            border-style: solid;
+            border-width: 0.1rem;
+            border-color: var(--bg_color_primary);
+            display: flex;
+            vertical-align: middle;
+            align-items: center;
+
+            .process-count {
+                color: var(--bg_color_primary);
+                position: relative;
+                margin: 0 auto;
+                width: auto;
+                height: auto;
+                font-weight: bold;
+            }
         }
     }
 

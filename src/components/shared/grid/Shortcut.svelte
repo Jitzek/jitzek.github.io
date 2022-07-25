@@ -1,6 +1,6 @@
 <script lang="ts">
     // components
-    import Redirect from "$components/shared/svg/redirect.svelte";
+    import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
     //
 
     // objects
@@ -21,7 +21,7 @@
         <img src={program.icon} alt={program.name} draggable="false" />
         {#if program.redirect}
             <div class="redirect-container">
-                <Redirect offsetX="3.5rem" offsetY="-1rem" />
+                <RedirectIcon offsetX="3.5rem" offsetY="-1rem" />
             </div>
         {/if}
     </div>

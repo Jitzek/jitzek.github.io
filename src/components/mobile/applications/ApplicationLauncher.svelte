@@ -25,7 +25,8 @@
     import { notify, processesStore } from "$stores/shared/ProcessesStore";
     import { touchDragOrPress } from "$actions/touchdrag";
     import { executeProgramById } from "$stores/shared/ProgramsStore";
-    import Redirect from "$components/shared/svg/redirect.svelte";
+    import Redirect from "$components/shared/svg/RedirectIcon.svelte";
+import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -121,7 +122,7 @@
             <img src={program.icon} alt={program.name} /><br />
             {#if program.redirect}
                 <div class="redirect-indicator">
-                    <Redirect offsetX="3.5rem" offsetY="-1rem" />
+                    <RedirectIcon offsetX="3.5rem" offsetY="-1rem" />
                 </div>
             {/if}
             <span class="name">{program.name}</span>
