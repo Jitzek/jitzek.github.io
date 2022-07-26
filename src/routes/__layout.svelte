@@ -43,12 +43,12 @@
 
         color: var(--fg_color_primary);
 
-        .build-label {
-            position: relative;
-            text-align: center;
-            z-index: 1;
-            pointer-events: none;
-        }
+        // .build-label {
+        //     position: relative;
+        //     text-align: center;
+        //     z-index: 1;
+        //     pointer-events: none;
+        // }
         .slot-container {
             all: unset;
             z-index: 0;

@@ -22,8 +22,8 @@
     /** ENDOF IMPORTS*/
 
     /** EXPORTS */
-    export let title: string = "";
-    export let icon: string = "";
+    // export let title: string = "";
+    // export let icon: string = "";
 
     // Height of window in PX
     // Default to min
@@ -56,9 +56,6 @@
     export let z_index: number = -1;
 
     export let onSelection: Function = () => {};
-    export let onMinimize: Function = () => {};
-    export let onClose: Function = () => {};
-    export let onMaximized: Function = () => {};
     /** ENDOF EXPORTS */
 
     /** VARIABLE DECLARATION */
@@ -194,71 +191,9 @@
     /** ENDOF HELPER FUNCTIONS */
 
     /** EVENT HANDLERS */
-    function window_handleDragOver(e: DragEvent) {
-        // if (!isMovingWindow) return;
-        // e.preventDefault();
-        // moveWindow(e.clientX, e.clientY);
-        // e.dataTransfer.dropEffect = "move";
-    }
-    function window_handleTouchMove(e: TouchEvent) {
-        // e.preventDefault();
-        // moveWindow(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-    }
-    function window_handleMouseMove(e: MouseEvent) {
-        // if (!isResizingWindow) return;
-        // let offsetX: number = e.clientX - prevResizeX;
-        // let offsetY: number = e.clientY - prevResizeY;
-        // if (
-        //     direction == Direction.TOP ||
-        //     direction == Direction.TOPLEFT ||
-        //     direction == Direction.TOPRIGHT
-        // ) {
-        //     if (dragY - offsetY < maxY) {
-        //         height -= offsetY;
-        //         dragHeight -= offsetY;
-        //     }
-        // }
-        // if (
-        //     direction == Direction.BOTTOM ||
-        //     direction == Direction.BOTTOMLEFT ||
-        //     direction == Direction.BOTTOMRIGHT
-        // ) {
-        //     if (dragY - offsetY > 0) {
-        //         if (dragHeight + offsetY >= minHeight) {
-        //             y -= offsetY;
-        //             height += offsetY;
-        //         }
-        //         dragHeight += offsetY;
-        //     }
-        //     dragY -= offsetY;
-        // }
-        // if (
-        //     direction == Direction.RIGHT ||
-        //     direction == Direction.TOPRIGHT ||
-        //     direction == Direction.BOTTOMRIGHT
-        // ) {
-        //     if (dragX + offsetX < maxX) {
-        //         width += offsetX;
-        //         dragWidth += offsetX;
-        //     }
-        // }
-        // if (
-        //     direction == Direction.LEFT ||
-        //     direction == Direction.TOPLEFT ||
-        //     direction == Direction.BOTTOMLEFT
-        // ) {
-        //     if (dragX + offsetX > 0) {
-        //         if (dragWidth - offsetX >= minWidth) {
-        //             x += offsetX;
-        //             width -= offsetX;
-        //         }
-        //         dragWidth -= offsetX;
-        //     }
-        //     dragX += offsetX;
-        // }
-        // prevResizeX = e.clientX;
-        // prevResizeY = e.clientY;
-    }
+    function window_handleDragOver(e: DragEvent) {}
+    function window_handleTouchMove(e: TouchEvent) {}
+    function window_handleMouseMove(e: MouseEvent) {}
     function window_handleMouseUp(e: MouseEvent) {
         if (isResizingWindow) {
             isResizingWindow = false;
@@ -367,42 +302,6 @@
         margin-right: auto;
         // outline: 1px solid black;
         overflow: hidden;
-
-        .control-bar {
-            height: $--control-bar-height;
-            width: 100%;
-            background-color: var(--border_color_primary);
-
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -o-user-select: none;
-
-            .window-info {
-                float: left;
-                display: flex;
-                height: 100%;
-                align-items: center;
-                margin-left: 0.25rem;
-
-                .window-icon {
-                    width: 1.5rem;
-                    height: auto;
-                }
-
-                .window-title {
-                    margin-left: 0.25rem;
-                }
-            }
-
-            .control-buttons {
-                float: right;
-                height: 100%;
-                width: auto;
-                display: flex;
-            }
-        }
 
         .window-content {
             width: 100%;
