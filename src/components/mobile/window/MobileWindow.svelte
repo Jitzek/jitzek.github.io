@@ -156,33 +156,6 @@
     /** ENDOF REACTIVE VARIABLES */
 
     /** HELPER FUNCTIONS */
-    function startWindowMove(_x: number, _y: number) {
-        isMovingWindow = true;
-        dragPrevX = _x;
-        dragPrevY = _y;
-    }
-
-    function endWindowMove(_x: number, _y: number) {
-        isMovingWindow = false;
-        onSelection();
-    }
-
-    function moveWindow(_x: number, _y: number) {
-        if (!isMovingWindow) return;
-        if (maximized) {
-            maximized = false;
-            x = _x - width / 2;
-            y = maxY;
-        }
-        let offsetX = _x - dragPrevX;
-        let offsetY = _y - dragPrevY;
-        dragPrevX = _x;
-        dragPrevY = _y;
-
-        x += offsetX;
-        y -= offsetY;
-    }
-
     function startWindowResize(x: number, y: number) {
         prevResizeX = x;
         prevResizeY = y;
@@ -317,7 +290,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            background-color: black;
+            // background-color: black;
             overflow: hidden;
 
             // Prevent border pushing other elements
@@ -358,7 +331,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            background-color: blue;
+            // background-color: blue;
             width: 0.5rem;
             height: 0.5rem;
         }

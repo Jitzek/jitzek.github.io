@@ -479,7 +479,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            background-color: black;
+            // background-color: black;
             overflow: hidden;
 
             // Prevent border pushing other elements
@@ -520,7 +520,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            background-color: blue;
+            // background-color: blue;
             width: 0.5rem;
             height: 0.5rem;
         }
