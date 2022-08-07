@@ -1,0 +1,76 @@
+{
+  ".svelte-kit/runtime/client/start.js": {
+    "file": "_app/immutable/start-cc44c838.js",
+    "src": ".svelte-kit/runtime/client/start.js",
+    "isEntry": true,
+    "imports": [
+      "_index-90306605.js",
+      "_index-7d7bf997.js"
+    ],
+    "dynamicImports": [
+      "src/routes/__layout.svelte",
+      "src/routes/__error.svelte",
+      "src/routes/index.svelte"
+    ]
+  },
+  "src/routes/__layout.svelte": {
+    "file": "_app/immutable/pages/__layout.svelte-2c9df69d.js",
+    "src": "src/routes/__layout.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-90306605.js",
+      "_DragAndDropStore-74485f5e.js",
+      "_index-7d7bf997.js"
+    ],
+    "css": [
+      "_app/immutable/assets/__layout-6faf5975.css"
+    ]
+  },
+  "src/routes/__error.svelte": {
+    "file": "_app/immutable/pages/__error.svelte-b6d64143.js",
+    "src": "src/routes/__error.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-90306605.js"
+    ]
+  },
+  "src/routes/index.svelte": {
+    "file": "_app/immutable/pages/index.svelte-f0adb2a8.js",
+    "src": "src/routes/index.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-90306605.js",
+      "_DragAndDropStore-74485f5e.js",
+      "_index-7d7bf997.js"
+    ],
+    "css": [
+      "_app/immutable/assets/index-a1603d16.css"
+    ]
+  },
+  "_index-90306605.js": {
+    "file": "_app/immutable/chunks/index-90306605.js"
+  },
+  "_index-7d7bf997.js": {
+    "file": "_app/immutable/chunks/index-7d7bf997.js",
+    "imports": [
+      "_index-90306605.js"
+    ]
+  },
+  "_DragAndDropStore-74485f5e.js": {
+    "file": "_app/immutable/chunks/DragAndDropStore-74485f5e.js",
+    "imports": [
+      "_index-7d7bf997.js"
+    ]
+  },
+  "src/routes/__layout.css": {
+    "file": "_app/immutable/assets/__layout-6faf5975.css",
+    "src": "src/routes/__layout.css"
+  },
+  "src/routes/index.css": {
+    "file": "_app/immutable/assets/index-a1603d16.css",
+    "src": "src/routes/index.css"
+  }
+}
