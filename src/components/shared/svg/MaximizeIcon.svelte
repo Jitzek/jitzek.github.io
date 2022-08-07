@@ -1,0 +1,29 @@
+<script lang="ts">
+    export let size: string = "100%";
+</script>
+
+<svg
+   width="64.000038"
+   height="60.000031"
+   viewBox="0 0 64.000038 60.000031"
+   version="1.1"
+   id="SVGRoot"
+   xmlns="http://www.w3.org/2000/svg"
+   style="width: {size}; height: auto;">
+  <defs
+     id="defs132" />
+  <g
+     id="layer1"
+     transform="translate(1.4781952e-5,-1.9839797)">
+    <rect
+       style="fill:none;stroke:#ffffff;stroke-width:11.8165;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       id="rect369"
+       width="52.183537"
+       height="48.183529"
+       x="5.9082351"
+       y="7.8922296"
+       ry="24.091764"
+       rx="0.43545324" />
+  </g>
+</svg>
+

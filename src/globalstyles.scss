@@ -1,0 +1,28 @@
+@mixin font-inherit {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+@mixin input-inherit {
+  @include font-inherit;
+  color: var(--input_fg_color);
+  background-color: var(--input_bg_color);
+  border-color: var(--input_border_color);
+  outline-color: var(--input_border_color);
+}
+
+@mixin input-hover-inherit {
+  color: var(--input_hover_fg_color);
+  background-color: var(--input_hover_bg_color);
+  border-color: var(--input_hover_border_color);
+  outline-color: var(--input_active_border_color);
+}
+
+@mixin input-active-inherit {
+  color: var(--input_active_fg_color);
+  background-color: var(--input_active_bg_color);
+  border-color: var(--input_active_border_color);
+  outline-color: var(--input_active_border_color);
+}
