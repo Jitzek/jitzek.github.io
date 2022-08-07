@@ -427,6 +427,12 @@
         margin-left: auto;
         margin-right: auto;
         overflow: hidden;
+        
+        $--window-box-shadow-size: 1rem;
+        $--window-box-shadow-color: rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 0 0 $--window-box-shadow-size $--window-box-shadow-color;
+        -webkit-box-shadow: 0 0 $--window-box-shadow-size $--window-box-shadow-color;
+        box-shadow: 0 0 $--window-box-shadow-size $--window-box-shadow-color;
 
         .control-bar {
             height: $--control-bar-height;
