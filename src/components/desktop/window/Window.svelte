@@ -426,7 +426,6 @@
         position: absolute;
         margin-left: auto;
         margin-right: auto;
-        // outline: 1px solid black;
         overflow: hidden;
 
         .control-bar {
@@ -479,7 +478,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            // background-color: black;
+            // background-color: black; // Window border color
             overflow: hidden;
 
             // Prevent border pushing other elements
@@ -520,7 +519,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            // background-color: blue;
+            // background-color: blue; // Window corners color
             width: 0.5rem;
             height: 0.5rem;
         }
