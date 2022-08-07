@@ -31,7 +31,7 @@
 <svelte:window on:dragend={test} />
 
 <div class="layout-wrapper" bind:this={wrapper}>
-    <div class="build-label">This website is in development</div>
+    <!-- <div class="build-label">This website is in development</div> -->
     <div class="slot-container">
         <slot />
     </div>
@@ -43,12 +43,12 @@
 
         color: var(--fg_color_primary);
 
-        .build-label {
-            position: relative;
-            text-align: center;
-            z-index: 1;
-            pointer-events: none;
-        }
+        // .build-label {
+        //     position: relative;
+        //     text-align: center;
+        //     z-index: 1;
+        //     pointer-events: none;
+        // }
         .slot-container {
             all: unset;
             z-index: 0;

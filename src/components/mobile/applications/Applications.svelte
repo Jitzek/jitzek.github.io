@@ -4,8 +4,7 @@
     //
 
     // "components"
-    import Categories from "$components/desktop/taskbar/menu/categories/Categories.svelte";
-    import MenuLauncherButton from "$components/desktop/taskbar/menu/categories/MenuLauncherButton.svelte";
+    import ApplicationLauncher from "$components/mobile/applications/ApplicationLauncher.svelte";
     //
 
     // "objects"
@@ -19,10 +18,10 @@
     import {
         categoriesStore,
         categoryAll,
+        categoryFavourites,
     } from "$stores/shared/CategoriesStore";
     import { programsStore } from "$stores/shared/ProgramsStore";
-    import { forIn, max } from "lodash";
-    import ApplicationLauncher from "./ApplicationLauncher.svelte";
+    import { sortBy } from "lodash";
     //
 
     /** ENDOF IMPORTS*/
@@ -54,7 +53,9 @@
         hide = !showApplications;
     });
     categoriesStore.subscribe((_categories) => {
-        categories = _categories;
+        categories = _categories.filter(
+            (category) => category.name !== categoryAll.name
+        );
         maxX = innerWidth * categories.length;
     });
     $: {
@@ -76,6 +77,7 @@
     function handleApplicationsContainerMoveStart(x: number) {
         isDragging = true;
         startX = scrollOffsetInPx + x;
+        velocityX = 0;
         changeCursor(Cursor.GRABBING);
     }
     function handleApplicationsContainerMove(x: number) {
@@ -124,7 +126,9 @@
     function handleApplicationsContainerMouseDown(e: MouseEvent) {
         handleApplicationsContainerMoveStart(e.clientX);
     }
-    function handleApplicationsContainerContextMenu(e: MouseEvent) {}
+    function handleApplicationsContainerContextMenu(e: MouseEvent) {
+        e.preventDefault();
+    }
 
     function window_handleTouchMove(e: TouchEvent) {
         if (!isDragging) return;
@@ -171,7 +175,9 @@
         class="category-with-applications"
         style="max-width: calc(100% * {categories.length})"
     >
-        {#each categories as category, i}
+        {#each sortBy(categories, [(category) => {
+                return category.id === categoryAll.id || category.id === categoryFavourites.id || category.name;
+            }]) as category, i}
             <div
                 class="category-with-applications-item {!isDragging
                     ? 'animate'

@@ -17,7 +17,7 @@ export const programsStore: Writable<Array<Program>> = writable([
     new Program(
         "Croma",
         "Official website for the Croma Robot made in Webots.",
-        [getCategoryByName(Category.Name.CATEGORY_1), categoryFavourites],
+        [categoryFavourites],
         "/images/program-icons/croma.png",
         new Window(
             BrowserContent,
@@ -27,24 +27,33 @@ export const programsStore: Writable<Array<Program>> = writable([
         )
     ),
     new Program(
-        "LocalHost 3000",
-        "",
-        [getCategoryByName(Category.Name.CATEGORY_2)],
-        "/images/program-icons/utilities-terminal.svg",
+        "Fillcan",
+        "A C++20 library for rendering graphics using Vulkan.",
+        [categoryFavourites],
+        "/images/program-icons/fillcan-128x128.png",
         new Window(
             BrowserContent,
-            { title: "Croma", url: "http://localhost:3000/" },
+            { title: "Fillcan", url: "https://jitzek.github.io/fillcan/" },
             800,
-            600
+            1000
         )
     ),
     new Program(
         "GitHub",
-        "",
+        "Open a new tab to my GitHub profile page",
         [getCategoryByName(Category.Name.SOCIALS)],
-        "https://github.com/fluidicon.png",
+        "/images/program-icons/github.png",
         null,
         new Redirect("https://github.com/Jitzek")
+    ),
+
+    new Program(
+        "LinkedIn",
+        "Open a new tab to my LinkedIn profile page",
+        [getCategoryByName(Category.Name.SOCIALS)],
+        "/images/program-icons/linkedin.png",
+        null,
+        new Redirect("https://www.linkedin.com/in/jitze-jan-kerkstra/")
     ),
 ]);
 programsStore.subscribe((programs) => (_programsStore = programs));

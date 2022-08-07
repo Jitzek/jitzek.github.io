@@ -84,28 +84,6 @@
 
 <div class="categories-container">
     <div class="category-buttons-container">
-        <!-- {#each categoryWrappers.filter(({ category }) => category.id === categoryAll.id || category.id === categoryFavourites.id) as { category, activated }}
-			<CategoryButton
-				icon={category.icon}
-				name={category.name}
-				{activated}
-				on:click={(e) => handleGategoryButtonClick(e, category.id)}
-			/>
-		{/each}
-		{#each categoryWrappers
-			.filter(
-				({ category }) => category.id !== categoryAll.id && category.id !== categoryFavourites.id
-			)
-			.sort((a, b) =>
-				a.category.name.localeCompare(b.category.name)
-			) as { category, activated } (category.id)}
-			<CategoryButton
-				icon={category.icon}
-				name={category.name}
-				{activated}
-				on:click={(e) => handleGategoryButtonClick(e, category.id)}
-			/>
-		{/each} -->
         {#each sortBy(categoryWrappers, [(wrapper) => {
                 return wrapper.category.id === categoryAll.id || wrapper.category.id === categoryFavourites.id || wrapper.category.name;
             }]) as { category, activated }}

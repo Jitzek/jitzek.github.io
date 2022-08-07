@@ -59,4 +59,17 @@ export class Process {
         this.bringToTop();
         notifyProcessesChanged();
     }
+
+    public maximizeWindow() {
+        if (!this.hasWindow()) return;
+        this.window.maximized = true;
+        notifyProcessesChanged();
+    }
+
+    public unMaximizeWindow() {
+        if (!this.hasWindow()) return;
+        this.window.maximized = false;
+        this.bringToTop();
+        notifyProcessesChanged();
+    }
 }

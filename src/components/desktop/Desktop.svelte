@@ -73,7 +73,7 @@
         window.y = process.window.y;
         window.width = process.window.width;
         window.height = process.window.height;
-        window.fullscreen = process.window.fullscreen;
+        window.maximized = process.window.maximized;
 
         updateWindows();
     }
@@ -81,7 +81,7 @@
     function handleWindowClose(uuid: string) {
         removeProcessByUuid(uuid);
     }
-    function handleWindowFullscreen(uuid: string) {}
+    function handleWindowMaximize(uuid: string) {}
     /** ENDOF EVENT HANDLERS */
 </script>
 
@@ -111,7 +111,7 @@
                 bind:width={window.width}
                 bind:x={window.x}
                 bind:y={window.y}
-                bind:fullscreen={window.fullscreen}
+                bind:maximized={window.maximized}
                 bind:minimized={window.minimized}
                 bind:z_index={window.z_index}
                 title={name}
@@ -120,7 +120,7 @@
                 onSelection={() => handleWindowSelection(uuid)}
                 onMinimize={() => handleWindowMinimize(uuid)}
                 onClose={() => handleWindowClose(uuid)}
-                onFullscreen={() => handleWindowFullscreen(uuid)}
+                onMaximized={() => handleWindowMaximize(uuid)}
             >
                 <svelte:component
                     this={window.component}
@@ -146,6 +146,7 @@
                 <ContextMenuOption
                     name={option.name}
                     icon={option.icon}
+                    icon_props={option.icon_props}
                     onClick={option.onClick}
                 />
             {/each}

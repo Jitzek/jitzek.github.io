@@ -48,7 +48,7 @@
     // Minimal width of window in PX
     export let minHeight: number = 250;
 
-    export let fullscreen: boolean = false;
+    export let maximized: boolean = false;
     export let minimized: boolean = false;
 
     export let z_index: number = 1;
@@ -56,7 +56,7 @@
     export let onSelection: Function = () => {};
     export let onMinimize: Function = () => {};
     export let onClose: Function = () => {};
-    export let onFullscreen: Function = () => {};
+    export let onMaximized: Function = () => {};
     /** ENDOF EXPORTS */
 
     /** VARIABLE DECLARATION */
@@ -169,8 +169,8 @@
 
     function moveWindow(_x: number, _y: number) {
         if (!isMovingWindow) return;
-        if (fullscreen) {
-            fullscreen = false;
+        if (maximized) {
+            maximized = false;
             x = _x - width / 2;
             y = maxY;
         }
@@ -290,8 +290,8 @@
     }
 
     function handleWindowDoubleClick(e: MouseEvent) {
-        fullscreen = !fullscreen;
-        onFullscreen();
+        maximized = !maximized;
+        onMaximized();
     }
 
     function handleMinimizeButtonClick() {
@@ -299,8 +299,8 @@
         onMinimize();
     }
     function handleResizeButtonClick() {
-        fullscreen = !fullscreen;
-        onFullscreen();
+        maximized = !maximized;
+        onMaximized();
     }
     function handleCloseButtonClick() {
         onClose();
@@ -326,14 +326,14 @@
     bind:this={windowElement}
     class="window"
     style="
-			width: {fullscreen ? maxWidth : width + x <= maxWidth ? width : maxWidth - x}px;
-			height: {fullscreen
+			width: {maximized ? maxWidth : width + x <= maxWidth ? width : maxWidth - x}px;
+			height: {maximized
         ? maxHeight
         : height + y <= maxHeight
         ? height
         : maxHeight - y}px; 
 			bottom: {heightOffset}px;
-			transform: translate({fullscreen ? 0 : x}px, -{fullscreen ? 0 : y}px);
+			transform: translate({maximized ? 0 : x}px, -{maximized ? 0 : y}px);
 			min-width: {minWidth}px;
 			min-height: {minHeight}px;
 			z-index: {z_index};
@@ -361,7 +361,7 @@
                 on:click={() => handleMinimizeButtonClick()}
             />
             <WindowResizeButton
-                isFullscreen={fullscreen}
+                isMaximized={maximized}
                 width={"2.5rem"}
                 height={"100%"}
                 on:click={() => handleResizeButtonClick()}
@@ -377,7 +377,7 @@
         <slot name="content" />
     </div>
 
-    {#if !fullscreen}
+    {#if !maximized}
         <div
             on:mousedown={(e) => handleWindowResizeStart(e, Direction.TOP)}
             class="border-top"
@@ -479,7 +479,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            background-color: black;
+            // background-color: black;
             overflow: hidden;
 
             // Prevent border pushing other elements
@@ -520,7 +520,7 @@
         .border-top-right,
         .border-bottom-left,
         .border-bottom-right {
-            background-color: blue;
+            // background-color: blue;
             width: 0.5rem;
             height: 0.5rem;
         }
