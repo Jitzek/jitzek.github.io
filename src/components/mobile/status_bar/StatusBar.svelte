@@ -11,6 +11,7 @@
     // "objects"
     import { changeCursor, Cursor } from "$objects/desktop/cursors";
     import { convertRemToPixels } from "$objects/shared/conversions";
+    import { expandStatusBarStore, expandStatusBar as expandStatusBarWithStore, collapseStatusBar as collapseStatusBarWithStore } from "$stores/mobile/StatusBarStore";
     //
 
     // "stores"
@@ -22,6 +23,7 @@
         getMonthOfYearString,
         getTimeWithoutSecondsAsString,
     } from "$stores/shared/DateTimeStore";
+    import DoubleArrow from "./DoubleArrow.svelte";
     import SwitchToDesktopButton from "./global_options/SwitchToDesktopButton.svelte";
     //
 
@@ -46,7 +48,9 @@
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
-    //
+    expandStatusBarStore.subscribe((expandStatusBar) => {
+        expanded = expandStatusBar;
+    });
     /** ENDOF STORE CALLBACKS */
 
     /** REACTIVE VARIABLES */
@@ -77,6 +81,7 @@
         setTimeout(() => {
             expanding = false;
         }, 500);
+        expandStatusBarWithStore();
     }
     function collapseStatusBar(smoothly: boolean = true) {
         statusBarOffset = minY;
@@ -85,6 +90,7 @@
         setTimeout(() => {
             expanding = false;
         }, 500);
+        collapseStatusBarWithStore();
     }
     /** ENDOF HELPER FUNCTIONS */
 
@@ -210,7 +216,9 @@
     on:mousedown={handleStatusBarBorderMouseDown}
     on:contextmenu={handleStatusBarBorderContextMenu}
     on:touchmove={handleStatusBarBorderTouchMove}
-/>
+>
+    <DoubleArrow size="1.5rem" rotation="{expanded ? "180deg" : "0deg"}" />
+</div>
 
 <style lang="scss">
     .status-bar {
@@ -286,6 +294,14 @@
             left: 0;
             margin: 0.5rem;
         }
+
+        .status-bar-status-middle {
+            position: absolute;
+            left: 50%;
+            right: 50%;
+            margin: 0.5rem;
+        }
+
         .status-bar-status-right {
             position: absolute;
             right: 0;

@@ -32,6 +32,10 @@
         removeProcessByUuid,
     } from "$stores/shared/ProcessesStore";
     import MobileWindow from "./window/MobileWindow.svelte";
+    import {
+        collapseStatusBar,
+        isStatusBarExpanded,
+    } from "$stores/mobile/StatusBarStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -78,12 +82,17 @@
     /** EVENT HANDLERS */
     function handleOpenWindowsButtonPress() {}
     function handleHomeButtonPress() {
+        collapseStatusBar();
         if (currentProcess !== null) {
             currentWindow.minimized = true;
         }
         closeApplicationDrawer();
     }
     function handleReturnButtonPress() {
+        if (isStatusBarExpanded()) {
+            collapseStatusBar();
+            return;
+        }
         if (currentProcess !== null) {
             removeProcessByUuid(currentProcess.uuid);
             return;
@@ -123,8 +132,6 @@
         <MobileWindow
             maximized={true}
             minimized={currentWindow.minimized}
-            title={currentProcess.name}
-            icon={currentProcess.getProgram().icon}
             bottomOffset={convertRemToPixels(1.5)}
             topOffset={convertRemToPixels(2.5)}
         >
