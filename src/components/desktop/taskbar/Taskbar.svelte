@@ -32,7 +32,14 @@
     } from "$stores/shared/DragAndDropStore";
     import ActiveProcess from "./ActiveProcess.svelte";
     import { processesStore } from "$stores/shared/ProcessesStore";
-    import { dateStore, getDayOfMonth, getDayOfWeekString, getMonthOfYearString, getTimeWithoutSecondsAsString } from "$stores/shared/DateTimeStore";
+    import {
+        dateStore,
+        getDateString,
+        getDayOfMonth,
+        getDayOfWeekString,
+        getMonthOfYearString,
+        getTimeWithoutSecondsAsString,
+    } from "$stores/shared/DateTimeStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -309,11 +316,8 @@
 
         <div class="right">
             <div class="date-time-container">
-                {getDayOfWeekString($dateStore, "short")}
-                {getDayOfMonth($dateStore)}
-                {getMonthOfYearString($dateStore, "short")}, {getTimeWithoutSecondsAsString(
-                    $dateStore
-                )}
+                {getTimeWithoutSecondsAsString($dateStore)}<br />
+                {getDateString($dateStore)}
             </div>
         </div>
     </div>
@@ -388,14 +392,15 @@
             }
 
             .right {
-                position: absolute;
-                right: 0;
+                margin: auto;
+                margin-right: 0;
                 height: 100%;
                 display: flex;
 
                 .date-time-container {
                     margin: auto;
                     margin-right: 1rem;
+                    text-align: center;
                 }
             }
         }

@@ -23,6 +23,7 @@
 <style lang="scss">
     svg {
         transition: rotate 0.5s;
+        -webkit-transition: rotate 0.5s;
 
         path {
             fill: var(--fg_color_secondary);
