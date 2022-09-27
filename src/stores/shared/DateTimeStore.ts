@@ -5,42 +5,44 @@ import type { Readable } from "svelte/store";
 // Stop is called when the last subscriber unsubscribes
 // https://svelte.dev/tutorial/readable-stores
 export const dateStore: Readable<Date> = readable(
-  new Date(),
-  function start(set) {
-    const interval = setInterval(() => {
-      set(new Date());
-    }, 1000);
+    new Date(),
+    function start(set) {
+        const interval = setInterval(() => {
+            set(new Date());
+        }, 1000);
 
-    return function stop() {
-      clearInterval(interval);
-    };
-  }
+        return function stop() {
+            clearInterval(interval);
+        };
+    }
 );
 
 export let locale: string = "en-EN";
 
 export function getTimeWithoutSecondsAsString(date: Date): string {
-  return date.toLocaleTimeString().slice(0, -3);
+    return `${date.getHours() < 10 ? "0" : ""}${date.getHours()}:${
+        date.getMinutes() < 10 ? "0" : ""
+    }${date.getMinutes()}`;
 }
 
 export function getDateString(date: Date): string {
-  return date.toLocaleDateString();
+    return date.toLocaleDateString();
 }
 
 export function getDayOfWeekString(
-  date: Date,
-  format: "short" | "long" | "narrow" = "long"
+    date: Date,
+    format: "short" | "long" | "narrow" = "long"
 ): string {
-  return date.toLocaleDateString(locale, { weekday: format });
+    return date.toLocaleDateString(locale, { weekday: format });
 }
 
 export function getMonthOfYearString(
-  date: Date,
-  format: "short" | "long" | "narrow" = "long"
+    date: Date,
+    format: "short" | "long" | "narrow" = "long"
 ): string {
-  return date.toLocaleDateString(locale, { month: format });
+    return date.toLocaleDateString(locale, { month: format });
 }
 
 export function getDayOfMonth(date: Date) {
-  return date.getDate();
+    return date.getDate();
 }

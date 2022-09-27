@@ -23,7 +23,10 @@ export const programsStore: Writable<Array<Program>> = writable([
             BrowserContent,
             { title: "Croma", url: "https://jitzek.github.io/croma-web-site/" },
             800,
-            1000
+            600,
+            null,
+            null,
+            true
         )
     ),
     new Program(
@@ -35,7 +38,10 @@ export const programsStore: Writable<Array<Program>> = writable([
             BrowserContent,
             { title: "Fillcan", url: "https://jitzek.github.io/fillcan/" },
             800,
-            1000
+            600,
+            null,
+            null,
+            true
         )
     ),
     new Program(

@@ -32,6 +32,7 @@
     } from "$stores/shared/DragAndDropStore";
     import ActiveProcess from "./ActiveProcess.svelte";
     import { processesStore } from "$stores/shared/ProcessesStore";
+    import { dateStore, getDayOfMonth, getDayOfWeekString, getMonthOfYearString, getTimeWithoutSecondsAsString } from "$stores/shared/DateTimeStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -269,11 +270,7 @@
                             <div style="padding-top: 100%;" />
                         </div>
                     {:else}
-                        <Launcher
-                            {program}
-                            {row}
-                            size={`${columnRadius}rem`}
-                        />
+                        <Launcher {program} {row} size={`${columnRadius}rem`} />
                     {/if}
                 {/each}
             </div>
@@ -307,6 +304,16 @@
                         />
                     {/if}
                 {/each}
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="date-time-container">
+                {getDayOfWeekString($dateStore, "short")}
+                {getDayOfMonth($dateStore)}
+                {getMonthOfYearString($dateStore, "short")}, {getTimeWithoutSecondsAsString(
+                    $dateStore
+                )}
             </div>
         </div>
     </div>
@@ -377,6 +384,18 @@
                     display: inline-grid;
                     display: -ms-inline-grid;
                     display: -moz-inline-grid;
+                }
+            }
+
+            .right {
+                position: absolute;
+                right: 0;
+                height: 100%;
+                display: flex;
+
+                .date-time-container {
+                    margin: auto;
+                    margin-right: 1rem;
                 }
             }
         }
