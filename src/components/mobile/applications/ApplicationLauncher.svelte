@@ -26,7 +26,7 @@
     import { touchDragOrPress } from "$actions/touchdrag";
     import { executeProgramById } from "$stores/shared/ProgramsStore";
     import Redirect from "$components/shared/svg/RedirectIcon.svelte";
-import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
+    import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
     //
 
     /** ENDOF IMPORTS*/
@@ -59,6 +59,13 @@ import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
     }
 
     function handleApplicationLauncherButtonClick() {
+        for (let process of $processesStore) {
+            if (process.getProgramId() === program.id) {
+                process.bringToTop();
+                process.unMinimizeWindow();
+                return;
+            }
+        }
         executeProgramById(program.id)?.bringToTop();
     }
 
@@ -70,14 +77,7 @@ import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
         e.preventDefault();
         if (e.detail.press) {
             // Open program
-            for (let process of $processesStore) {
-                if (process.getProgramId() === program.id) {
-                    process.bringToTop();
-                    process.unMinimizeWindow();
-                    return;
-                }
-            }
-            executeProgramById(program.id)?.bringToTop();
+            handleApplicationLauncherButtonClick();
             return;
         }
         if (!e.detail.drag) return;
