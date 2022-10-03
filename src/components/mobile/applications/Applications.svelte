@@ -9,7 +9,6 @@
 
     // "objects"
     import { changeCursor, Cursor } from "$objects/desktop/cursors";
-    import { convertRemToPixels } from "$objects/shared/conversions";
     import type { Category as CategoryObject } from "$objects/shared/program/Category";
     //
 

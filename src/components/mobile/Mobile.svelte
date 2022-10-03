@@ -47,7 +47,6 @@
     /** VARIABLE DECLARATION */
     let wallpaper: string = "/images/wallpapers/custom-design-01-1280x720.png";
     let currentProcess: ProcessObject | null = null;
-    let currentWindow: WindowObject | null = null;
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
@@ -59,10 +58,11 @@
             currentProcess = null;
             return;
         }
+        if (process.getWindow().minimized) {
+            currentProcess = null;
+            return;
+        }
         currentProcess = process;
-        currentWindow = currentProcess.getWindow();
-        // currentWindow.fullscreen = true;
-        // currentWindow.minimized = false;
     });
     /** ENDOF STORE CALLBACKS */
 
@@ -83,9 +83,9 @@
     function handleOpenWindowsButtonPress() {}
     function handleHomeButtonPress() {
         collapseStatusBar();
-        if (currentProcess !== null) {
-            currentWindow.minimized = true;
-        }
+        $processesStore.forEach((process) => {
+            process.minimizeWindow();
+        });
         closeApplicationDrawer();
     }
     function handleReturnButtonPress() {
@@ -128,20 +128,23 @@
 <Applications distanceFromBottomInRem={3.5} distanceFromTopInRem={2.5} />
 
 <div class="window-container">
-    {#if currentProcess !== null}
-        <MobileWindow
-            maximized={true}
-            minimized={currentWindow.minimized}
-            bottomOffset={convertRemToPixels(1.5)}
-            topOffset={convertRemToPixels(2.5)}
-        >
-            <svelte:component
-                this={currentProcess.getWindow().component}
-                {...currentProcess.getWindow().componentAttributes}
-                slot="content"
-            />
-        </MobileWindow>
-    {/if}
+    {#each $processesStore as { uuid, name, icon, window } (uuid)}
+        {#if window !== null}
+            <MobileWindow
+                maximized={true}
+                minimized={window.minimized}
+                bottomOffset={convertRemToPixels(1.5)}
+                topOffset={convertRemToPixels(2.5)}
+                z_index={uuid == currentProcess?.uuid ? 0 : -1}
+            >
+                <svelte:component
+                    this={window.component}
+                    {...window.componentAttributes}
+                    slot="content"
+                />
+            </MobileWindow>
+        {/if}
+    {/each}
 </div>
 
 <StatusBar

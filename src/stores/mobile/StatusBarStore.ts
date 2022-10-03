@@ -9,8 +9,6 @@ export const expandStatusBarStore: Readable<boolean> = derived(
 );
 
 export function expandStatusBar() {
-    console.log(expanded);
-
     expanded = true;
     _expandStatusBarStore.set(expanded);
 }

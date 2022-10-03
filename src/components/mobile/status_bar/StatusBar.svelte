@@ -6,25 +6,24 @@
     //
 
     // "components"
+    import DoubleArrow from "$components/mobile/status_bar/DoubleArrow.svelte";
     //
 
     // "objects"
     import { changeCursor, Cursor } from "$objects/desktop/cursors";
     import { convertRemToPixels } from "$objects/shared/conversions";
-    import { expandStatusBarStore, expandStatusBar as expandStatusBarWithStore, collapseStatusBar as collapseStatusBarWithStore } from "$stores/mobile/StatusBarStore";
     //
 
     // "stores"
     import {
         dateStore,
-        getDateString,
         getDayOfMonth,
         getDayOfWeekString,
         getMonthOfYearString,
         getTimeWithoutSecondsAsString,
     } from "$stores/shared/DateTimeStore";
-    import DoubleArrow from "./DoubleArrow.svelte";
     import SwitchToDesktopButton from "./global_options/SwitchToDesktopButton.svelte";
+    import { expandStatusBarStore, expandStatusBar as expandStatusBarWithStore, collapseStatusBar as collapseStatusBarWithStore } from "$stores/mobile/StatusBarStore";
     //
 
     /** ENDOF IMPORTS*/
@@ -48,8 +47,8 @@
     /** ENDOF VARIABLE DECLERATION */
 
     /** STORE CALLBACKS */
-    expandStatusBarStore.subscribe((expandStatusBar) => {
-        expanded = expandStatusBar;
+    expandStatusBarStore.subscribe((_expanded) => {
+        expanded = _expanded;
     });
     /** ENDOF STORE CALLBACKS */
 
@@ -292,13 +291,6 @@
         .status-bar-status-left {
             position: absolute;
             left: 0;
-            margin: 0.5rem;
-        }
-
-        .status-bar-status-middle {
-            position: absolute;
-            left: 50%;
-            right: 50%;
             margin: 0.5rem;
         }
 

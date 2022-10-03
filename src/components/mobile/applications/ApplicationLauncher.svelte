@@ -4,6 +4,8 @@
     //
 
     // "components"
+    import Redirect from "$components/shared/svg/RedirectIcon.svelte";
+    import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
     //
 
     // "objects"
@@ -11,22 +13,14 @@
     //
 
     // "stores"
-    import {
-        hideContextMenu,
-        showContextMenu,
-    } from "$stores/shared/ContextMenuStore";
-    import {
-        addProgramShortcut,
-        containsProgramShortcut,
-        removeProgramShortcut,
-    } from "$stores/desktop/TaskbarStore";
     import { setData as setDragAndDropData } from "$stores/shared/DragAndDropStore";
     import { hideMenu as hideApplicationsMenu } from "$stores/mobile/ApplicationsStore";
     import { notify, processesStore } from "$stores/shared/ProcessesStore";
-    import { touchDragOrPress } from "$actions/touchdrag";
     import { executeProgramById } from "$stores/shared/ProgramsStore";
-    import Redirect from "$components/shared/svg/RedirectIcon.svelte";
-    import RedirectIcon from "$components/shared/svg/RedirectIcon.svelte";
+    //
+
+    // "actions"
+    import { touchDragOrPress } from "$actions/touchdrag";
     //
 
     /** ENDOF IMPORTS*/
@@ -179,10 +173,5 @@
 
     .application-launcher-button:active {
         @include input-active-inherit;
-    }
-
-    .application-launcher-button:hover,
-    .application-launcher-button:focus,
-    .application-launcher-button:active {
     }
 </style>
