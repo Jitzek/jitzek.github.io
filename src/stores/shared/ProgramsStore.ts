@@ -21,7 +21,7 @@ export const programsStore: Writable<Array<Program>> = writable([
         "/images/program-icons/croma.png",
         new Window(
             BrowserContent,
-            { title: "Croma", url: "https://jitzek.github.io/croma-web-site/" },
+            { title: "Croma", url: "https://jitzek.github.io/croma/" },
             800,
             1000
         )
